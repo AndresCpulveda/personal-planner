@@ -6,10 +6,29 @@ function TasksProvider({children}) {
 
   const [addingTask, setAddingTask] = useState(false)
   const [tasks, setTasks] = useState([])
+  const [completed, setCompleted] = useState([])
 
    const addToTasks = (task) => {
-    setTasks([...tasks, task])
-    console.log(tasks);
+    const toAdd = {
+      ...task,
+      completed: false
+    }
+    setTasks([...tasks, toAdd])
+   }
+
+   const addToCompleted = (task) => {
+    const newDueList = tasks.filter(due => due.name != task.name)
+    setTasks(newDueList)
+    const toAdd = {
+      ...task,
+      completed: true
+    }
+    setCompleted([toAdd, ...completed])
+   }
+
+   const removeCompleted = (task) => {
+    const newCompletedList = completed.filter(item => item.name != task.name)
+    setCompleted(newCompletedList)
    }
 
   return (
@@ -18,7 +37,10 @@ function TasksProvider({children}) {
         addingTask,
         setAddingTask,
         tasks,
-        addToTasks
+        addToTasks,
+        completed,
+        addToCompleted,
+        removeCompleted,
       }}
     >
       {children}
