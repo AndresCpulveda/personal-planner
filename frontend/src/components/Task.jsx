@@ -1,6 +1,7 @@
 
 
 import useTasks from './hooks/useTasks';
+import Timer from './Timer';
 
 function Task({task}) {
   
@@ -25,7 +26,7 @@ function Task({task}) {
         <li className='col-span-3 flex items-center border border-white text-white px-2'>{name}</li>
         <li className='col-span-2 flex items-center justify-center border border-white text-white px-2'>{due}</li>
         <li className='col-span-1 flex items-center justify-center border border-white text-white px-2'>{priority}</li>
-        <li className='col-span-3 flex items-center justify-center border border-white text-white px-2'><p><span>I</span> {time} <span></span></p></li>
+        <li className='col-span-3 flex items-center justify-center border border-white text-white px-2'> <Timer /> </li>
       </ul>
     </>
   )

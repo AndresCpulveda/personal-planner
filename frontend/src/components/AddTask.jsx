@@ -1,6 +1,7 @@
 import {useState} from 'react'
 
 import useTasks from './hooks/useTasks';
+import Timer from './Timer';
 
 function AddTask() {
 
@@ -51,7 +52,7 @@ function AddTask() {
           <option value="medium">Medium</option>
           <option value="high">High</option>
         </select></li>
-      <li className='col-span-3 flex items-center justify-center border border-white text-white px-2'><p><span>I</span>00:00:00<span></span></p></li>
+      <li className='col-span-3 flex items-center justify-center border border-white text-white px-2'><Timer /></li>
     </ul>
 
   )
