@@ -1,6 +1,8 @@
 import {useRef, useState} from 'react'
 
-function Timer() {
+import { timeFormatter } from '../helpers/helpers'
+
+function Timer({changeTime}) {
 
   const [timerActive, setTimerActive] = useState(false)
   const [timerPaused, setTimerPaused] = useState(true)
@@ -15,11 +17,12 @@ function Timer() {
       setTimer((timer) => timer + 1)
     }, 1000)
   }
-
+  
   const handlePause = () => {
     setTimerActive(false)
     setTimerPaused(true)
     clearInterval(timeRef.current)
+    changeTime(timer)
   }
 
   const handleReset = () => {
@@ -28,9 +31,7 @@ function Timer() {
     clearInterval(timeRef.current)
     setTimer(0)
   }
-  const minutes = `0${Math.floor(timer / 60)}`
-  const seconds = `0${timer % 60}`.slice(-2)
-
+  
   return (
     <>
       <div className='flex gap-2'>
@@ -39,7 +40,7 @@ function Timer() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </span>
-        <p>{`${minutes}.${seconds}`}</p>
+        <p>{timeFormatter(timer)}</p>
         {timerPaused ? 
           <span onClick={() => handleStart()}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 cursor-pointer hover:scale-110 transition-all">

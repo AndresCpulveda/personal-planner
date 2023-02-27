@@ -26,7 +26,6 @@ function AddTask() {
 
 
   return (
-    <form>
     <ul className='grid grid-cols-10'>
       <li className='col-span-1 flex justify-center border border-white px-4 text-white p-4' >
         <span  onClick={() => {addNewTask()}}>
@@ -71,8 +70,6 @@ function AddTask() {
         </div>
       </li>
     </ul>
-    </form>
-
   )
 }
 

@@ -1,8 +1,7 @@
-import { useEffect } from 'react'
+
 
 import Task from './Task'
 import useTasks from './hooks/useTasks';
-import AddTask from './AddTask';
 
 function TodayCompleted() {
 
