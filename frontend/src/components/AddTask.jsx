@@ -1,17 +1,22 @@
 import {useState} from 'react'
 
 import useTasks from './hooks/useTasks';
-import Timer from './Timer';
 
 function AddTask() {
 
   const {addToDueTasks, setAddingTodayTask} = useTasks();
 
+  const currentDate = new Date
+  const formattedDate = currentDate.toISOString().split('T')[0]
+
   const [name, setName] = useState("")
-  const [due, setDue] = useState("")
+  const [due, setDue] = useState(formattedDate)
   const [priority, setPriority] = useState("")
 
   const addNewTask = () => {
+    if([name, due, priority].includes('')) {
+      return alert('Llena los campos')
+    }
     const task = {
       name, due, priority, time: "00:00:00"
     }
@@ -37,11 +42,13 @@ function AddTask() {
       </li>
       <li className='col-span-3 flex border border-white'>
         <input
+          autoFocus
           className='bg-transparent w-full text-white px-2'
           onChange={e => setName(e.target.value)}
         ></input></li>
       <li className='col-span-2 flex border border-white'>
         <input
+          defaultValue={due}
           type='date'
           className='bg-transparent w-full text-white px-2'
           onChange={e => setDue(e.target.value)}
@@ -49,9 +56,9 @@ function AddTask() {
       <li className='col-span-1 flex border border-white'>
         <select required defaultValue={"empty"} className='bg-transparent w-full text-white px-2 ' onChange={e => setPriority(e.target.value)}>
           <option value="empty"></option>
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
         </select></li>
       <li className='col-span-3 flex items-center justify-center border border-white text-white px-2'>
         <div className='flex gap-2'>
