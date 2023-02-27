@@ -5,7 +5,12 @@ import useTasks from './hooks/useTasks';
 import AddTask from './AddTask';
 
 function TodayDue() {
-   const {addingTask, tasks} = useTasks();
+    const {addingTodayTask, todayDueTasks} = useTasks();
+
+    const orderedList = [...todayDueTasks].sort((a, b) => {
+      const priorityOrder = {high: 1, medium: 2, low: 3}
+      return priorityOrder[a.priority] - priorityOrder[b.priority]
+    })    
 
   return (
     <>
@@ -18,8 +23,8 @@ function TodayDue() {
           <li className='col-span-3 border text-center border-white'><p className='text-white uppercase'>time spent</p></li>
         </ul>
         <div className=''>
-          {tasks.map( task => <Task task={task} />)}
-          {addingTask ? <AddTask /> : null}
+          {orderedList.map( task => <Task task={task} />)}
+          {addingTodayTask ? <AddTask /> : null}
         </div>
       </div>
     </>

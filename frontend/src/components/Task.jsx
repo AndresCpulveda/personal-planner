@@ -6,7 +6,7 @@ import Timer from './Timer';
 function Task({task}) {
   
   const {addToCompleted, removeCompleted} = useTasks();
-  const {name, due, priority, time} = task;
+  const {name, due, priority} = task;
 
   return (
     <>

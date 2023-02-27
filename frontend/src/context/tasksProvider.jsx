@@ -4,41 +4,41 @@ const TasksContext = createContext()
 
 function TasksProvider({children}) {
 
-  const [addingTask, setAddingTask] = useState(false)
-  const [tasks, setTasks] = useState([])
-  const [completed, setCompleted] = useState([])
+  const [addingTodayTask, setAddingTodayTask] = useState(false)
+  const [todayDueTasks, setTodayDueTasks] = useState([])
+  const [todayCompleted, setTodayCompleted] = useState([])
 
-   const addToTasks = (task) => {
+   const addToDueTasks = (task) => {
     const toAdd = {
       ...task,
       completed: false
     }
-    setTasks([...tasks, toAdd])
+    setTodayDueTasks([...todayDueTasks, toAdd])
    }
 
    const addToCompleted = (task) => {
-    const newDueList = tasks.filter(due => due.name != task.name)
-    setTasks(newDueList)
+    const newDueList = todayDueTasks.filter(due => due.name != task.name)
+    setTodayDueTasks(newDueList)
     const toAdd = {
       ...task,
       completed: true
     }
-    setCompleted([toAdd, ...completed])
+    setTodayCompleted([toAdd, ...todayCompleted])
    }
 
    const removeCompleted = (task) => {
-    const newCompletedList = completed.filter(item => item.name != task.name)
-    setCompleted(newCompletedList)
+    const newCompletedList = todayCompleted.filter(completed => completed.name != task.name)
+    setTodayCompleted(newCompletedList)
    }
 
   return (
     <TasksContext.Provider
       value={{
-        addingTask,
-        setAddingTask,
-        tasks,
-        addToTasks,
-        completed,
+        addingTodayTask,
+        setAddingTodayTask,
+        todayDueTasks,
+        addToDueTasks,
+        todayCompleted,
         addToCompleted,
         removeCompleted,
       }}

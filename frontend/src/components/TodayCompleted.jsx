@@ -6,7 +6,7 @@ import AddTask from './AddTask';
 
 function TodayCompleted() {
 
-  const {completed} = useTasks();
+  const {todayCompleted} = useTasks();
 
   return (
     <div className='flex flex-col'>
@@ -18,7 +18,7 @@ function TodayCompleted() {
         <li className='col-span-3 border text-center border-white'><p className='text-white uppercase'>time spent</p></li>
       </ul>
       <div className=''>
-        {completed.map( task => <Task task={task} />)}
+        {todayCompleted.map( task => <Task task={task} />)}
       </div>
     </div>
   )
