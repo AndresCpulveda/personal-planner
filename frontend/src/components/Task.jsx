@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
-import useTasks from './hooks/useTasks';
+import useTasks from '../hooks/useTasks'
 import Timer from './Timer';
 import { timeFormatter } from '../helpers/helpers';
+import { formatPriority } from '../helpers/StyleHelpers';
 
 function Task({task}) {
-  console.log(task);
   
   const {addToCompleted, removeCompleted} = useTasks();
   const {name, due, priority} = task;
@@ -36,7 +36,7 @@ function Task({task}) {
         }
         <li className='col-span-3 flex items-center border border-white text-white px-2'>{name}</li>
         <li className='col-span-2 flex items-center justify-center border border-white text-white px-2'>{due}</li>
-        <li className='col-span-1 flex items-center justify-center border border-white text-white px-2'>{priority}</li>
+        <li className={`col-span-1 flex items-center justify-center border border-white px-2 ${formatPriority(priority)}`}>{priority}</li>
         {task.time === '00:00:00' ? 
           <li className='col-span-3 flex items-center justify-center border border-white text-white px-2'> <Timer changeTime={changeTime} /> </li>
           :

@@ -3,7 +3,7 @@ import {useState} from 'react'
 import TodayDue from '../components/TodayDue'
 import TodayCompleted from '../components/TodayCompleted'
 import ProgressGraph from '../components/ProgressGraph'
-import useTasks from '../components/hooks/useTasks'
+import useTasks from '../hooks/useTasks'
 
 function TodayTasks() {
 

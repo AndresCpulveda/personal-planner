@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 
 function MainLayout() {
   return (
-    <main className='flex bg-stone-900 h-screen p-8'>
+    <main className='flex p-8'>
       <Outlet />
     </main>
   )

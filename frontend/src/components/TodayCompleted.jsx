@@ -1,7 +1,7 @@
 
 
 import Task from './Task'
-import useTasks from './hooks/useTasks';
+import useTasks from '../hooks/useTasks'
 
 function TodayCompleted() {
 

@@ -1,21 +1,29 @@
 import {useState} from 'react'
 
-import useTasks from './hooks/useTasks';
+import useTasks from '../hooks/useTasks'
+import Alert from './Alert'
 
 function AddTask() {
-
-  const {addToDueTasks, setAddingTodayTask} = useTasks();
 
   const currentDate = new Date
   const formattedDate = currentDate.toISOString().split('T')[0]
 
+  const {addToDueTasks, setAddingTodayTask} = useTasks();
+
   const [name, setName] = useState("")
   const [due, setDue] = useState(formattedDate)
   const [priority, setPriority] = useState("")
+  const [alert, setAlert] = useState({})
+
+
 
   const addNewTask = () => {
     if([name, due, priority].includes('')) {
-      return alert('Llena los campos')
+      setAlert({msg: 'Use all the fields', error: true})
+      setTimeout(() => {
+        setAlert({})
+      }, 3000);
+      return
     }
     const task = {
       name, due, priority, time: "00:00:00"
@@ -26,6 +34,8 @@ function AddTask() {
 
 
   return (
+    <>
+    {alert.msg ? <Alert alert={alert} /> : null}
     <ul className='grid grid-cols-10'>
       <li className='col-span-1 flex justify-center border border-white px-4 text-white p-4' >
         <span  onClick={() => {addNewTask()}}>
@@ -70,6 +80,7 @@ function AddTask() {
         </div>
       </li>
     </ul>
+  </>
   )
 }
 
