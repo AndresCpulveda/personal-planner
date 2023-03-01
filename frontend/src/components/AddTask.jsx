@@ -16,7 +16,6 @@ function AddTask() {
   const [alert, setAlert] = useState({})
 
 
-
   const addNewTask = () => {
     if([name, due, priority].includes('')) {
       setAlert({msg: 'Use all the fields', error: true})
