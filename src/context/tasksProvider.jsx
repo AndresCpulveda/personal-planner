@@ -1,5 +1,7 @@
 import { createContext, useState } from "react";
 
+import sendAxios from "../../config/axios";
+
 const TasksContext = createContext()
 
 function TasksProvider({children}) {
@@ -8,12 +10,20 @@ function TasksProvider({children}) {
   const [todayDueTasks, setTodayDueTasks] = useState([])
   const [todayCompleted, setTodayCompleted] = useState([])
 
-   const addToDueTasks = (task) => {
+   const addToDueTasks = async (task) => {
     const toAdd = {
       ...task,
       completed: false
     }
-    setTodayDueTasks([...todayDueTasks, toAdd])
+    try {
+      const {data} = await sendAxios.post('tasks/add', toAdd)
+      const fixedDue = data.due.split('T')[0]
+      data.due = fixedDue
+
+      setTodayDueTasks([...todayDueTasks, data])
+    } catch (error) {
+      console.log(error);
+    }
    }
 
    const addToCompleted = (task) => {
