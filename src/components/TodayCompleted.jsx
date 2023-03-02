@@ -6,6 +6,7 @@ import useTasks from '../hooks/useTasks'
 function TodayCompleted() {
 
   const {todayCompleted} = useTasks();
+  console.log('r complete');
 
   return (
     <div className='flex flex-col'>
@@ -17,7 +18,7 @@ function TodayCompleted() {
         <li className='col-span-3 border text-center border-white'><p className='text-white uppercase'>time spent</p></li>
       </ul>
       <div className=''>
-        {todayCompleted.map( task => <Task task={task} />)}
+        {todayCompleted.map( task => <Task task={task} key={task._id} />)}
       </div>
     </div>
   )

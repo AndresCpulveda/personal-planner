@@ -1,4 +1,4 @@
-import {useState} from 'react'
+
 
 import TodayDue from '../components/TodayDue'
 import TodayCompleted from '../components/TodayCompleted'
@@ -7,7 +7,7 @@ import useTasks from '../hooks/useTasks'
 
 function TodayTasks() {
 
-  const {setAddingTodayTask} = useTasks();
+  const {setAddingTodayTask, loadedTasks} = useTasks();
 
   return (
     <>
@@ -21,12 +21,12 @@ function TodayTasks() {
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       </div>
-      <TodayDue />
+      {loadedTasks ? <TodayDue /> : null}
 
       <div className='mt-10 mb-2'>
         <h2 className='uppercase text-white text-3xl font-bold'>today`s completed tasks</h2>
       </div>
-      <TodayCompleted />
+      {loadedTasks ? <TodayCompleted /> : null}
 
     </section>
     <section className='w-1/3 flex flex-col'>

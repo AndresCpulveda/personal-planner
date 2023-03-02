@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 import sendAxios from "../../config/axios";
 
@@ -9,6 +9,42 @@ function TasksProvider({children}) {
   const [addingTodayTask, setAddingTodayTask] = useState(false)
   const [todayDueTasks, setTodayDueTasks] = useState([])
   const [todayCompleted, setTodayCompleted] = useState([])
+  const [todaysTasks, setTodaysTasks] = useState([])
+  const [loadedTasks, setLoadedTasks] = useState(false)
+
+  useEffect(() => {
+    const getTodaysTasks = async () => {
+      try {
+        const {data} = await sendAxios('tasks/todays')
+        const formatted = data.map( task => {
+          const date = task.due.split('T')[0]  
+          task.due = date;
+          return task
+        })
+        setTodaysTasks(formatted)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getTodaysTasks()
+  }, [])
+
+  useEffect(() => {
+    const getTodaysDue = async () => {
+      console.log('aca');
+      console.log(todaysTasks);
+      const todayDue = todaysTasks.filter(task => !task.completed)
+      setTodayDueTasks(todayDue)
+    }
+    const getTodaysCompleted = () => {
+      const listCompleted = todaysTasks.filter(task => task.completed)
+      setTodayCompleted(listCompleted)
+    }
+    getTodaysDue()
+    getTodaysCompleted()
+    setLoadedTasks(true)
+  }, [todaysTasks])
+
 
    const addToDueTasks = async (task) => {
     const toAdd = {
@@ -34,9 +70,7 @@ function TasksProvider({children}) {
       completed: true
     }
     try {
-      console.log(toAdd);
       const updated = await sendAxios.put('tasks/complete', toAdd)
-      console.log(updated);
     } catch (error) {
       console.log(error);
     }
@@ -48,9 +82,12 @@ function TasksProvider({children}) {
     setTodayCompleted(newCompletedList)
    }
 
+
   return (
     <TasksContext.Provider
       value={{
+        setTodaysTasks,
+        todaysTasks,
         addingTodayTask,
         setAddingTodayTask,
         todayDueTasks,
@@ -58,6 +95,7 @@ function TasksProvider({children}) {
         todayCompleted,
         addToCompleted,
         removeCompleted,
+        loadedTasks,
       }}
     >
       {children}

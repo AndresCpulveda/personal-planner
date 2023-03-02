@@ -6,13 +6,13 @@ import AddTask from './AddTask';
 
 function TodayDue() {
     const {addingTodayTask, todayDueTasks} = useTasks();
+    console.log('r due');
 
     const orderedList = [...todayDueTasks].sort((a, b) => {
-      console.log(a);
-      console.log(b);
       const priorityOrder = {High: 1, Medium: 2, Low: 3}
       return priorityOrder[a.priority] - priorityOrder[b.priority]
     })    
+
 
   return (
     <>
@@ -25,7 +25,7 @@ function TodayDue() {
           <li className='col-span-3 border text-center border-white'><p className='text-white uppercase'>time spent</p></li>
         </ul>
         <div className=''>
-          {orderedList.map( task => <Task task={task} />)}
+          {orderedList.map( task => <Task task={task} key={task._id} />)}
           {addingTodayTask ? <AddTask /> : null}
         </div>
       </div>
