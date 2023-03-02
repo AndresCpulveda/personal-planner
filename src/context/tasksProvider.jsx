@@ -26,12 +26,19 @@ function TasksProvider({children}) {
     }
    }
 
-   const addToCompleted = (task) => {
+   const addToCompleted = async (task) => {
     const newDueList = todayDueTasks.filter(due => due.name != task.name)
     setTodayDueTasks(newDueList)
     const toAdd = {
       ...task,
       completed: true
+    }
+    try {
+      console.log(toAdd);
+      const updated = await sendAxios.put('tasks/complete', toAdd)
+      console.log(updated);
+    } catch (error) {
+      console.log(error);
     }
     setTodayCompleted([toAdd, ...todayCompleted])
    }
