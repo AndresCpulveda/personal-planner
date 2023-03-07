@@ -6,7 +6,6 @@ import useTasks from '../hooks/useTasks'
 function TodayCompleted() {
 
   const {todayCompleted} = useTasks();
-  console.log('r complete');
 
   return (
     <div className='flex flex-col'>

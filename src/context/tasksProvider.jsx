@@ -31,8 +31,6 @@ function TasksProvider({children}) {
 
   useEffect(() => {
     const getTodaysDue = async () => {
-      console.log('aca');
-      console.log(todaysTasks);
       const todayDue = todaysTasks.filter(task => !task.completed)
       setTodayDueTasks(todayDue)
     }
@@ -77,9 +75,14 @@ function TasksProvider({children}) {
     setTodayCompleted([toAdd, ...todayCompleted])
    }
 
-   const removeCompleted = (task) => {
-    const newCompletedList = todayCompleted.filter(completed => completed.name != task.name)
-    setTodayCompleted(newCompletedList)
+   const removeCompleted = async (task) => {
+    try {
+      const {data} = await sendAxios.delete(`tasks/delete/${task._id}`)
+      const newCompletedList = todayCompleted.filter(completed => completed.name != data.name)
+      setTodayCompleted(newCompletedList)
+    } catch (error) {
+      console.log(error);
+    }
    }
 
 

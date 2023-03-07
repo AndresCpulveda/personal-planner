@@ -6,7 +6,6 @@ import AddTask from './AddTask';
 
 function TodayDue() {
     const {addingTodayTask, todayDueTasks} = useTasks();
-    console.log('r due');
 
     const orderedList = [...todayDueTasks].sort((a, b) => {
       const priorityOrder = {High: 1, Medium: 2, Low: 3}
