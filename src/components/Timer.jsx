@@ -1,14 +1,16 @@
 import {useRef, useState} from 'react'
 
-import { timeFormatter } from '../helpers/helpers'
+import { timeFormatter, timeDeFormatter } from '../helpers/helpers'
 
-function Timer({changeTime}) {
+function Timer({changeTime, task}) {
+
+  const savedTime = timeDeFormatter(task.time)
 
   const [timerActive, setTimerActive] = useState(false)
   const [timerPaused, setTimerPaused] = useState(true)
-  const [timer, setTimer] = useState(0)
+  const [timer, setTimer] = useState(savedTime || 0)
 
-  const timeRef = useRef(null)
+  const timeRef = useRef(savedTime || null)
 
   const handleStart = () => {
     setTimerActive(true)

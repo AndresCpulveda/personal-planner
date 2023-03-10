@@ -63,16 +63,12 @@ function TasksProvider({children}) {
    const addToCompleted = async (task) => {
     const newDueList = todayDueTasks.filter(due => due.name != task.name)
     setTodayDueTasks(newDueList)
-    const toAdd = {
-      ...task,
-      completed: true
-    }
     try {
-      const updated = await sendAxios.put('tasks/complete', toAdd)
+      const updated = await sendAxios.put('tasks/update', task)
     } catch (error) {
       console.log(error);
     }
-    setTodayCompleted([toAdd, ...todayCompleted])
+    setTodayCompleted([task, ...todayCompleted])
    }
 
    const removeCompleted = async (task) => {
@@ -83,6 +79,15 @@ function TasksProvider({children}) {
     } catch (error) {
       console.log(error);
     }
+   }
+
+   const updateTime = async (task) => {
+    try {
+      const {data} = await sendAxios.put('tasks/update', task)
+    } catch (error) {
+      console.log(error);
+    }
+
    }
 
 
@@ -99,6 +104,7 @@ function TasksProvider({children}) {
         addToCompleted,
         removeCompleted,
         loadedTasks,
+        updateTime,
       }}
     >
       {children}
