@@ -68,7 +68,7 @@ function TasksProvider({children}) {
     } catch (error) {
       console.log(error);
     }
-    setTodayCompleted([task, ...todayCompleted])
+    setTodayCompleted([...todayCompleted, task])
    }
 
    const removeCompleted = async (task) => {

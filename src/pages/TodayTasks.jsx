@@ -4,14 +4,16 @@ import TodayDue from '../components/TodayDue'
 import TodayCompleted from '../components/TodayCompleted'
 import ProgressGraph from '../components/ProgressGraph'
 import useTasks from '../hooks/useTasks'
+import SavingSpinner from '../components/SavingSpinner'
 
 function TodayTasks() {
 
-  const {setAddingTodayTask, loadedTasks} = useTasks();
+  const {setAddingTodayTask, loadedTasks, saving} = useTasks();
 
   return (
     <>
     <section className='w-2/3'>
+      <SavingSpinner saving={saving} />
       <div className='mt-10 mb-2 flex gap-4 items-center'>
         <h2 className='uppercase text-white text-3xl font-bold'>today´s due tasks</h2>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 

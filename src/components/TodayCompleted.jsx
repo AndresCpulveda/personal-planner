@@ -6,7 +6,7 @@ import useTasks from '../hooks/useTasks'
 function TodayCompleted() {
 
   const {todayCompleted} = useTasks();
-
+  
   return (
     <div className='flex flex-col'>
       <ul className='grid grid-cols-10'>
