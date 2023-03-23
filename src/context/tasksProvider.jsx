@@ -11,6 +11,7 @@ function TasksProvider({children}) {
   const [todayCompleted, setTodayCompleted] = useState([])
   const [todaysTasks, setTodaysTasks] = useState([])
   const [loadedTasks, setLoadedTasks] = useState(false)
+  const [allTasks, setAllTasks] = useState([])
 
   useEffect(() => {
     const getTodaysTasks = async () => {
@@ -42,6 +43,24 @@ function TasksProvider({children}) {
     getTodaysCompleted()
     setLoadedTasks(true)
   }, [todaysTasks])
+
+  const getAllTasks = async () => {
+    try {
+      const {data} = await sendAxios('tasks/all')
+      console.log(data);
+      const formatted = data.map(task => {
+        const due = task.due.split('T')[0]
+        const date = task.createdAt.split('T')[0]
+        task.due = due
+        task.createdAt = date
+        return task
+      })
+      setAllTasks(formatted)
+      console.log(formatted);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 
    const addToDueTasks = async (task) => {
@@ -105,6 +124,8 @@ function TasksProvider({children}) {
         removeCompleted,
         loadedTasks,
         updateTime,
+        getAllTasks,
+        allTasks,
       }}
     >
       {children}

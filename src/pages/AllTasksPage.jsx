@@ -1,13 +1,18 @@
-import React from 'react'
+import {useEffect} from 'react'
 import AllTasks from '../components/AllTasks';
 import TodayDue from '../components/TodayDue'
 import useTasks from '../hooks/useTasks'
 
 function AllTasksPage() {
-  const {loadedTasks} = useTasks();
+  const {loadedTasks, getAllTasks} = useTasks();
+
+  useEffect(() => {
+    getAllTasks()
+  }, [])
+
   return (
     <>
-      <section className='w-2/3'>
+      <section className='w-full'>
         <div className='mt-10 mb-2 flex gap-4 items-center'>
           <h2 className='uppercase text-white text-3xl font-bold'>all tasks</h2>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
@@ -19,9 +24,9 @@ function AllTasksPage() {
         </div>
         {loadedTasks ? <AllTasks /> : null}
       </section>
-      <section className='w-1/3 flex flex-col'>
-        {/* <ProgressGraph /> */}
-      </section>
+      {/* <section className='w-1/3 flex flex-col'>
+        <ProgressGraph />
+      </section> */}
 
     </>
   )
