@@ -1,13 +1,18 @@
 import {useEffect, useState} from 'react'
-import useTasks from '../hooks/useTasks';
 import TaskOnAll from './TaskOnAll';
 import sendAxios from '../../config/axios';
+import { sortByBoolean, sortPriority } from '../helpers/helpers';
 
 function AllTasks() {
-  // const {allTasks} = useTasks();
   const [showingTasks, setShowingTasks] = useState([])
   const [allTasks, setAllTasks] = useState([])
   const [activeBtn, setActiveBtn] = useState('all')
+
+  const [arrowName, setArrowName] = useState(false)
+  const [arrowCreated, setArrowCreated] = useState(false)
+  const [arrowDue, setArrowDue] = useState(false)
+  const [arrowPriority, setArrowPriority] = useState(false)
+  const [arrowTime, setArrowTime] = useState(false)
   
   useEffect(() => {
     const getAllTasks = async () => {
@@ -29,7 +34,6 @@ function AllTasks() {
     getAllTasks()
   }, [])
   
-
   const completedTasks = allTasks.filter(task => task.completed)
   const uncompletedTasks = allTasks.filter(task => !task.completed)
 
@@ -38,7 +42,6 @@ function AllTasks() {
     2: 'text-green-500 border-green-500',
     3: 'text-red-500 border-red-500'
   }
-
 
   return (
     <>
@@ -73,11 +76,69 @@ function AllTasks() {
         <ul className='grid grid-cols-12'>
           <li className='col-span-1 border text-center border-white'><p className='text-white uppercase'>status</p></li>
           <li className='col-span-1 border text-center border-white'><p className='text-white uppercase'>actions</p></li>
-          <li className='col-span-3 border text-center border-white'><p className='text-white uppercase'>name</p></li>
-          <li className='col-span-2 border text-center border-white'><p className='text-white uppercase'>created</p></li>
-          <li className='col-span-2 border text-center border-white'><p className='text-white uppercase'>due</p></li>
-          <li className='col-span-1 border text-center border-white'><p className='text-white uppercase'>priority</p></li>
-          <li className='col-span-2 border text-center border-white'><p className='text-white uppercase'>time spent</p></li>
+          <li className='grid grid-cols-12 col-span-3 border text-center border-white'>
+            <p className='col-span-11 text-white uppercase'>name</p>
+            <span className={`col-span-1 flex items-center ${arrowName ? 'rotate-180' : ''}`}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
+                className="w-5 h-5 text-gray-700 cursor-pointer hover:text-white"
+                onClick={() => {
+                  setShowingTasks(sortByBoolean(showingTasks, arrowName))
+                  setArrowName(!arrowName)
+                  }
+                }
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
+              </svg>
+            </span>
+          </li>
+          <li className='grid grid-cols-12 col-span-2 border text-center border-white'>
+            <p className='col-span-11 text-white uppercase'>created</p>
+            <span className={`col-span-1 flex items-center ${arrowCreated ? 'rotate-180' : ''}`}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
+                className="w-5 h-5 text-gray-700 cursor-pointer hover:text-white"
+                onClick={() => setArrowCreated(!arrowCreated)}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
+              </svg>
+            </span>
+          </li>
+          <li className='grid grid-cols-12 col-span-2 border text-center border-white'>
+            <p className='col-span-11 text-white uppercase'>due</p>
+            <span className={`col-span-1 flex items-center ${arrowDue ? 'rotate-180' : ''}`}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
+                className="w-5 h-5 text-gray-700 cursor-pointer hover:text-white"
+                onClick={() => setArrowDue(!arrowDue)}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
+              </svg>
+            </span>
+          </li>
+          <li className='grid grid-cols-12 col-span-1 border text-center border-white'>
+            <p className='col-span-10 text-white uppercase'>priority</p>
+            <span className={`col-span-2 flex items-centerr ${arrowPriority ? 'rotate-180' : ''}`}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
+                className="w-5 h-5 text-gray-700 cursor-pointer hover:text-white"
+                onClick={() => {
+                  setShowingTasks(sortPriority(showingTasks, arrowPriority))
+                  setArrowPriority(!arrowPriority)
+                  }
+                }
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
+              </svg>
+            </span>
+          </li>
+          <li className='grid grid-cols-12 col-span-2 border text-center border-white'>
+            <p className='col-span-10 text-white uppercase'>time spent</p>
+            <span className={`flex items-centerr ${arrowTime ? 'rotate-180' : ''}`}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
+                className="w-5 h-5 text-gray-700 cursor-pointer hover:text-white"
+                onClick={() => setArrowTime(!arrowTime)}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
+              </svg>
+            </span>
+          </li>
         </ul>
         <div className=''>
           {showingTasks.map( task => <TaskOnAll task={task} key={task._id} />)}
