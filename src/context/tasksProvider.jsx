@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 
 import sendAxios from "../../config/axios";
+import { dateFormatter } from "../helpers/helpers";
 
 const TasksContext = createContext()
 
@@ -18,8 +19,7 @@ function TasksProvider({children}) {
       try {
         const {data} = await sendAxios('tasks/todays')
         const formatted = data.map( task => {
-          const date = task.due.split('T')[0]  
-          task.due = date;
+          task.due = dateFormatter(task.due)
           return task
         })
         setTodaysTasks(formatted)
@@ -48,10 +48,8 @@ function TasksProvider({children}) {
     try {
       const {data} = await sendAxios('tasks/all')
       const formatted = data.map(task => {
-        const due = task.due.split('T')[0]
-        const date = task.createdAt.split('T')[0]
-        task.due = due
-        task.createdAt = date
+        task.due = dateFormatter(task.due)
+        task.createdAt = dateFormatter(task.createdAt)
         return task
       })
       setAllTasks(formatted)
