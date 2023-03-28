@@ -47,7 +47,6 @@ function TasksProvider({children}) {
   const getAllTasks = async () => {
     try {
       const {data} = await sendAxios('tasks/all')
-      console.log(data);
       const formatted = data.map(task => {
         const due = task.due.split('T')[0]
         const date = task.createdAt.split('T')[0]
@@ -56,7 +55,6 @@ function TasksProvider({children}) {
         return task
       })
       setAllTasks(formatted)
-      console.log(formatted);
     } catch (error) {
       console.log(error);
     }

@@ -1,15 +1,13 @@
-import {useEffect} from 'react'
+import {useEffect, useState} from 'react'
 import AllTasks from '../components/AllTasks';
 import TodayDue from '../components/TodayDue'
 import useTasks from '../hooks/useTasks'
 
 function AllTasksPage() {
   const {loadedTasks, getAllTasks} = useTasks();
-
   useEffect(() => {
     getAllTasks()
   }, [])
-
   return (
     <>
       <section className='w-full'>
@@ -22,14 +20,11 @@ function AllTasksPage() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        {loadedTasks ? <AllTasks /> : null}
+        {loadedTasks ? <AllTasks/> : null}
       </section>
-      {/* <section className='w-1/3 flex flex-col'>
-        <ProgressGraph />
-      </section> */}
-
     </>
   )
+
 }
 
 export default AllTasksPage
