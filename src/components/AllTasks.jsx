@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import TaskOnAll from './TaskOnAll';
 import sendAxios from '../../config/axios';
-import { sortByBoolean, sortPriority } from '../helpers/helpers';
+import { sortByBoolean, sortDueBoolean, sortPriority } from '../helpers/helpers';
 
 function AllTasks() {
   const [showingTasks, setShowingTasks] = useState([])
@@ -96,7 +96,10 @@ function AllTasks() {
             <span className={`col-span-1 flex items-center ${arrowCreated ? 'rotate-180' : ''}`}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
                 className="w-5 h-5 text-gray-700 cursor-pointer hover:text-white"
-                onClick={() => setArrowCreated(!arrowCreated)}
+                onClick={() => {
+                  setArrowCreated(!arrowCreated)
+                  }
+                }
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
               </svg>
@@ -107,7 +110,11 @@ function AllTasks() {
             <span className={`col-span-1 flex items-center ${arrowDue ? 'rotate-180' : ''}`}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
                 className="w-5 h-5 text-gray-700 cursor-pointer hover:text-white"
-                onClick={() => setArrowDue(!arrowDue)}
+                onClick={() => {
+                  setArrowDue(sortDueBoolean(showingTasks, arrowDue))
+                  setArrowDue(!arrowDue)
+                  }
+                }
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
               </svg>

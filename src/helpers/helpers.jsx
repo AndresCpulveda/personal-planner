@@ -58,3 +58,10 @@ export function sortByBoolean(list, boolean){ //OPTIMIZAR
     return sorted
   }
 }
+
+export function sortDueBoolean(list, boolean) {
+  console.log(list);
+  const sorted = list.sort((a, b) => {
+    console.log(a.due);
+  })
+}
