@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import TaskOnAll from './TaskOnAll';
 import sendAxios from '../../config/axios';
-import { sortByBoolean, sortDueBoolean, sortPriority } from '../helpers/helpers';
+import { sortByBoolean, sortDueBoolean, sortPriority, dateFormatter } from '../helpers/helpers';
 
 function AllTasks() {
   const [showingTasks, setShowingTasks] = useState([])
@@ -19,13 +19,11 @@ function AllTasks() {
       try {
         const {data} = await sendAxios('tasks/all')
         const formatted = data.map(task => {
-          const due = task.due.split('T')[0]
-          const date = task.createdAt.split('T')[0]
-          task.due = due
-          task.createdAt = date
+          task.due = dateFormatter(task.due)
+          task.createdAt = dateFormatter(task.createdAt)
           return task
         })
-        setShowingTasks(formatted)
+          setShowingTasks(formatted)
         setAllTasks(formatted)
       } catch (error) {
         console.log(error);
