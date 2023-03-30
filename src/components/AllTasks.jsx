@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import TaskOnAll from './TaskOnAll';
 import sendAxios from '../../config/axios';
-import { sortByBoolean, sortDueBoolean, sortPriority, dateFormatter } from '../helpers/helpers';
+import { sortByBoolean, sortDueBoolean, sortPriority, dateFormatter, sortCreatedBoolean} from '../helpers/helpers';
 
 function AllTasks() {
   const [showingTasks, setShowingTasks] = useState([])
@@ -9,8 +9,8 @@ function AllTasks() {
   const [activeBtn, setActiveBtn] = useState('all')
 
   const [arrowName, setArrowName] = useState(false)
-  const [arrowCreated, setArrowCreated] = useState(false)
-  const [arrowDue, setArrowDue] = useState(false)
+  const [arrowCreated, setArrowCreated] = useState(true)
+  const [arrowDue, setArrowDue] = useState(true)
   const [arrowPriority, setArrowPriority] = useState(false)
   const [arrowTime, setArrowTime] = useState(false)
   
@@ -95,6 +95,7 @@ function AllTasks() {
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
                 className="w-5 h-5 text-gray-700 cursor-pointer hover:text-white"
                 onClick={() => {
+                  setArrowCreated(sortCreatedBoolean(showingTasks, arrowCreated))
                   setArrowCreated(!arrowCreated)
                   }
                 }
