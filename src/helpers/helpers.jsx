@@ -33,7 +33,7 @@ const months = {
 export function dateFormatter(date) {
 
   const splitDate = date.split('T')[0];
-  const dateArray = splitDate.split('-');s
+  const dateArray = splitDate.split('-');
   const formattedDate = `${dateArray[2]} ${months[dateArray[1]]} ${dateArray[0]}`
   return formattedDate
 }
@@ -154,6 +154,31 @@ export function sortCreatedBoolean(list, boolean) { //OPTIMIZAR
       return 1
     }
     return 0
+  })
+  return sorted
+}
+
+export function sortTime(list, boolean) {  
+  const sorted = list.sort((a, b) => {
+    const aTime = timeDeFormatter(a.time)
+    const bTime = timeDeFormatter(b.time)
+    if(boolean) {
+      if(aTime < bTime) {
+        return -1
+      }
+      if(aTime > bTime) {
+        return 1
+      }
+      return 0
+    } else {
+      if(aTime > bTime) {
+        return -1
+      }
+      if(aTime < bTime) {
+        return 1
+      }
+      return 0
+    }
   })
   return sorted
 }
