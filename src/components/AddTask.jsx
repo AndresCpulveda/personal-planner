@@ -6,7 +6,10 @@ import Alert from './Alert'
 function AddTask() {
 
   const currentDate = new Date
-  const formattedDate = currentDate.toISOString().split('T')[0]
+  const offset = currentDate.getTimezoneOffset();
+  const settedDated = currentDate.setMinutes(currentDate.getMinutes() - offset)
+  const theDate = new Date(settedDated)
+  const formattedDate = theDate.toISOString().split('T')[0]
 
   const {addToDueTasks, setAddingTodayTask} = useTasks();
 
