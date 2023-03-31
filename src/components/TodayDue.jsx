@@ -3,14 +3,12 @@ import React from 'react'
 import Task from './Task'
 import useTasks from '../hooks/useTasks'
 import AddTask from './AddTask';
+import { sortPriority } from '../helpers/helpers';
 
 function TodayDue() {
     const {addingTodayTask, todayDueTasks} = useTasks();
 
-    const orderedList = [...todayDueTasks].sort((a, b) => {
-      const priorityOrder = {High: 1, Medium: 2, Low: 3}
-      return priorityOrder[a.priority] - priorityOrder[b.priority]
-    })    
+    const orderedList = sortPriority(todayDueTasks, true)
 
 
   return (

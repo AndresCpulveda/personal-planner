@@ -58,7 +58,6 @@ function TasksProvider({children}) {
     }
   }
 
-
    const addToDueTasks = async (task) => {
     const toAdd = {
       ...task,
