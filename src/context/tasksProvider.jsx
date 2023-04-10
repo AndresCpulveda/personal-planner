@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 
 import sendAxios from "../../config/axios";
-import { dateFormatter } from "../helpers/helpers";
+import { dateFormatter, getTodaysDate } from "../helpers/helpers";
 
 const TasksContext = createContext()
 
@@ -63,12 +63,17 @@ function TasksProvider({children}) {
       ...task,
       completed: false
     }
+    console.log(task);
     try {
       const {data} = await sendAxios.post('tasks/add', toAdd)
       const fixedDue = data.due.split('T')[0]
       data.due = fixedDue
+      const todaysDate = getTodaysDate()
+      console.log(data.due);
+      if(todaysDate === data.due) {
+        setTodayDueTasks([...todayDueTasks, data])
+      }
 
-      setTodayDueTasks([...todayDueTasks, data])
     } catch (error) {
       console.log(error);
     }

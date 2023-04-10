@@ -1,3 +1,11 @@
+export function getTodaysDate() {
+  const currentDate = new Date
+  const offset = currentDate.getTimezoneOffset();
+  const settedDated = currentDate.setMinutes(currentDate.getMinutes() - offset)
+  const theDate = new Date(settedDated)
+  return theDate.toISOString().split('T')[0]
+}
+
 export function timeFormatter(timer) {
   let hours = `${Math.floor(timer / 3600)}`
   let minutes = `${Math.floor(timer / 60)}`;
@@ -55,7 +63,7 @@ export function dateDeFormatter(date) {
 export function sortPriority(list, boolean) { //OPTIMIZAR
   const sorted = list.sort((a, b) => {
     const priorityOrder = {High: 1, Medium: 2, Low: 3}
-    if(!boolean) {
+    if(boolean) {
       return priorityOrder[a.priority] - priorityOrder[b.priority]
     }else {
       return priorityOrder[b.priority] - priorityOrder[a.priority]

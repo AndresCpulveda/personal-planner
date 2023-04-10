@@ -2,14 +2,11 @@ import {useState} from 'react'
 
 import useTasks from '../hooks/useTasks'
 import Alert from './Alert'
+import { getTodaysDate } from '../helpers/helpers';
 
 function AddTask() {
 
-  const currentDate = new Date
-  const offset = currentDate.getTimezoneOffset();
-  const settedDated = currentDate.setMinutes(currentDate.getMinutes() - offset)
-  const theDate = new Date(settedDated)
-  const formattedDate = theDate.toISOString().split('T')[0]
+  const formattedDate = getTodaysDate()
 
   const {addToDueTasks, setAddingTodayTask} = useTasks();
 
