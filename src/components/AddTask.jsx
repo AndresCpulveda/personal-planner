@@ -16,7 +16,7 @@ function AddTask() {
   const [priority, setPriority] = useState("")
   const [isRecurring, setIsRecurring] = useState(false)
   const [frequencyInterval, setFrequencyInterval] = useState(1)
-  const [frequencyUnit, setFrequencyUnit] = useState("")
+  const [intervalUnit, setIntervalUnit] = useState("")
   const [category, setCategory] = useState("")
   const [hoursToComplete, setHoursToComplete] = useState(0)
   const [minutesToComplete, setMinutesToComplete] = useState(0)
@@ -33,9 +33,9 @@ function AddTask() {
       return
     }
     const task = {
-      name, due, priority, time: timeFormatter(hoursToComplete * 60 + minutesToComplete)
+      name, due, priority, isRecurring, frequencyInterval, intervalUnit, category, time: timeFormatter(hoursToComplete * 60 + minutesToComplete)
     }
-    
+
     addToDueTasks(task)
     setAddingTodayTask(false)
   }
@@ -92,7 +92,7 @@ function AddTask() {
             <div className={`flex ${isRecurring ? '' : 'text-gray-500'}`}>
               <span className='mr-2 pt-1'>Every:</span>
               <input type='number' value={frequencyInterval} disabled={!isRecurring} className='bg-gray-300 rounded-md h-8 w-12 p-2' onChange={e => setFrequencyInterval(e.target.value)}></input>
-              <select disabled={!isRecurring} onChange={e => {setFrequencyUnit(e.target.value)}}>
+              <select disabled={!isRecurring} onChange={e => {setIntervalUnit(e.target.value)}}>
                 <option value='days'>Days</option>
                 <option value='weeks'>Weeks</option>
                 <option value='months'>Months</option>

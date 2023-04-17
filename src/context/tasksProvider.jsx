@@ -59,11 +59,13 @@ function TasksProvider({children}) {
   }
 
    const addToDueTasks = async (task) => {
+
     const toAdd = {
       ...task,
-      completed: false
+      completed: false,
+      stopWatch: task.time === "00:00:00"
     }
-    console.log(task);
+    console.log(toAdd);
     try {
       const {data} = await sendAxios.post('tasks/add', toAdd)
       const fixedDue = data.due.split('T')[0]
