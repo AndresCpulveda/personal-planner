@@ -3,6 +3,7 @@ import {useState} from 'react'
 import useTasks from '../hooks/useTasks'
 import Alert from './Alert'
 import { getTodaysDate } from '../helpers/helpers';
+import { timeFormatter } from '../helpers/helpers';
 
 function AddTask() {
 
@@ -22,7 +23,6 @@ function AddTask() {
 
   const [alert, setAlert] = useState({})
 
-
   const addNewTask = (e) => {
     e.preventDefault()
     if([name, due, priority].includes('')) {
@@ -33,8 +33,9 @@ function AddTask() {
       return
     }
     const task = {
-      name, due, priority, time: "00:00:00"
+      name, due, priority, time: timeFormatter(hoursToComplete * 60 + minutesToComplete)
     }
+    
     addToDueTasks(task)
     setAddingTodayTask(false)
   }
@@ -47,7 +48,7 @@ function AddTask() {
       onClick={e => e.target.classList.contains('out-modal') ? setAddingTodayTask(false) : null}
     >
       <form
-        className='w-2/4 bg-white border-2 border-black py-8 px-24 flex flex-col justify-evenly'
+        className='w-2/4 bg-white rounded py-8 px-24 flex flex-col justify-evenly'
         onSubmit={addNewTask}
       >
         <div className='grid grid-cols-2'>
@@ -101,9 +102,9 @@ function AddTask() {
             <input className='bg-gray-300 rounded-md h-8 p-2' onChange={e => setCategory(e.target.value)}></input>
 
             <div className={`flex`}>
-              <input type='number' className='bg-gray-300 rounded-md h-8 w-16 p-2' onChange={e => setHoursToComplete(e.target.value)}></input>
+              <input type='number' className='bg-gray-300 rounded-md h-8 w-16 p-2' onChange={e => setHoursToComplete(parseInt(e.target.value))}></input>
               <span className='ml-1 mr-4 pt-1'>Hours</span>
-              <input type='number' className='bg-gray-300 rounded-md h-8 w-16 p-2' onChange={e => setMinutesToComplete(e.target.value)}></input>
+              <input type='number' className='bg-gray-300 rounded-md h-8 w-16 p-2' onChange={e => setMinutesToComplete(parseInt(e.target.value))}></input>
               <span className='ml-1 mr-4 pt-1'>minutes</span>
             </div>
           </div>
