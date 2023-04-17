@@ -33,7 +33,7 @@ function AddTask() {
       return
     }
     const task = {
-      name, due, priority, isRecurring, frequencyInterval, intervalUnit, category, time: timeFormatter(hoursToComplete * 60 + minutesToComplete)
+      name, due, priority, isRecurring, frequencyInterval, intervalUnit, category, time: timeFormatter(hoursToComplete * 3600 + minutesToComplete * 60)
     }
 
     addToDueTasks(task)
