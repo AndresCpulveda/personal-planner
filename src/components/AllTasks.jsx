@@ -135,7 +135,7 @@ function AllTasks() {
             </span>
           </li>
           <li className='grid grid-cols-12 col-span-2 border text-center border-white'>
-            <p className='col-span-10 text-white uppercase'>time spent</p>
+            <p className='col-span-10 text-white uppercase'>timer</p>
             <span className={`flex items-centerr ${arrowTime ? 'rotate-180' : ''}`}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
                 className="w-5 h-5 text-gray-700 cursor-pointer hover:text-white"

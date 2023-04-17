@@ -12,12 +12,22 @@ function Timer({changeTime, task}) {
 
   const timeRef = useRef(savedTime || null)
 
+  if(timerActive && timer % 13 === 0) {
+    changeTime(timer)
+  }
+
   const handleStart = () => {
     setTimerActive(true)
     setTimerPaused(false)
-    timeRef.current = setInterval(() => {
-      setTimer((timer) => timer + 1)
-    }, 1000)
+    if(task.stopWatch) {
+      timeRef.current = setInterval(() => {
+        setTimer((timer) => timer + 1)
+      }, 1000)
+    }else {
+      timeRef.current = setInterval(() => {
+        setTimer((timer) => timer - 1)
+      }, 1000)
+    }
   }
   
   const handlePause = () => {
@@ -26,12 +36,13 @@ function Timer({changeTime, task}) {
     clearInterval(timeRef.current)
     changeTime(timer)
   }
-
+  
   const handleReset = () => {
     setTimerActive(false)
     setTimerPaused(true)
     clearInterval(timeRef.current)
     setTimer(0)
+    changeTime(0)
   }
   
   return (
