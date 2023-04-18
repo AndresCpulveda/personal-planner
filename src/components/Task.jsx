@@ -2,18 +2,13 @@ import { useState } from 'react';
 
 import useTasks from '../hooks/useTasks'
 import Timer from './Timer';
-import { timeFormatter } from '../helpers/helpers';
+import { timeFormatter, getTodaysDate } from '../helpers/helpers';
 import { formatPriority } from '../helpers/StyleHelpers';
 
 function Task({task}) {
   
   const {addToCompleted, removeCompleted, updateTime} = useTasks();
   const {name, due, priority, time} = task;
-
-  const changeTime = (timer) => {
-    task.time = timeFormatter(timer);
-    updateTime(task)
-  }
 
   return (
     <>
@@ -40,7 +35,7 @@ function Task({task}) {
         {task.completed ? 
           <li className='col-span-3 flex items-center justify-center border border-white text-white px-2'>{task.time}</li>
           :
-          <li className='col-span-3 flex items-center justify-center border border-white text-white px-2'> <Timer task={task} changeTime={changeTime} /> </li>
+          <li className='col-span-3 flex items-center justify-center border border-white text-white px-2'> <Timer task={task} /> </li>
         }
       </ul>
     </>

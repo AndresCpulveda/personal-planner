@@ -1,10 +1,12 @@
 import {useRef, useState} from 'react'
 
 import { timeFormatter, timeDeFormatter } from '../helpers/helpers'
+import useTasks from '../hooks/useTasks';
 
-function Timer({changeTime, task}) {
+function Timer({task}) {
 
   const savedTime = timeDeFormatter(task.time)
+  const {updateTime} = useTasks();
 
   const [timerActive, setTimerActive] = useState(false)
   const [timerPaused, setTimerPaused] = useState(true)
@@ -13,7 +15,8 @@ function Timer({changeTime, task}) {
   const timeRef = useRef(savedTime || null)
 
   if(timerActive && timer % 13 === 0) {
-    changeTime(timer)
+    task.time = timeFormatter(timer);
+    updateTime(task)
   }
 
   const handleStart = () => {
@@ -29,12 +32,13 @@ function Timer({changeTime, task}) {
       }, 1000)
     }
   }
-  
+
   const handlePause = () => {
     setTimerActive(false)
     setTimerPaused(true)
     clearInterval(timeRef.current)
-    changeTime(timer)
+    task.time = timeFormatter(timer);
+    updateTime(task)
   }
   
   const handleReset = () => {
@@ -42,8 +46,18 @@ function Timer({changeTime, task}) {
     setTimerPaused(true)
     clearInterval(timeRef.current)
     setTimer(0)
-    changeTime(0)
+    task.time = timeFormatter(timer);
+    task.stopWatch = true;
+    updateTime(task)
   }
+
+  if(timer < 0) {
+    setTimerActive(false)
+    setTimerPaused(true)
+    clearInterval(timeRef.current)
+    handleReset()
+  }
+
   
   return (
     <>

@@ -11,11 +11,6 @@ function TaskOnAll({task}) {
   const {name, due, priority, time, createdAt} = task;
   const [deleted, setDeleted] = useState(false)
 
-  const changeTime = (timer) => {
-    task.time = timeFormatter(timer);
-    updateTime(task)
-  }
-
 
   return (
     <>
@@ -59,7 +54,7 @@ function TaskOnAll({task}) {
       {task.completed ? 
         <li className='col-span-2 flex items-center justify-center border border-white text-white px-2'>{time}</li>
         :
-        <li className='col-span-2 flex items-center justify-center border border-white text-white px-2'> <Timer task={task} changeTime={changeTime} /> </li>
+        <li className='col-span-2 flex items-center justify-center border border-white text-white px-2'> <Timer task={task} /> </li>
       }
     </ul>
     </>

@@ -32,6 +32,7 @@ function AddTask() {
       }, 3000);
       return
     }
+    console.log(hoursToComplete * 3600 + minutesToComplete * 60);
     const task = {
       name, due, priority, isRecurring, frequencyInterval, intervalUnit, category, time: timeFormatter(hoursToComplete * 3600 + minutesToComplete * 60)
     }

@@ -7,8 +7,11 @@ export function getTodaysDate() {
 }
 
 export function timeFormatter(timer) {
+  if(timer < 0) {
+    return '00:00:00'
+  }
   let hours = `${Math.floor(timer / 3600)}`
-  let minutes = `${Math.floor(timer / 60)}`;
+  let minutes = `${Math.floor((timer - hours * 3600) / 60)}`;
   let seconds = `0${timer % 60}`.slice(-2);
   if(timer < 599) {
     return `0${hours}:0${minutes}:${seconds}`;
