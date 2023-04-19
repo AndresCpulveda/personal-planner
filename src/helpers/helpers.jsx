@@ -58,10 +58,16 @@ export function dateDeFormatter(date) {
   }
 
   const splitDate = date.split(' ');
-  const deformattedDate = `${splitDate[2]} ${swappedMonths[splitDate[1]]} ${splitDate[0]}`
-  const daysDate = dateAsDays(deformattedDate)
-  return daysDate
+  const deformattedDate = `${splitDate[2]}-${swappedMonths[splitDate[1]]}-${splitDate[0]}`
+  return deformattedDate
 }
+
+export function dateAsDays(date) {
+  const dateArray = date.split('-')
+  const result = dateArray[0] * 365 + dateArray[1] * 30 + dateArray[2]
+  return result
+}
+
 
 export function sortPriority(list, boolean) { //OPTIMIZAR
   const sorted = list.sort((a, b) => {
@@ -105,17 +111,11 @@ export function sortByBoolean(list, boolean){ //OPTIMIZAR
   }
 }
 
-export function dateAsDays(date) {
-  const dateArray = date.split(' ')
-  const result = dateArray[0] * 365 + dateArray[1] * 30 + dateArray[2]
-  return result
-}
-
 export function sortDueBoolean(list, boolean) { //OPTIMIZAR
   if(boolean) {
     const sorted = list.sort((a, b) => {
-      const aAsNumb = dateDeFormatter(a.due)
-      const bAsNumb = dateDeFormatter(b.due)
+      const aAsNumb = dateAsDays(dateDeFormatter(a.due))
+      const bAsNumb = dateAsDays(dateDeFormatter(b.due))
       if(aAsNumb > bAsNumb) {
         return -1
       }
@@ -127,8 +127,8 @@ export function sortDueBoolean(list, boolean) { //OPTIMIZAR
     return sorted
   }
   const sorted = list.sort((a, b) => {
-    const aAsNumb = dateDeFormatter(a.due)
-    const bAsNumb = dateDeFormatter(b.due)
+    const aAsNumb = dateAsDays(dateDeFormatter(a.due))
+    const bAsNumb = dateAsDays(dateDeFormatter(b.due))
     if(aAsNumb < bAsNumb) {
       return -1
     }
@@ -143,8 +143,8 @@ export function sortDueBoolean(list, boolean) { //OPTIMIZAR
 export function sortCreatedBoolean(list, boolean) { //OPTIMIZAR
   if(boolean) {
     const sorted = list.sort((a, b) => {
-      const aAsNumb = dateDeFormatter(a.createdAt)
-      const bAsNumb = dateDeFormatter(b.createdAt)
+      const aAsNumb = dateAsDays(dateDeFormatter(a.createdAt))
+      const bAsNumb = dateAsDays(dateDeFormatter(b.createdAt))
       if(aAsNumb > bAsNumb) {
         return -1
       }
@@ -156,8 +156,8 @@ export function sortCreatedBoolean(list, boolean) { //OPTIMIZAR
     return sorted
   }
   const sorted = list.sort((a, b) => {
-    const aAsNumb = dateDeFormatter(a.createdAt)
-    const bAsNumb = dateDeFormatter(b.createdAt)
+    const aAsNumb = dateAsDays(dateDeFormatter(a.createdAt))
+    const bAsNumb = dateAsDays(dateDeFormatter(b.createdAt))
     if(aAsNumb < bAsNumb) {
       return -1
     }

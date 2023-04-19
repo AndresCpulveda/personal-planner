@@ -104,8 +104,9 @@ function TasksProvider({children}) {
     }
    }
 
-   const updateTime = async (task) => {
+   const updateTask = async (task) => {
     task.due = getTodaysDate()
+
     try {
       const {data} = await sendAxios.put('tasks/update', task)
     } catch (error) {
@@ -128,7 +129,7 @@ function TasksProvider({children}) {
         addToCompleted,
         removeCompleted,
         loadedTasks,
-        updateTime,
+        updateTask,
         getAllTasks,
         allTasks,
       }}

@@ -2,10 +2,9 @@ import {useState} from 'react'
 
 import useTasks from '../hooks/useTasks'
 import Alert from './Alert'
-import { getTodaysDate } from '../helpers/helpers';
-import { timeFormatter } from '../helpers/helpers';
+import { getTodaysDate, dateDeFormatter, timeFormatter } from '../helpers/helpers';
 
-function AddTask() {
+function AddTask({editing, setEditingTask}) {
 
   const formattedDate = getTodaysDate()
 
@@ -32,7 +31,6 @@ function AddTask() {
       }, 3000);
       return
     }
-    console.log(hoursToComplete * 3600 + minutesToComplete * 60);
     const task = {
       name, due, priority, isRecurring, frequencyInterval, intervalUnit, category, time: timeFormatter(hoursToComplete * 3600 + minutesToComplete * 60)
     }
@@ -46,7 +44,12 @@ function AddTask() {
   <>
     <div
       className='fixed top-0 left-0 w-screen h-screen bg-gray-800 opacity-95 out-modal p-8 flex place-content-center'
-      onClick={e => e.target.classList.contains('out-modal') ? setAddingTodayTask(false) : null}
+      onClick={e => {
+        if(e.target.classList.contains('out-modal')){
+          setAddingTodayTask(false)
+          setEditingTask(false)
+        }}
+      }
     >
       <form
         className='w-2/4 bg-white rounded py-8 px-24 flex flex-col justify-evenly'
@@ -67,45 +70,46 @@ function AddTask() {
             <input
               autoFocus
               className='bg-gray-300 rounded-md h-8 px-2'
-              value={name}
+              defaultValue={editing?.name || ''}
               onChange={e => setName(e.target.value)}
             ></input>
 
             <input
-              defaultValue={due}
+              // defaultValue={due}
+              defaultValue={editing?.due ? dateDeFormatter(editing.due) : due}
               type='date'
               className='bg-gray-300 rounded-md h-8 px-2'
               onChange={e => setDue(e.target.value)}
             ></input>
 
-            <select required defaultValue={"empty"} className='bg-gray-300 rounded-md h-8 p-2' onChange={e => setPriority(e.target.value)}>
+            <select required defaultValue={editing?.priority || "empty"} className='bg-gray-300 rounded-md h-8 p-2' onChange={e => setPriority(e.target.value)}>
               <option value="empty"></option>
               <option value="Low">Low</option>
               <option value="Medium">Medium</option>
               <option value="High">High</option>
             </select>
 
-            <select required defaultValue={"No"} className='bg-gray-300 rounded-md h-8 p-2' onChange={e => setIsRecurring(e.target.value === "No" ? false : true)}>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
+            <select required defaultValue={editing?.isRecurring || "no"} className='bg-gray-300 rounded-md h-8 p-2' onChange={e => setIsRecurring(e.target.value === "No" ? false : true)}>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
             </select>
 
             <div className={`flex ${isRecurring ? '' : 'text-gray-500'}`}>
               <span className='mr-2 pt-1'>Every:</span>
-              <input type='number' value={frequencyInterval} disabled={!isRecurring} className='bg-gray-300 rounded-md h-8 w-12 p-2' onChange={e => setFrequencyInterval(e.target.value)}></input>
-              <select disabled={!isRecurring} onChange={e => {setIntervalUnit(e.target.value)}}>
+              <input type='number' defaultValue={editing?.frecuencyInterval || frequencyInterval} disabled={!isRecurring} className='bg-gray-300 rounded-md h-8 w-12 p-2' onChange={e => setFrequencyInterval(e.target.value)}></input>
+              <select disabled={!isRecurring} defaultValue={editing?.intervalUnit || intervalUnit} onChange={e => {setIntervalUnit(e.target.value)}}>
                 <option value='days'>Days</option>
                 <option value='weeks'>Weeks</option>
                 <option value='months'>Months</option>
               </select>
             </div>
 
-            <input className='bg-gray-300 rounded-md h-8 p-2' onChange={e => setCategory(e.target.value)}></input>
+            <input className='bg-gray-300 rounded-md h-8 p-2' defaultValue={editing?.category || category} onChange={e => setCategory(e.target.value)}></input>
 
             <div className={`flex`}>
-              <input type='number' className='bg-gray-300 rounded-md h-8 w-16 p-2' onChange={e => setHoursToComplete(parseInt(e.target.value))}></input>
+              <input type='number' className='bg-gray-300 rounded-md h-8 w-16 p-2' defaultValue={editing?.hoursToComplete || hoursToComplete} onChange={e => setHoursToComplete(parseInt(e.target.value))}></input>
               <span className='ml-1 mr-4 pt-1'>Hours</span>
-              <input type='number' className='bg-gray-300 rounded-md h-8 w-16 p-2' onChange={e => setMinutesToComplete(parseInt(e.target.value))}></input>
+              <input type='number' className='bg-gray-300 rounded-md h-8 w-16 p-2' defaultValue={editing?.minutesToComplete || minutesToComplete} onChange={e => setMinutesToComplete(parseInt(e.target.value))}></input>
               <span className='ml-1 mr-4 pt-1'>minutes</span>
             </div>
           </div>
@@ -114,57 +118,13 @@ function AddTask() {
           :
           <input
             type='submit'
+            value='agregar'
             className={`bg-blue-700 uppercase text-lg text-white border border-white py-2 rounded-md w-full font-bold text-center cursor-pointer`}
           ></input>
         }
       </form>
     </div>
   </>
-    // {alert.msg ? <Alert alert={alert} /> : null}
-    // <ul className='grid grid-cols-10'>
-    //   <li className='col-span-1 flex justify-center border border-white px-4 text-white p-4' >
-    //     <span  onClick={() => {addNewTask()}}>
-    //       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-green-700 mr-2 cursor-pointer hover:text-green-500">
-    //         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-    //       </svg>
-    //     </span>
-    //     <span onClick={() => setAddingTodayTask(false)}>
-    //       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-gray-500 mr-2 cursor-pointer hover:text-red-700">
-    //         <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-    //       </svg>
-    //     </span>
-    //   </li>
-    //   <li className='col-span-3 flex border border-white'>
-    //     <input
-    //       autoFocus
-    //       className='bg-transparent w-full text-white px-2'
-    //       onChange={e => setName(e.target.value)}
-    //     ></input></li>
-    //   <li className='col-span-2 flex border border-white'>
-    //     <input
-    //       defaultValue={due}
-    //       type='date'
-    //       className='bg-transparent w-full text-white px-2'
-    //       onChange={e => setDue(e.target.value)}
-    //     ></input></li>
-    //   <li className='col-span-1 flex border border-white'>
-    //     <select required defaultValue={"empty"} className='bg-transparent w-full text-white px-2 ' onChange={e => setPriority(e.target.value)}>
-    //       <option value="empty"></option>
-    //       <option value="Low">Low</option>
-    //       <option value="Medium">Medium</option>
-    //       <option value="High">High</option>
-    //     </select></li>
-    //   <li className='col-span-3 flex items-center justify-center border border-white text-white px-2'>
-    //     <div className='flex gap-2'>
-    //       <span>
-    //         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-    //           <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-    //         </svg>
-    //       </span>
-    //       <p>00:00</p>
-    //     </div>
-    //   </li>
-    // </ul>
   )
 }
 

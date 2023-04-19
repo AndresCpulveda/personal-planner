@@ -6,7 +6,7 @@ import useTasks from '../hooks/useTasks';
 function Timer({task}) {
 
   const savedTime = timeDeFormatter(task.time)
-  const {updateTime} = useTasks();
+  const {updateTask} = useTasks();
 
   const [timerActive, setTimerActive] = useState(false)
   const [timerPaused, setTimerPaused] = useState(true)
@@ -16,7 +16,7 @@ function Timer({task}) {
 
   if(timerActive && timer % 13 === 0) {
     task.time = timeFormatter(timer);
-    updateTime(task)
+    updateTask(task)
   }
 
   const handleStart = () => {
@@ -38,7 +38,7 @@ function Timer({task}) {
     setTimerPaused(true)
     clearInterval(timeRef.current)
     task.time = timeFormatter(timer);
-    updateTime(task)
+    updateTask(task)
   }
   
   const handleReset = () => {
@@ -48,7 +48,7 @@ function Timer({task}) {
     setTimer(0)
     task.time = timeFormatter(timer);
     task.stopWatch = true;
-    updateTime(task)
+    updateTask(task)
   }
 
   if(timer < 0) {
