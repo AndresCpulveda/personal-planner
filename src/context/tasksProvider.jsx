@@ -18,7 +18,7 @@ function TasksProvider({children}) {
     const getTodaysTasks = async () => {
       try {
         const {data} = await sendAxios('tasks/todays')
-        const formatted = data.map( task => {
+        const formatted = data.map( task => { //Formats all the dates before saving to states array
           task.due = dateFormatter(task.due)
           return task
         })
@@ -30,8 +30,9 @@ function TasksProvider({children}) {
     getTodaysTasks()
   }, [])
 
+
   useEffect(() => {
-    const getTodaysDue = async () => {
+    const getTodaysDue = () => {
       const todayDue = todaysTasks.filter(task => !task.completed)
       setTodayDueTasks(todayDue)
     }
@@ -58,22 +59,23 @@ function TasksProvider({children}) {
     }
   }
 
-   const addToDueTasks = async (task) => {
+   const addToTasks = async (task) => { //COMPLETES THE TASK OBJECT AND SENDS IT TO THE BACKEND
 
     const toAdd = {
       ...task,
       completed: false,
-      stopWatch: task.time === "00:00:00"
+      stopWatch: task.time === 0
     }
-    console.log(toAdd);
+
     try {
       const {data} = await sendAxios.post('tasks/add', toAdd)
-      const fixedDue = data.due.split('T')[0]
+      console.log(data);
+      const fixedDue = data.due.split('T')[0] //CUTS THE DATE FOR COMPARISON
       data.due = fixedDue
-      const todaysDate = getTodaysDate()
-      console.log(data.due);
+      const todaysDate = getTodaysDate() //GETS TODAYS DATE FOR COMPARISON
       if(todaysDate === data.due) {
-        setTodayDueTasks([...todayDueTasks, data])
+        data.due = dateFormatter(data.due) //FORMATS DATE BEFORE SAVING
+        setTodayDueTasks([...todayDueTasks, data]) //SAVES OBJECT IN TODAYS TASKS ARRAY WITH THE DESIRED FORMAT
       }
 
     } catch (error) {
@@ -124,7 +126,7 @@ function TasksProvider({children}) {
         addingTodayTask,
         setAddingTodayTask,
         todayDueTasks,
-        addToDueTasks,
+        addToTasks,
         todayCompleted,
         addToCompleted,
         removeCompleted,

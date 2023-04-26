@@ -6,10 +6,11 @@ import { getTodaysDate, dateDeFormatter, timeFormatter } from '../helpers/helper
 
 function AddTask({editing, setEditingTask}) {
 
-  const formattedDate = getTodaysDate()
+  const formattedDate = getTodaysDate() //TO USE AS DEFAULT VALUE OF "DUE DATE" FIELD
 
-  const {addToDueTasks, setAddingTodayTask} = useTasks();
+  const {addToTasks, setAddingTodayTask} = useTasks();
 
+  //STATES FOR EACH FIELD ON THE FORM
   const [name, setName] = useState("")
   const [due, setDue] = useState(formattedDate)
   const [priority, setPriority] = useState("")
@@ -20,9 +21,9 @@ function AddTask({editing, setEditingTask}) {
   const [hoursToComplete, setHoursToComplete] = useState(0)
   const [minutesToComplete, setMinutesToComplete] = useState(0)
 
-  const [alert, setAlert] = useState({})
+  const [alert, setAlert] = useState({}) //TO CONDITIONALY SHOW THE ALERT COMPONENT
 
-  const addNewTask = (e) => {
+  const addNewTask = (e) => { //VALIDATES FORM AND CALLS FUNCTION IN THE PROVIDER TO SEND THE TASK
     e.preventDefault()
     if([name, due, priority].includes('')) {
       setAlert({msg: 'Use all the fields', error: true})
@@ -31,11 +32,11 @@ function AddTask({editing, setEditingTask}) {
       }, 3000);
       return
     }
-    const task = {
-      name, due, priority, isRecurring, frequencyInterval, intervalUnit, category, time: timeFormatter(hoursToComplete * 3600 + minutesToComplete * 60)
+    const task = { //CREATE TASK OBJECT TO BE SENT
+      name, due, priority, isRecurring, frequencyInterval, intervalUnit, category, time: (hoursToComplete * 3600 + minutesToComplete * 60)
     }
 
-    addToDueTasks(task)
+    addToTasks(task)
     setAddingTodayTask(false)
   }
 
