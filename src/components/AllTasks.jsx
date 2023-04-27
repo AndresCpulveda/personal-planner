@@ -57,7 +57,7 @@ function AllTasks() {
                   setActiveBtn(2)
                   setShowingTasks(completedTasks)
                 }}
-                className={`${activeBtn === 2 ? btnStyles[2] : ''} relative inline-flex cursor-pointer items-center gap-2 rounded-lg  px-3 py-2 hover:bg-green-100`}
+                className={`${activeBtn === 2 ? btnStyles[2] : ''} relative inline-flex cursor-pointer items-center gap-2 rounded-lg  px-3 py-2 hover:bg-green-100 hover:text-green-500`}
               >Completed</a>
             </li>
             <li>
@@ -66,7 +66,7 @@ function AllTasks() {
                   setActiveBtn(3)
                   setShowingTasks(uncompletedTasks)
                 }}
-                className={`${activeBtn === 3 ? btnStyles[3] : ''} relative inline-flex cursor-pointer items-center gap-2 rounded-lg  px-3 py-2 hover:bg-red-100`}
+                className={`${activeBtn === 3 ? btnStyles[3] : ''} relative inline-flex cursor-pointer items-center gap-2 rounded-lg  px-3 py-2 hover:bg-red-100 hover:text-red-500`}
               >Uncompleted</a>
             </li>
           </ul>
@@ -74,12 +74,56 @@ function AllTasks() {
 
         <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
           <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-4 font-medium text-gray-900">Task</th>
-              <th className="px-6 py-4 font-medium text-gray-900">Due Date</th>
-              <th className="px-6 py-4 font-medium text-gray-900">Category</th>
-              <th className="px-6 py-4 font-medium text-gray-900">State</th>
-              <th className="px-6 py-4 font-medium text-gray-900"></th>
+            <tr className=''>
+              <th className="px-5 py-4 font-medium text-gray-900">
+                <span className={`flex`}>Task
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
+                    className={`${arrowName ? 'rotate-180' : ''} w-5 h-5 mx-2 text-gray-400 cursor-pointer hover:text-gray-900`}
+                    onClick={() => {
+                      setShowingTasks(sortByBoolean(showingTasks, arrowName))
+                      setArrowName(!arrowName)
+                      }
+                    }
+                  ><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg>
+                </span>
+              </th>
+              <th className="px-5  py-4 font-medium text-gray-900">
+                <span className={`flex`}>Due Date
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
+                    className={`${arrowDue ? 'rotate-180' : ''} w-5 h-5 mx-2 text-gray-400 cursor-pointer hover:text-gray-900`}
+                    onClick={() => {
+                      setArrowDue(sortDueBoolean(showingTasks, arrowDue))
+                      setArrowDue(!arrowDue)
+                      }
+                    }
+                  ><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg>
+                </span>
+              </th>
+              <th className="px-5 py-4 font-medium text-gray-900">
+                <span className={`flex`}>Category
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
+                    className={`${arrowCreated ? 'rotate-180' : ''} w-5 h-5 mx-2 text-gray-400 cursor-pointer hover:text-gray-900`}
+                    onClick={() => {
+
+                      setArrowCreated(!arrowCreated)
+                      }
+                    }
+                  ><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg>
+                </span>
+              </th>
+              <th className="px-5 py-4 font-medium text-gray-900">
+                <span className={`flex`}>State
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
+                    className={`${arrowPriority ? 'rotate-180' : ''} w-5 h-5 mx-2 text-gray-400 cursor-pointer hover:text-gray-900`}
+                    onClick={() => {
+                      setShowingTasks(sortPriority(showingTasks, arrowPriority))
+                      setArrowPriority(!arrowPriority)
+                      }
+                    }
+                  ><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg>
+                </span>
+              </th>
+              <th className="px-5 py-4 font-medium text-gray-900">hola</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 border-t border-gray-100">
@@ -96,36 +140,6 @@ function AllTasks() {
         <ul className='grid grid-cols-12'>
           <li className='col-span-1 border text-center border-white'><p className='text-white uppercase'>status</p></li>
           <li className='col-span-1 border text-center border-white'><p className='text-white uppercase'>actions</p></li>
-          <li className='grid grid-cols-12 col-span-3 border text-center border-white'>
-            <p className='col-span-11 text-white uppercase'>name</p>
-            <span className={`col-span-1 flex items-center ${arrowName ? 'rotate-180' : ''}`}>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
-                className="w-5 h-5 text-gray-700 cursor-pointer hover:text-white"
-                onClick={() => {
-                  setShowingTasks(sortByBoolean(showingTasks, arrowName))
-                  setArrowName(!arrowName)
-                  }
-                }
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
-              </svg>
-            </span>
-          </li>
-          <li className='grid grid-cols-12 col-span-2 border text-center border-white'>
-            <p className='col-span-11 text-white uppercase'>created</p>
-            <span className={`col-span-1 flex items-center ${arrowCreated ? 'rotate-180' : ''}`}>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
-                className="w-5 h-5 text-gray-700 cursor-pointer hover:text-white"
-                onClick={() => {
-                  setArrowCreated(sortCreatedBoolean(showingTasks, arrowCreated))
-                  setArrowCreated(!arrowCreated)
-                  }
-                }
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
-              </svg>
-            </span>
-          </li>
           <li className='grid grid-cols-12 col-span-2 border text-center border-white'>
             <p className='col-span-11 text-white uppercase'>due</p>
             <span className={`col-span-1 flex items-center ${arrowDue ? 'rotate-180' : ''}`}>
