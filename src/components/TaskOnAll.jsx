@@ -59,6 +59,7 @@ function TaskOnAll({task}) {
             }}
           >{completed ? "Delete" : "Complete"}</button>
           <button
+            onClick={handleEditTask}
             className='hover:text-blue-700'
           >Edit</button></td>
       </tr>

@@ -17,3 +17,9 @@ export const stylePriority = (priority) => {
   }
   return "text-red-600 bg-red-100"
 }
+
+export const btnStyles = {
+  1: 'text-gray-900 bg-gray-200',
+  2: 'text-green-500 bg-green-100',
+  3: 'text-red-500 bg-red-100'
+}

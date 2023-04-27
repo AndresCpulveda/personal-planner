@@ -12,7 +12,7 @@ function AllTasksPage() {
     <>
       <section className='w-full'>
         <div className='mt-10 mb-2 flex gap-4 items-center'>
-          <h2 className='uppercase text-white text-3xl font-bold'>all tasks</h2>
+          <h2 className='uppercase text-gray-900 text-3xl font-bold'>all tasks</h2>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
             className="w-6 h-6 text-white cursor-pointer hover:scale-125 transition-all"
             onClick={() => setAddingTodayTask(true)}
