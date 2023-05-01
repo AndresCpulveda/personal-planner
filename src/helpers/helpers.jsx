@@ -70,7 +70,9 @@ export function dateAsDays(date) {
 
 
 export function sortPriority(list, boolean) { //OPTIMIZAR
-  const sorted = list.sort((a, b) => {
+  const completed = list.filter( task => task.completed)
+  const uncompleted = list.filter( task => !task.completed)
+  const sorted = uncompleted.sort((a, b) => {
     const priorityOrder = {High: 1, Medium: 2, Low: 3}
     if(boolean) {
       return priorityOrder[a.priority] - priorityOrder[b.priority]
@@ -78,7 +80,13 @@ export function sortPriority(list, boolean) { //OPTIMIZAR
       return priorityOrder[b.priority] - priorityOrder[a.priority]
     }
   })
-  return sorted
+  let result;
+  if(boolean) {
+    result = [...sorted, ...completed]
+  }else{
+    result = [...completed, ...sorted]
+  }
+  return result
 }
 
 export function sortByBoolean(list, boolean){ //OPTIMIZAR

@@ -21,10 +21,6 @@ function TaskOnAll({task}) {
 
   return (
     <>
-
-      {addingTodayTask ? <AddTask /> : null} {/* Modal for adding task */}
-      {editingTask ? <EditTask editing={task} setEditingTask={setEditingTask} /> : null} {/* Modal for editing task */}
-
       <tr className={`odd:bg-white even:bg-gray-50 ${deleted ? "hidden" : ""}`}>
         <th className="px-6 py-4 font-medium text-gray-900">{name}</th>
         <td className="px-6 py-4">{due}</td>
@@ -62,8 +58,11 @@ function TaskOnAll({task}) {
             onClick={handleEditTask}
             className='hover:text-blue-700'
           >Edit</button></td>
+        <td>
+          {addingTodayTask ? <AddTask /> : null} {/* Modal for adding task */}
+          {editingTask ? <EditTask editing={task} setEditingTask={setEditingTask} /> : null} {/* Modal for editing task */}
+        </td>
       </tr>
-
     </>
   )
 }
