@@ -8,17 +8,29 @@ function TodayCompleted() {
   const {todayCompleted} = useTasks();
   
   return (
-    <div className='flex flex-col'>
-      <ul className='grid grid-cols-10'>
-        <li className='col-span-1 border text-center border-white'><p className='text-white uppercase'>done</p></li>
-        <li className='col-span-3 border text-center border-white'><p className='text-white uppercase'>name</p></li>
-        <li className='col-span-2 border text-center border-white'><p className='text-white uppercase'>due</p></li>
-        <li className='col-span-1 border text-center border-white'><p className='text-white uppercase'>priority</p></li>
-        <li className='col-span-3 border text-center border-white'><p className='text-white uppercase'>time spent</p></li>
-      </ul>
-      <div className=''>
-        {todayCompleted.map( task => <Task task={task} key={task._id} />)}
-      </div>
+    <div className="">
+      <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
+        <thead className="bg-gray-50">
+          <tr className=''>
+            <th className="px-5 py-4 font-medium text-gray-900">
+              <span className={`flex`}>Task</span>
+            </th>
+            <th className="px-5  py-4 font-medium text-gray-900">
+              <span className={`flex`}>Due Date</span>
+            </th>
+            <th className="px-5 py-4 font-medium text-gray-900">
+              <span className={`flex`}>Category</span>
+            </th>
+            <th className="px-5 py-4 font-medium text-gray-900">
+              <span className={`flex`}>State</span>
+            </th>
+            <th className="px-5 py-4 font-medium text-gray-900"></th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-100 border-t border-gray-100">
+          {todayCompleted.map( task => <Task task={task} key={task._id} />)}
+        </tbody>
+      </table>
     </div>
   )
 }
