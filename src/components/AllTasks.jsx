@@ -40,7 +40,7 @@ function AllTasks() {
   return (
     <>
       <div className="">
-        <div className="p-1 mb-4">
+        <div className="flex align-center justify-between p-1 mb-4">
           <ul className="flex items-center gap-2 text-sm font-medium">
             <li>
               <a
@@ -69,8 +69,17 @@ function AllTasks() {
                 className={`${activeBtn === 3 ? btnStyles[3] : ''} relative inline-flex cursor-pointer items-center gap-2 rounded-lg  px-3 py-2 hover:bg-red-100 hover:text-red-500`}
               >Uncompleted</a>
             </li>
+            <li>
+            </li>
           </ul>
+          <div className='flex gap-4 ml-2'>
+            <span className='text-sm'><button className='cursor-default rounded-full bg-yellow-500 h-2 w-2 mr-1'></button>Low</span>
+            <span className='text-sm'><button className='cursor-default rounded-full bg-orange-500 h-2 w-2 mr-1'></button>Medium</span>
+            <span className='text-sm'><button className='cursor-default rounded-full bg-red-500 h-2 w-2 mr-1'></button>High</span>
+            <span className='text-sm'><button className='cursor-default rounded-full bg-green-500 h-2 w-2 mr-1'></button>Completed</span>
+          </div>
         </div>
+
 
         <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
           <thead className="bg-gray-50">
@@ -123,7 +132,7 @@ function AllTasks() {
                   ><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg>
                 </span>
               </th>
-              <th className="px-5 py-4 font-medium text-gray-900">hola</th>
+              <th className="px-5 py-4 font-medium text-gray-900"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 border-t border-gray-100">
