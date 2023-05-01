@@ -201,3 +201,26 @@ export function sortTime(list, boolean) {
   })
   return sorted
 }
+
+export function sortCategory(list, boolean) {
+  const sorted = list.sort((a,b) => {
+    if(boolean) {
+      if (a.category > b.category) {
+        return 1;
+      }
+      if (a.category < b.category) {
+        return -1;
+      }
+      return 0;
+    }else {
+      if (a.category > b.category) {
+        return -1;
+      }
+      if (a.category < b.category) {
+        return 1;
+      }
+      return 0;
+    }
+  })
+  return sorted;
+}
