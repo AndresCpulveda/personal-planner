@@ -85,7 +85,7 @@ function AllTasks() {
           <thead className="bg-gray-50">
             <tr className=''>
               <th className="px-5 py-4 font-medium text-gray-900">
-                <span className={`flex`}>Task
+                <span className={`flex items-center`}>Task
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
                     className={`${arrowName ? 'rotate-180' : ''} w-5 h-5 mx-2 text-gray-400 cursor-pointer hover:text-gray-900`}
                     onClick={() => {
@@ -97,7 +97,7 @@ function AllTasks() {
                 </span>
               </th>
               <th className="px-5  py-4 font-medium text-gray-900">
-                <span className={`flex`}>Due Date
+                <span className={`flex items-center`}>Due Date
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
                     className={`${arrowDue ? 'rotate-180' : ''} w-5 h-5 mx-2 text-gray-400 cursor-pointer hover:text-gray-900`}
                     onClick={() => {
@@ -109,7 +109,7 @@ function AllTasks() {
                 </span>
               </th>
               <th className="px-5 py-4 font-medium text-gray-900">
-                <span className={`flex`}>Category
+                <span className={`flex items-center`}>Category
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
                     className={`${arrowCategory ? 'rotate-180' : ''} w-5 h-5 mx-2 text-gray-400 cursor-pointer hover:text-gray-900`}
                     onClick={() => {
@@ -121,7 +121,7 @@ function AllTasks() {
                 </span>
               </th>
               <th className="px-5 py-4 font-medium text-gray-900">
-                <span className={`flex`}>State
+                <span className={`flex items-center`}>State
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
                     className={`${arrowPriority ? 'rotate-180' : ''} w-5 h-5 mx-2 text-gray-400 cursor-pointer hover:text-gray-900`}
                     onClick={() => {
