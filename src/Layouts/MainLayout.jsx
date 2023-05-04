@@ -1,14 +1,28 @@
 import React from 'react'
-import { Outlet, Link} from 'react-router-dom' 
+import { Outlet, NavLink} from 'react-router-dom' 
 
 function MainLayout() {
+  const activeStyle = 'block p-4 bg-white border-b-2 border-gray-800 font-semibold'
+
   return (
     <>
-      <header className='flex bg-[#171412]'>
-        <ul className='flex gap-4'>
-          <li className='p-4'><Link className='text-gray-400 cursor-pointer hover:text-white' to='/'>Todays Tasks</Link> </li>
-          <li className='p-4'><Link className='text-gray-400 cursor-pointer hover:text-white' to={'/tasks'}>All Tasks</Link></li>
-        </ul>
+      <header className='flex bg-slate-100'>
+        <nav>          
+          <ul className='flex'>
+            <li className='text-gray-800'>
+              <NavLink
+                to='/'
+                className={({ isActive, isPending }) => isActive ? activeStyle : "block p-4 font-semibold" }>Todays Tasks
+              </NavLink>
+            </li>
+            <li className='text-gray-800'>
+              <NavLink
+                to={'/tasks'}
+                className={({ isActive, isPending }) => isActive ? activeStyle : "block p-4 font-semibold"}>All Tasks
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
       </header>
       <main className='flex p-8'>
         <Outlet />
