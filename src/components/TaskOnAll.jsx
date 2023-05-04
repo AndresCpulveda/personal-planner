@@ -6,14 +6,16 @@ import { timeFormatter } from '../helpers/helpers';
 import { formatPriority } from '../helpers/StyleHelpers';
 import EditTask from './EditTask';
 import { stylePriority } from '../helpers/StyleHelpers';
+import ModalAlert from './ModalAlert';
 
 function TaskOnAll({task}) {
   const {name, due, priority, time, createdAt, category, completed} = task;
     
-  const {addToCompleted, removeCompleted, updateTask, addingTodayTask} = useTasks();
+  const {addToCompleted, updateTask, addingTodayTask} = useTasks();
   const [deleted, setDeleted] = useState(false)
 
   const [editingTask, setEditingTask] = useState(false)
+  const [modalAlert, setModalAlert] = useState(false)
   
   const handleEditTask = () => {
     setEditingTask(true)
@@ -44,10 +46,7 @@ function TaskOnAll({task}) {
             className={`${completed ? "hover:text-red-600" : "hover:text-green-600"}`}
             onClick={e => {
               if(completed) {
-                if (confirm('Do you want to remove this task?')){
-                  removeCompleted(task)
-                  setDeleted(true)
-                }
+                setModalAlert(true)
               }else {
                 task.completed = true
                 addToCompleted({...task, completed: true})
@@ -61,6 +60,7 @@ function TaskOnAll({task}) {
         <td>
           {addingTodayTask ? <AddTask /> : null} {/* Modal for adding task */}
           {editingTask ? <EditTask editing={task} setEditingTask={setEditingTask} /> : null} {/* Modal for editing task */}
+          {modalAlert ? <ModalAlert setModalAlert={setModalAlert} task={task} setDeleted={setDeleted}/> : null }
         </td>
       </tr>
     </>
