@@ -97,7 +97,7 @@ function AddTask({editing, setEditingTask}) {
 
             <div className={`flex ${isRecurring ? '' : 'text-gray-500'}`}>
               <span className='mr-2 pt-1'>Every:</span>
-              <input type='number' defaultValue={editing?.frecuencyInterval || frequencyInterval} disabled={!isRecurring} className='bg-gray-300 rounded-md h-8 w-12 p-2' onChange={e => setFrequencyInterval(e.target.value)}></input>
+              <input type='number' defaultValue={editing?.frecuencyInterval || frequencyInterval} disabled={!isRecurring} className='bg-gray-300 rounded-md h-8 p-2 w-12' onChange={e => setFrequencyInterval(e.target.value)}></input>
               <select disabled={!isRecurring} defaultValue={editing?.intervalUnit || intervalUnit} onChange={e => {setIntervalUnit(e.target.value)}}>
                 <option value='days'>Days</option>
                 <option value='weeks'>Weeks</option>
@@ -108,9 +108,9 @@ function AddTask({editing, setEditingTask}) {
             <input className='bg-gray-300 rounded-md h-8 p-2' defaultValue={editing?.category || category} onChange={e => setCategory(e.target.value)}></input>
 
             <div className={`flex`}>
-              <input type='number' className='bg-gray-300 rounded-md h-8 w-16 p-2' defaultValue={editing?.hoursToComplete || hoursToComplete} onChange={e => setHoursToComplete(parseInt(e.target.value))}></input>
+              <input type='number' className='bg-gray-300 rounded-md h-8 p-2 w-12' defaultValue={editing?.hoursToComplete || hoursToComplete} onChange={e => setHoursToComplete(parseInt(e.target.value))}></input>
               <span className='ml-1 mr-4 pt-1'>Hours</span>
-              <input type='number' className='bg-gray-300 rounded-md h-8 w-16 p-2' defaultValue={editing?.minutesToComplete || minutesToComplete} onChange={e => setMinutesToComplete(parseInt(e.target.value))}></input>
+              <input type='number' className='bg-gray-300 rounded-md h-8 p-2 w-12' defaultValue={editing?.minutesToComplete || minutesToComplete} onChange={e => setMinutesToComplete(parseInt(e.target.value))}></input>
               <span className='ml-1 mr-4 pt-1'>minutes</span>
             </div>
           </div>

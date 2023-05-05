@@ -37,6 +37,20 @@ function AllTasks() {
   const completedTasks = allTasks.filter(task => task.completed)
   const uncompletedTasks = allTasks.filter(task => !task.completed)
 
+  const styles = {
+    btns: {
+      categoryBtns: 'relative inline-flex cursor-pointer items-center gap-2 rounded-lg  px-3 py-2',
+      stateBtns: 'cursor-default rounded-full h-2 w-2 mr-1'
+    },
+    table: {
+      th: 'px-5 py-4 font-medium text-gray-900',
+      headings: {
+        text: 'flex items-center',
+        icons: 'w-5 h-5 mx-2 text-gray-400 cursor-pointer hover:text-gray-900'
+      }
+    }
+  }
+
   return (
     <>
       <div className="">
@@ -48,7 +62,7 @@ function AllTasks() {
                   setActiveBtn(1)
                   setShowingTasks(allTasks)
                 }}
-                className={`${activeBtn === 1 ? btnStyles[1] : ''} relative inline-flex cursor-pointer items-center gap-2 rounded-lg  px-3 py-2 hover:bg-gray-200`}
+                className={`${activeBtn === 1 ? btnStyles[1] : ''} ${styles.btns.categoryBtns} hover:bg-gray-200`}
               >All</a>
             </li>
             <li>
@@ -57,7 +71,7 @@ function AllTasks() {
                   setActiveBtn(2)
                   setShowingTasks(completedTasks)
                 }}
-                className={`${activeBtn === 2 ? btnStyles[2] : ''} relative inline-flex cursor-pointer items-center gap-2 rounded-lg  px-3 py-2 hover:bg-green-100 hover:text-green-500`}
+                className={`${activeBtn === 2 ? btnStyles[2] : ''} ${styles.btns.categoryBtns} hover:bg-green-100 hover:text-green-500`}
               >Completed</a>
             </li>
             <li>
@@ -66,17 +80,17 @@ function AllTasks() {
                   setActiveBtn(3)
                   setShowingTasks(uncompletedTasks)
                 }}
-                className={`${activeBtn === 3 ? btnStyles[3] : ''} relative inline-flex cursor-pointer items-center gap-2 rounded-lg  px-3 py-2 hover:bg-red-100 hover:text-red-500`}
+                className={`${activeBtn === 3 ? btnStyles[3] : ''} ${styles.btns.categoryBtns} hover:bg-red-100 hover:text-red-500`}
               >Uncompleted</a>
             </li>
             <li>
             </li>
           </ul>
           <div className='flex gap-4 ml-2'>
-            <span className='text-sm'><button className='cursor-default rounded-full bg-yellow-500 h-2 w-2 mr-1'></button>Low</span>
-            <span className='text-sm'><button className='cursor-default rounded-full bg-orange-500 h-2 w-2 mr-1'></button>Medium</span>
-            <span className='text-sm'><button className='cursor-default rounded-full bg-red-500 h-2 w-2 mr-1'></button>High</span>
-            <span className='text-sm'><button className='cursor-default rounded-full bg-green-500 h-2 w-2 mr-1'></button>Completed</span>
+            <span className='text-sm'><button className={`${styles.btns.stateBtns} bg-yellow-500`}></button>Low</span>
+            <span className='text-sm'><button className={`${styles.btns.stateBtns} bg-orange-500`}></button>Medium</span>
+            <span className='text-sm'><button className={`${styles.btns.stateBtns} bg-red-500`}></button>High</span>
+            <span className='text-sm'><button className={`${styles.btns.stateBtns} bg-green-500`}></button>Completed</span>
           </div>
         </div>
 
@@ -84,10 +98,10 @@ function AllTasks() {
         <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
           <thead className="bg-gray-50">
             <tr className=''>
-              <th className="px-5 py-4 font-medium text-gray-900">
-                <span className={`flex items-center`}>Task
+              <th className={styles.table.th}>
+                <span className={styles.table.headings.text}>Task
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
-                    className={`${arrowName ? 'rotate-180' : ''} w-5 h-5 mx-2 text-gray-400 cursor-pointer hover:text-gray-900`}
+                    className={`${arrowName ? 'rotate-180' : ''} ${styles.table.headings.icons}`}
                     onClick={() => {
                       setShowingTasks(sortByBoolean(showingTasks, arrowName))
                       setArrowName(!arrowName)
@@ -96,10 +110,10 @@ function AllTasks() {
                   ><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg>
                 </span>
               </th>
-              <th className="px-5  py-4 font-medium text-gray-900">
-                <span className={`flex items-center`}>Due Date
+              <th className={styles.table.th}>
+                <span className={styles.table.headings.text}>Due Date
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
-                    className={`${arrowDue ? 'rotate-180' : ''} w-5 h-5 mx-2 text-gray-400 cursor-pointer hover:text-gray-900`}
+                    className={`${arrowDue ? 'rotate-180' : ''} ${styles.table.headings.icons}`}
                     onClick={() => {
                       setArrowDue(sortDueBoolean(showingTasks, arrowDue))
                       setArrowDue(!arrowDue)
@@ -108,10 +122,10 @@ function AllTasks() {
                   ><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg>
                 </span>
               </th>
-              <th className="px-5 py-4 font-medium text-gray-900">
-                <span className={`flex items-center`}>Category
+              <th className={styles.table.th}>
+                <span className={styles.table.headings.text}>Category
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
-                    className={`${arrowCategory ? 'rotate-180' : ''} w-5 h-5 mx-2 text-gray-400 cursor-pointer hover:text-gray-900`}
+                    className={`${arrowCategory ? 'rotate-180' : ''} ${styles.table.headings.icons}`}
                     onClick={() => {
                       setShowingTasks(sortCategory(showingTasks, arrowCategory))
                       setArrowCategory(!arrowCategory)
@@ -120,10 +134,10 @@ function AllTasks() {
                   ><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg>
                 </span>
               </th>
-              <th className="px-5 py-4 font-medium text-gray-900">
-                <span className={`flex items-center`}>State
+              <th className={styles.table.th}>
+                <span className={styles.table.headings.text}>State
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
-                    className={`${arrowPriority ? 'rotate-180' : ''} w-5 h-5 mx-2 text-gray-400 cursor-pointer hover:text-gray-900`}
+                    className={`${arrowPriority ? 'rotate-180' : ''} ${styles.table.headings.icons}`}
                     onClick={() => {
                       setShowingTasks(sortPriority(showingTasks, arrowPriority))
                       setArrowPriority(!arrowPriority)
@@ -132,7 +146,7 @@ function AllTasks() {
                   ><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg>
                 </span>
               </th>
-              <th className="px-5 py-4 font-medium text-gray-900"></th>
+              <th className={styles.table.th}></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 border-t border-gray-100">

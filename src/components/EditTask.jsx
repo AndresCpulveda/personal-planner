@@ -31,9 +31,6 @@ function EditTask({editing, setEditingTask}) {
       }, 3000);
       return
     }
-    // const task = {
-    //   name, due, priority, isRecurring, frequencyInterval, intervalUnit, category, time: timeFormatter(hoursToComplete * 3600 + minutesToComplete * 60)
-    // }
 
     editing.name = name
     editing.due = due
@@ -117,9 +114,9 @@ function EditTask({editing, setEditingTask}) {
             <input className='bg-gray-300 rounded-md h-8 p-2' defaultValue={editing?.category || category} onChange={e => setCategory(e.target.value)}></input>
 
             <div className={`flex`}>
-              <input type='number' className='bg-gray-300 rounded-md h-8 w-16 p-2' defaultValue={editing?.hoursToComplete || hoursToComplete} onChange={e => setHoursToComplete(parseInt(e.target.value))}></input>
+              <input type='number' className='bg-gray-300 rounded-md h-8 w-12 p-2' defaultValue={editing?.hoursToComplete || hoursToComplete} onChange={e => setHoursToComplete(parseInt(e.target.value))}></input>
               <span className='ml-1 mr-4 pt-1'>Hours</span>
-              <input type='number' className='bg-gray-300 rounded-md h-8 w-16 p-2' defaultValue={editing?.minutesToComplete || minutesToComplete} onChange={e => setMinutesToComplete(parseInt(e.target.value))}></input>
+              <input type='number' className='bg-gray-300 rounded-md h-8 w-12 p-2' defaultValue={editing?.minutesToComplete || minutesToComplete} onChange={e => setMinutesToComplete(parseInt(e.target.value))}></input>
               <span className='ml-1 mr-4 pt-1'>minutes</span>
             </div>
           </div>
