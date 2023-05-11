@@ -42,7 +42,6 @@ const months = {
 }
 
 export function dateFormatter(date) {
-
   const splitDate = date.split('T')[0];
   const dateArray = splitDate.split('-');
   const formattedDate = `${dateArray[2]} ${months[dateArray[1]]} ${dateArray[0]}`
@@ -50,7 +49,6 @@ export function dateFormatter(date) {
 }
 
 export function dateDeFormatter(date) {
-
   let swappedMonths = {}
 
   for(let key in months) {
@@ -260,20 +258,22 @@ export function createRecurrings(list) {
     Months: 30,
   }
   const todayAsDays = dateAsDays(getTodaysDate())
-  console.log(todayAsDays);
   const toCreate = list.filter(task => dateAsDays(dateDeFormatter(task.due)) < todayAsDays)
-  console.log(toCreate);
-  const test = toCreate.map(task => {
+  // console.log(toCreate);
+  const tasksToAdd = toCreate.map(task => {
     let latestDue = parseInt(dateAsDays(dateDeFormatter(task.due)))
-    console.log(`${task.name} ${latestDue}`);
     let newTasks = []
     do {
-      const newDue = latestDue + increments[task.intervalUnit]
-      const newTask = {...task, due: newDue}
+      const newDueDays = latestDue + increments[task.intervalUnit]
+      const newDue = dateFormatter(daysToDate(newDueDays))
+      const {name, priority, isRecurring, intervalUnit, category, time} = task
+      const newTask = { //CREATE TASK OBJECT TO BE SENT
+        name, due: newDue, priority, isRecurring, intervalUnit, category, time
+      }
       newTasks.push(newTask)
-      latestDue = newDue
+      latestDue = newDueDays
     } while (latestDue < todayAsDays);
     return newTasks
   })
-  console.log(test);
+  return tasksToAdd.flat()
 }

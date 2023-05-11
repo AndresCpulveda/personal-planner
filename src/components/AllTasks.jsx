@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react'
 
 import TaskOnAll from './TaskOnAll';
 import sendAxios from '../../config/axios';
-import { sortByBoolean, sortDueBoolean, sortPriority, dateFormatter, sortCreatedBoolean, sortTime, sortCategory} from '../helpers/helpers';
+import { sortByBoolean, sortDueBoolean, sortPriority, dateFormatter, sortCreatedBoolean, sortTime, sortCategory, extractRecentRecurrings, createRecurrings} from '../helpers/helpers';
 import { btnStyles } from '../helpers/StyleHelpers';
 
 function AllTasks() {
@@ -25,8 +25,11 @@ function AllTasks() {
           task.createdAt = dateFormatter(task.createdAt)
           return task
         })
-          setShowingTasks(formatted)
-        setAllTasks(formatted)
+        const currentRecurrings = extractRecentRecurrings(formatted)
+        const newRecurrings = createRecurrings(currentRecurrings)
+        const toAdd = [...formatted, ...newRecurrings]
+        setShowingTasks(toAdd)
+        setAllTasks(toAdd)
       } catch (error) {
         console.log(error);
       }

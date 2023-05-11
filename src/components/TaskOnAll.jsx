@@ -9,6 +9,7 @@ import { stylePriority } from '../helpers/StyleHelpers';
 import ModalAlert from './ModalAlert';
 
 function TaskOnAll({task}) {
+  console.log(task);
   const {name, due, priority, time, createdAt, category, completed} = task;
     
   const {addToCompleted, updateTask, addingTodayTask} = useTasks();

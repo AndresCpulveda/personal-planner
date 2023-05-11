@@ -55,8 +55,8 @@ function TasksProvider({children}) {
       })
       const currentRecurrings = extractRecentRecurrings(formatted)
       const newRecurrings = createRecurrings(currentRecurrings)
-
-      setAllTasks(formatted)
+      const toAdd = [...formatted, ...newRecurrings]
+      setAllTasks(toAdd)
     } catch (error) {
       console.log(error);
     }
