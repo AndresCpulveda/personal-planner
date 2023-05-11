@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 
 import sendAxios from "../../config/axios";
-import { dateFormatter, getTodaysDate } from "../helpers/helpers";
+import { dateFormatter, getTodaysDate, extractRecentRecurrings, createRecurrings } from "../helpers/helpers";
 
 const TasksContext = createContext()
 
@@ -53,6 +53,9 @@ function TasksProvider({children}) {
         task.createdAt = dateFormatter(task.createdAt)
         return task
       })
+      const currentRecurrings = extractRecentRecurrings(formatted)
+      const newRecurrings = createRecurrings(currentRecurrings)
+
       setAllTasks(formatted)
     } catch (error) {
       console.log(error);

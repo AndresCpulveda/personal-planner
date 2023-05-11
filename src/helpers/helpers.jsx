@@ -64,8 +64,19 @@ export function dateDeFormatter(date) {
 
 export function dateAsDays(date) {
   const dateArray = date.split('-')
-  const result = dateArray[0] * 365 + dateArray[1] * 30 + dateArray[2]
+  const result = parseInt(dateArray[0]) * 365 + parseInt(dateArray[1]) * 30 + parseInt(dateArray[2])
   return result
+}
+
+export function daysToDate(days) {
+  const year = Math.floor(days / 365)
+  const month = Math.floor(days % 365 / 30)
+  const day = days - ((year * 365) + (month * 30))
+  if(month < 10) {
+    return `${year}-0${month}-${day}`
+  }else {
+    return `${year}-${month}-${day}`
+  }
 }
 
 
@@ -223,4 +234,46 @@ export function sortCategory(list, boolean) {
     }
   })
   return sorted;
+}
+
+export function extractRecentRecurrings(list) {
+  const filtered = list.filter( task => task.isRecurring) //Extract only the tasks which are recurring
+  const recurrings = filtered.reduce((acc, cur) => { //Use reduce to iterate each of the array elements while saving in the array accumulator the desired elements (initial value set to [] so the acc is considered an array)
+    const alreadyExists = acc.find( task => task.name === cur.name) //Check if the iterating element already exists in the array accumulator
+
+    if(!alreadyExists) { //If not already in the acc the it is added
+      acc.push(cur)
+    }else {
+      if(alreadyExists.due < cur.due) { //If already in the acc then check if its due value is greater than the interating elements due value
+        alreadyExists.due = cur.due //If iterating element has greater value, previously saved elements due value is updated
+      }
+    }
+    return acc //Return the accumulated array with unrepeated tasks and each tasks has the greatest due value
+  }, [])
+  return recurrings
+}
+
+export function createRecurrings(list) {
+  const increments = {
+    Days: 1,
+    Weeks: 7,
+    Months: 30,
+  }
+  const todayAsDays = dateAsDays(getTodaysDate())
+  console.log(todayAsDays);
+  const toCreate = list.filter(task => dateAsDays(dateDeFormatter(task.due)) < todayAsDays)
+  console.log(toCreate);
+  const test = toCreate.map(task => {
+    let latestDue = parseInt(dateAsDays(dateDeFormatter(task.due)))
+    console.log(`${task.name} ${latestDue}`);
+    let newTasks = []
+    do {
+      const newDue = latestDue + increments[task.intervalUnit]
+      const newTask = {...task, due: newDue}
+      newTasks.push(newTask)
+      latestDue = newDue
+    } while (latestDue < todayAsDays);
+    return newTasks
+  })
+  console.log(test);
 }
