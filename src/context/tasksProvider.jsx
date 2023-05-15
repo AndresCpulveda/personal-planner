@@ -62,7 +62,7 @@ function TasksProvider({children}) {
     }
   }
 
-   const addToTasks = async (task) => { //COMPLETES THE TASK OBJECT AND SENDS IT TO THE BACKEND
+  const addToTasks = async (task) => { //COMPLETES THE TASK OBJECT AND SENDS IT TO THE BACKEND
 
     const toAdd = {
       ...task,
@@ -80,7 +80,7 @@ function TasksProvider({children}) {
         data.due = dateFormatter(data.due) //FORMATS DATE BEFORE SAVING
         setTodayDueTasks([...todayDueTasks, data]) //SAVES OBJECT IN TODAYS TASKS ARRAY WITH THE DESIRED FORMAT
       }
-
+      return data
     } catch (error) {
       console.log(error);
     }

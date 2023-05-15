@@ -4,8 +4,10 @@ import TaskOnAll from './TaskOnAll';
 import sendAxios from '../../config/axios';
 import { sortByBoolean, sortDueBoolean, sortPriority, dateFormatter, sortCreatedBoolean, sortTime, sortCategory, extractRecentRecurrings, createRecurrings} from '../helpers/helpers';
 import { btnStyles } from '../helpers/StyleHelpers';
+import useTasks from '../hooks/useTasks';
 
 function AllTasks() {
+  const {addToTasks} = useTasks();
   const [showingTasks, setShowingTasks] = useState([])
   const [allTasks, setAllTasks] = useState([])
   const [activeBtn, setActiveBtn] = useState('all')
@@ -30,6 +32,10 @@ function AllTasks() {
         const toAdd = [...formatted, ...newRecurrings]
         setShowingTasks(toAdd)
         setAllTasks(toAdd)
+        const savedRecurrings = newRecurrings.map(task => {
+          const saved = addToTasks(task)
+          return saved
+        })
       } catch (error) {
         console.log(error);
       }
