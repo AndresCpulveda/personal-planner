@@ -14,7 +14,7 @@ function EditTask({editing, setEditingTask}) {
   const [due, setDue] = useState(editing.due)
   const [priority, setPriority] = useState(editing.priority)
   const [isRecurring, setIsRecurring] = useState(editing.isRecurring || false)
-  const [frequencyInterval, setFrequencyInterval] = useState(editing.frecuencyInterval || "")
+  const [frequencyInterval, setFrequencyInterval] = useState(editing.frequencyInterval || "")
   const [intervalUnit, setIntervalUnit] = useState(editing.intervalUnit || "")
   const [category, setCategory] = useState(editing.category || "")
   const [hoursToComplete, setHoursToComplete] = useState(editing.hoursToComplete || 0)
@@ -68,7 +68,7 @@ function EditTask({editing, setEditingTask}) {
             <label className='uppercase'>Due Date</label>
             <label className='uppercase'>Priority</label>
             <label className='uppercase'>Recurring Task?</label>
-            <label className={`flex ${isRecurring ? '' : 'text-gray-500'} uppercase`}>Frecuency</label>
+            <label className={`flex ${isRecurring ? '' : 'text-gray-500'} uppercase`}>Frequency</label>
             <label className='uppercase'>Category</label>
             <label className='uppercase'>time to complete</label>
           </div>
@@ -103,7 +103,7 @@ function EditTask({editing, setEditingTask}) {
 
             <div className={`flex ${isRecurring ? '' : 'text-gray-500'}`}>
               <span className='mr-2 pt-1'>Every:</span>
-              <input type='number' defaultValue={editing?.frecuencyInterval || frequencyInterval} disabled={!isRecurring} className='bg-gray-300 rounded-md h-8 w-12 p-2' onChange={e => setFrequencyInterval(e.target.value)}></input>
+              <input type='number' defaultValue={editing?.frequencyInterval || frequencyInterval} disabled={!isRecurring} className='bg-gray-300 rounded-md h-8 w-12 p-2' onChange={e => setFrequencyInterval(e.target.value)}></input>
               <select disabled={!isRecurring} defaultValue={editing?.intervalUnit || intervalUnit} onChange={e => {setIntervalUnit(e.target.value)}}>
                 <option value='days'>Days</option>
                 <option value='weeks'>Weeks</option>

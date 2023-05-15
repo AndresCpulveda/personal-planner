@@ -16,7 +16,7 @@ function AddTask({editing, setEditingTask}) {
   const [priority, setPriority] = useState("")
   const [isRecurring, setIsRecurring] = useState(false)
   const [frequencyInterval, setFrequencyInterval] = useState(1)
-  const [intervalUnit, setIntervalUnit] = useState("")
+  const [intervalUnit, setIntervalUnit] = useState("Days")
   const [category, setCategory] = useState("")
   const [hoursToComplete, setHoursToComplete] = useState(0)
   const [minutesToComplete, setMinutesToComplete] = useState(0)
@@ -62,7 +62,7 @@ function AddTask({editing, setEditingTask}) {
             <label className='uppercase'>Due Date</label>
             <label className='uppercase'>Priority</label>
             <label className='uppercase'>Recurring Task?</label>
-            <label className={`flex ${isRecurring ? '' : 'text-gray-500'} uppercase`}>Frecuency</label>
+            <label className={`flex ${isRecurring ? '' : 'text-gray-500'} uppercase`}>Frequency</label>
             <label className='uppercase'>Category</label>
             <label className='uppercase'>time to complete</label>
           </div>
@@ -97,7 +97,7 @@ function AddTask({editing, setEditingTask}) {
 
             <div className={`flex ${isRecurring ? '' : 'text-gray-500'}`}>
               <span className='mr-2 pt-1'>Every:</span>
-              <input type='number' defaultValue={editing?.frecuencyInterval || frequencyInterval} disabled={!isRecurring} className='bg-gray-300 rounded-md h-8 p-2 w-12' onChange={e => setFrequencyInterval(e.target.value)}></input>
+              <input type='number' defaultValue={editing?.frequencyInterval || frequencyInterval} disabled={!isRecurring} className='bg-gray-300 rounded-md h-8 p-2 w-12' onChange={e => setFrequencyInterval(e.target.value)}></input>
               <select disabled={!isRecurring} defaultValue={editing?.intervalUnit || intervalUnit} onChange={e => {setIntervalUnit(e.target.value)}}>
                 <option value='days'>Days</option>
                 <option value='weeks'>Weeks</option>
