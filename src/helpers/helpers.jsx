@@ -253,7 +253,6 @@ export function sortCategory(list, boolean) {
 
 export function extractRecentRecurrings(list) {
   const filtered = list.filter( task => task.isRecurring) //Extract only the tasks which are recurring
-  const remaining = list.filter( task => !task.isRecurring) //Extract only the tasks which are recurring
   const recurrings = filtered.reduce((acc, cur) => { //Use reduce to iterate each of the array elements while saving in the array accumulator the desired elements (initial value set to [] so the acc is considered an array)
     const alreadyExists = acc.find( task => task.name === cur.name) //Check if the iterating element already exists in the array accumulator
     
@@ -261,7 +260,10 @@ export function extractRecentRecurrings(list) {
       const clone = {...cur}
       acc.push(clone)
     }else {
-      if(alreadyExists.due < cur.due) { //If already in the acc then check if its due value is greater than the interating elements due value
+      //Transform the dates to numbers so they can be compared
+      const aAsNum = dateAsDays(dateDeFormatter(alreadyExists.due))
+      const bAsNum = dateAsDays(dateDeFormatter(cur.due))
+      if(aAsNum < bAsNum) { //If already in the acc then check if its due value is greater than the interating elements due value
         alreadyExists.due = cur.due //If iterating element has greater value, previously saved elements due value is updated
       }
     }

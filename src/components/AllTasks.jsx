@@ -34,8 +34,8 @@ function AllTasks() {
         setShowingTasks(toAdd)
         setAllTasks(toAdd)
         const savedRecurrings = newRecurrings.map(task => {
-          const saved = addToTasks(task)
-          return saved
+          // const saved = addToTasks(task)
+          // return saved
         })
       } catch (error) {
         console.log(error);
