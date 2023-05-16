@@ -4,10 +4,7 @@ import TodayDue from '../components/TodayDue'
 import useTasks from '../hooks/useTasks'
 
 function AllTasksPage() {
-  const {loadedTasks, getAllTasks} = useTasks();
-  useEffect(() => {
-    getAllTasks()
-  }, [])
+  const {loadedTasks} = useTasks();
   return (
     <>
       <section className='w-full'>

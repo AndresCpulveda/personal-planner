@@ -45,23 +45,6 @@ function TasksProvider({children}) {
     setLoadedTasks(true)
   }, [todaysTasks])
 
-  const getAllTasks = async () => {
-    try {
-      const {data} = await sendAxios('tasks/all')
-      const formatted = data.map(task => {
-        task.due = dateFormatter(task.due)
-        task.createdAt = dateFormatter(task.createdAt)
-        return task
-      })
-      const currentRecurrings = extractRecentRecurrings(formatted)
-      const newRecurrings = createRecurrings(currentRecurrings)
-      const toAdd = [...formatted, ...newRecurrings]
-      setAllTasks(toAdd)
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   const addToTasks = async (task) => { //COMPLETES THE TASK OBJECT AND SENDS IT TO THE BACKEND
 
     const toAdd = {
@@ -135,7 +118,6 @@ function TasksProvider({children}) {
         removeCompleted,
         loadedTasks,
         updateTask,
-        getAllTasks,
         allTasks,
       }}
     >

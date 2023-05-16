@@ -236,11 +236,14 @@ export function sortCategory(list, boolean) {
 
 export function extractRecentRecurrings(list) {
   const filtered = list.filter( task => task.isRecurring) //Extract only the tasks which are recurring
+  const remaining = list.filter( task => !task.isRecurring) //Extract only the tasks which are recurring
   const recurrings = filtered.reduce((acc, cur) => { //Use reduce to iterate each of the array elements while saving in the array accumulator the desired elements (initial value set to [] so the acc is considered an array)
     const alreadyExists = acc.find( task => task.name === cur.name) //Check if the iterating element already exists in the array accumulator
-
+    // recurrings.forEach(task => task.name == "tender cama" ? console.log(task) : null)
+    
     if(!alreadyExists) { //If not already in the acc the it is added
-      acc.push(cur)
+      const clone = {...cur}
+      acc.push(clone)
     }else {
       if(alreadyExists.due < cur.due) { //If already in the acc then check if its due value is greater than the interating elements due value
         alreadyExists.due = cur.due //If iterating element has greater value, previously saved elements due value is updated
@@ -259,16 +262,15 @@ export function createRecurrings(list) {
   }
   const todayAsDays = dateAsDays(getTodaysDate())
   const toCreate = list.filter(task => dateAsDays(dateDeFormatter(task.due)) < todayAsDays)
-  // console.log(toCreate);
   const tasksToAdd = toCreate.map(task => {
     let latestDue = parseInt(dateAsDays(dateDeFormatter(task.due)))
     let newTasks = []
     do {
-      const newDueDays = latestDue + increments[task.intervalUnit]
+      const newDueDays = latestDue + (increments[task.intervalUnit] * task.frequencyInterval)
       const newDue = dateFormatter(daysToDate(newDueDays))
-      const {name, priority, isRecurring, intervalUnit, category, time} = task
+      const {name, priority, isRecurring, intervalUnit, frequencyInterval, category, time} = task
       const newTask = { //CREATE TASK OBJECT TO BE SENT
-        name, due: newDue, priority, isRecurring, intervalUnit, category, time
+        name, due: newDue, priority, isRecurring, intervalUnit, frequencyInterval, category, time
       }
       newTasks.push(newTask)
       latestDue = newDueDays
