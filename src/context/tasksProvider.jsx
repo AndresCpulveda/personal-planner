@@ -46,16 +46,16 @@ function TasksProvider({children}) {
   }, [todaysTasks])
 
   const addToTasks = async (task) => { //COMPLETES THE TASK OBJECT AND SENDS IT TO THE BACKEND
-
     const toAdd = {
       ...task,
       completed: false,
       stopWatch: task.time === 0
     }
+    
+    console.log(toAdd);
 
     try {
       const {data} = await sendAxios.post('tasks/add', toAdd)
-      console.log(data);
       const fixedDue = data.due.split('T')[0] //CUTS THE DATE FOR COMPARISON
       data.due = fixedDue
       const todaysDate = getTodaysDate() //GETS TODAYS DATE FOR COMPARISON
@@ -73,7 +73,6 @@ function TasksProvider({children}) {
     const newDueList = todayDueTasks.filter(due => due.name != task.name)
     setTodayDueTasks(newDueList)
     try {
-      task.due = getTodaysDate()
       const {data} = await sendAxios.put('tasks/update', task)
       data.due = dateFormatter(data.due)
       setTodayCompleted([...todayCompleted, data])

@@ -19,7 +19,6 @@ function AllTasks() {
   const [arrowTime, setArrowTime] = useState(false)
   
   useEffect(() => {
-    console.log('here');
     const getAllTasks = async () => {
       try {
         const {data} = await sendAxios('tasks/all')
@@ -28,17 +27,15 @@ function AllTasks() {
           task.createdAt = dateFormatter(task.createdAt)
           return task
         })
-        // formatted.forEach(task => task.name == "tender cama" ? console.log(task) : null)
         const currentRecurrings = extractRecentRecurrings(formatted)
-        // formatted.forEach(task => task.name == "tender cama" ? console.log(task) : null)
         const newRecurrings = createRecurrings(currentRecurrings)
         const toAdd = [...formatted, ...newRecurrings]
         // toAdd.forEach(task => task.name == "tender cama" ? console.log(task) : null)
         setShowingTasks(toAdd)
         setAllTasks(toAdd)
         const savedRecurrings = newRecurrings.map(task => {
-          const saved = addToTasks(task)
-          return saved
+          // const saved = addToTasks(task)
+          // return saved
         })
       } catch (error) {
         console.log(error);

@@ -60,6 +60,23 @@ export function dateDeFormatter(date) {
   return deformattedDate
 }
 
+export function addMonths(latestDue, addition) {
+  const date = daysToDate(latestDue)
+  
+  let swappedMonths = {}
+  
+  for(let key in months) {
+    swappedMonths[months[key]] = key
+  }
+  
+  const splitDate = date.split('-')
+  const monthNum = splitDate[1]
+  const newMonth = months[`0${(parseInt(monthNum) + addition)}`]
+  const result = `${splitDate[2]} ${newMonth} ${splitDate[0]}`
+  return result
+
+}
+
 export function dateAsDays(date) {
   const dateArray = date.split('-')
   const result = parseInt(dateArray[0]) * 365 + parseInt(dateArray[1]) * 30 + parseInt(dateArray[2])
@@ -239,7 +256,6 @@ export function extractRecentRecurrings(list) {
   const remaining = list.filter( task => !task.isRecurring) //Extract only the tasks which are recurring
   const recurrings = filtered.reduce((acc, cur) => { //Use reduce to iterate each of the array elements while saving in the array accumulator the desired elements (initial value set to [] so the acc is considered an array)
     const alreadyExists = acc.find( task => task.name === cur.name) //Check if the iterating element already exists in the array accumulator
-    // recurrings.forEach(task => task.name == "tender cama" ? console.log(task) : null)
     
     if(!alreadyExists) { //If not already in the acc the it is added
       const clone = {...cur}
@@ -255,26 +271,33 @@ export function extractRecentRecurrings(list) {
 }
 
 export function createRecurrings(list) {
-  const increments = {
-    Days: 1,
-    Weeks: 7,
-    Months: 30,
+  const increments = { //Create an object with the equivalent increments of days for each intervalUnit
+    days: 1,
+    weeks: 7,
   }
-  const todayAsDays = dateAsDays(getTodaysDate())
-  const toCreate = list.filter(task => dateAsDays(dateDeFormatter(task.due)) < todayAsDays)
-  const tasksToAdd = toCreate.map(task => {
-    let latestDue = parseInt(dateAsDays(dateDeFormatter(task.due)))
-    let newTasks = []
+  const todayAsDays = dateAsDays(getTodaysDate()) //Save todays date in a constant variable for comparisson
+
+  const toCreate = list.filter(task => dateAsDays(dateDeFormatter(task.due)) < todayAsDays) //Filter out all the tasks which its due date is further than todays date
+
+  const tasksToAdd = toCreate.map(task => { //Use map to iterate on each task to be cloned
+    const {name, priority, isRecurring, intervalUnit, frequencyInterval, category, time} = task //Destructure object of task
+    let latestDue = parseInt(dateAsDays(dateDeFormatter(task.due))) //Calculate (in days) the due date of the task (which is the task with the latest due date)
+    let newTasks = [] //Array where the tasks to be created will be stored
     do {
-      const newDueDays = latestDue + (increments[task.intervalUnit] * task.frequencyInterval)
-      const newDue = dateFormatter(daysToDate(newDueDays))
-      const {name, priority, isRecurring, intervalUnit, frequencyInterval, category, time} = task
-      const newTask = { //CREATE TASK OBJECT TO BE SENT
-        name, due: newDue, priority, isRecurring, intervalUnit, frequencyInterval, category, time
+      let newDueDays; ////Variable where the new due date of each task being created will be stored (as days)
+      if(intervalUnit === 'months') { //If the tasks interval unit is months we have to add months instead of days (cause every month has different amount of days)
+        const newDueString = addMonths(latestDue, frequencyInterval) //Create a new date with the corresponding amount of months added (as a string formatted date)
+        newDueDays = dateAsDays(dateDeFormatter(newDueString)) //The new due date for the task being created (as days for future comparisson)
+      }else{
+        newDueDays = latestDue + (increments[intervalUnit] * frequencyInterval) //If the tasks interval unit is not months, calculate the increment in days and add it to the last due date
       }
-      newTasks.push(newTask)
-      latestDue = newDueDays
-    } while (latestDue < todayAsDays);
+      const newDue = dateFormatter(daysToDate(newDueDays)) //Formatt (to string date) the newDue date of the task being created so it is saved ready to show in the UI
+      const newTask = { //CREATE TASK OBJECT TO BE SENT
+        name, due: newDue, priority, isRecurring, intervalUnit, frequencyInterval, category, time: timeDeFormatter(time)
+      }
+      newTasks.push(newTask) //Push the created task to the array
+      latestDue = newDueDays //Update the latestDue to the due date of the task recently created
+    } while (latestDue < todayAsDays); //Check if todays date is further in time than the latestDue so we know if more tasks must be created
     return newTasks
   })
   return tasksToAdd.flat()
