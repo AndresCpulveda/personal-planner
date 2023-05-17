@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useRef, useEffect} from 'react'
 
 import useTasks from '../hooks/useTasks'
 import Alert from './Alert'
@@ -6,9 +6,17 @@ import { getTodaysDate, dateDeFormatter, timeFormatter } from '../helpers/helper
 
 function AddTask({editing, setEditingTask}) {
 
+  const [categories, setCategories] = useState([])
+
+  useEffect(() => {
+    const categories = getCategories()
+    setCategories(categories)
+   }, [])
+
   const formattedDate = getTodaysDate() //TO USE AS DEFAULT VALUE OF "DUE DATE" FIELD
 
-  const {addToTasks, setAddingTodayTask} = useTasks();
+  const {addToTasks, setAddingTodayTask, getCategories} = useTasks();
+
 
   //STATES FOR EACH FIELD ON THE FORM
   const [name, setName] = useState("")
@@ -105,7 +113,11 @@ function AddTask({editing, setEditingTask}) {
               </select>
             </div>
 
-            <input className='bg-gray-300 rounded-md h-8 p-2' defaultValue={editing?.category || category} onChange={e => setCategory(e.target.value)}></input>
+            <input list='categoriesList' className='bg-gray-300 rounded-md h-8 p-1' defaultValue={editing?.category || category} onChange={e => setCategory(e.target.value)}>
+            </input>
+            <datalist id='categoriesList'>
+              {categories.map( categorie => (<option key={categorie} value={categorie}>{categorie}</option>))}
+            </datalist>
 
             <div className={`flex`}>
               <input type='number' className='bg-gray-300 rounded-md h-8 p-2 w-12' defaultValue={editing?.hoursToComplete || hoursToComplete} onChange={e => setHoursToComplete(parseInt(e.target.value))}></input>

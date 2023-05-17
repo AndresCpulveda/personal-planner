@@ -7,9 +7,8 @@ import { btnStyles } from '../helpers/StyleHelpers';
 import useTasks from '../hooks/useTasks';
 
 function AllTasks() {
-  const {addToTasks} = useTasks();
+  const {addToTasks, allTasks} = useTasks();
   const [showingTasks, setShowingTasks] = useState([])
-  const [allTasks, setAllTasks] = useState([])
   const [activeBtn, setActiveBtn] = useState('all')
 
   const [arrowName, setArrowName] = useState(false)
@@ -19,30 +18,8 @@ function AllTasks() {
   const [arrowTime, setArrowTime] = useState(false)
   
   useEffect(() => {
-    const getAllTasks = async () => {
-      try {
-        const {data} = await sendAxios('tasks/all')
-        const formatted = data.map(task => {
-          task.due = dateFormatter(task.due)
-          task.createdAt = dateFormatter(task.createdAt)
-          return task
-        })
-        const currentRecurrings = extractRecentRecurrings(formatted)
-        const newRecurrings = createRecurrings(currentRecurrings)
-        const savedRecurrings = newRecurrings.map(task => {
-          const saved = addToTasks(task)
-          saved.then(res => formatted.push(res))
-          return saved
-        })
-        const toAdd = formatted
-        setShowingTasks(toAdd)
-        setAllTasks(toAdd)
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getAllTasks()
-  }, [])
+    setShowingTasks(allTasks)
+  }, [allTasks])
   
   const completedTasks = allTasks.filter(task => task.completed)
   const uncompletedTasks = allTasks.filter(task => !task.completed)
