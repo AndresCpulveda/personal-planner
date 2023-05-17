@@ -88,8 +88,14 @@ export function daysToDate(days) {
   const month = Math.floor(days % 365 / 30)
   const day = days - ((year * 365) + (month * 30))
   if(month < 10) {
+    if(day < 10) {
+      return `${year}-0${month}-0${day}`
+    }
     return `${year}-0${month}-${day}`
   }else {
+    if(day < 10) {
+      return `${year}-${month}-0${day}`
+    }
     return `${year}-${month}-${day}`
   }
 }
@@ -285,7 +291,7 @@ export function createRecurrings(list) {
     const {name, priority, isRecurring, intervalUnit, frequencyInterval, category, time} = task //Destructure object of task
     let latestDue = parseInt(dateAsDays(dateDeFormatter(task.due))) //Calculate (in days) the due date of the task (which is the task with the latest due date)
     let newTasks = [] //Array where the tasks to be created will be stored
-    do {
+    while (latestDue < todayAsDays) { //Check if todays date is further in time than the latestDue so we know if more tasks must be created {
       let newDueDays; ////Variable where the new due date of each task being created will be stored (as days)
       if(intervalUnit === 'months') { //If the tasks interval unit is months we have to add months instead of days (cause every month has different amount of days)
         const newDueString = addMonths(latestDue, frequencyInterval) //Create a new date with the corresponding amount of months added (as a string formatted date)
@@ -299,7 +305,7 @@ export function createRecurrings(list) {
       }
       newTasks.push(newTask) //Push the created task to the array
       latestDue = newDueDays //Update the latestDue to the due date of the task recently created
-    } while (latestDue < todayAsDays); //Check if todays date is further in time than the latestDue so we know if more tasks must be created
+    } // while (latestDue < todayAsDays); //Check if todays date is further in time than the latestDue so we know if more tasks must be created
     return newTasks
   })
   return tasksToAdd.flat()

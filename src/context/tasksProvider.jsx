@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 
 import sendAxios from "../../config/axios";
-import { dateFormatter, getTodaysDate, extractRecentRecurrings, createRecurrings } from "../helpers/helpers";
+import { dateFormatter, dateDeFormatter, getTodaysDate, extractRecentRecurrings, createRecurrings } from "../helpers/helpers";
 
 const TasksContext = createContext()
 
@@ -51,16 +51,15 @@ function TasksProvider({children}) {
       completed: false,
       stopWatch: task.time === 0
     }
-    
-    console.log(toAdd);
 
     try {
       const {data} = await sendAxios.post('tasks/add', toAdd)
+      console.log(data)
       const fixedDue = data.due.split('T')[0] //CUTS THE DATE FOR COMPARISON
       data.due = fixedDue
-      const todaysDate = getTodaysDate() //GETS TODAYS DATE FOR COMPARISON
+      const todaysDate = dateFormatter(getTodaysDate()) //GETS TODAYS DATE FOR COMPARISON
+      data.due = dateFormatter(data.due) //FORMATS DATE BEFORE SAVING
       if(todaysDate === data.due) {
-        data.due = dateFormatter(data.due) //FORMATS DATE BEFORE SAVING
         setTodayDueTasks([...todayDueTasks, data]) //SAVES OBJECT IN TODAYS TASKS ARRAY WITH THE DESIRED FORMAT
       }
       return data

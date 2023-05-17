@@ -29,14 +29,14 @@ function AllTasks() {
         })
         const currentRecurrings = extractRecentRecurrings(formatted)
         const newRecurrings = createRecurrings(currentRecurrings)
-        const toAdd = [...formatted, ...newRecurrings]
-        // toAdd.forEach(task => task.name == "tender cama" ? console.log(task) : null)
+        const savedRecurrings = newRecurrings.map(task => {
+          const saved = addToTasks(task)
+          saved.then(res => formatted.push(res))
+          return saved
+        })
+        const toAdd = formatted
         setShowingTasks(toAdd)
         setAllTasks(toAdd)
-        const savedRecurrings = newRecurrings.map(task => {
-          // const saved = addToTasks(task)
-          // return saved
-        })
       } catch (error) {
         console.log(error);
       }
