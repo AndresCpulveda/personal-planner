@@ -25,9 +25,9 @@ function TaskOnAll({task}) {
     <>
       <tr className={`odd:bg-white even:bg-gray-50 ${deleted ? "hidden" : ""}`}>
         <th className="px-6 py-4 font-medium text-gray-900">{name}</th>
-        <td className="px-6 py-4">{due}</td>
-        <td className="px-6 py-4">{category}</td>
-        <td className="px-6 py-4">
+        <td className="text-gray-500 px-6 py-4">{due}</td>
+        <td className="text-gray-500 px-6 py-4">{category}</td>
+        <td className="text-gray-500 px-6 py-4">
           <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${completed ? "text-green-600 bg-green-100" : stylePriority(priority)}`}>
             {completed ?
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-3 w-3">
@@ -41,7 +41,7 @@ function TaskOnAll({task}) {
             {completed ? 'completed' : 'uncompleted'}
           </span>
         </td>
-        <td className="flex justify-end gap-4 px-6 py-4 font-medium">
+        <td className="text-gray-500 flex justify-end gap-4 px-6 py-4 font-medium">
           <button
             className={`${completed ? "hover:text-red-600" : "hover:text-green-600"}`}
             onClick={e => {

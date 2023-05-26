@@ -82,7 +82,7 @@ function AllTasks() {
         </div>
 
 
-        <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
+        <table className="w-full border-collapse bg-white text-left text-sm">
           <thead className="bg-gray-50">
             <tr className=''>
               <th className={styles.table.th}>

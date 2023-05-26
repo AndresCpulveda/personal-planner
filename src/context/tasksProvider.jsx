@@ -122,7 +122,11 @@ function TasksProvider({children}) {
    }
 
    const updateTask = async (task) => {
-    task.due = getTodaysDate()
+    if(task.due.includes('-')) {
+      const newDue = dateFormatter(task.due)
+      task.due = newDue
+    }
+    // task.due = getTodaysDate()
 
     try {
       const {data} = await sendAxios.put('tasks/update', task)

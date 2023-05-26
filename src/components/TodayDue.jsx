@@ -14,7 +14,7 @@ function TodayDue() {
     return (
       <>
         <div className="">
-          <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
+          <table className="w-full border-collapse bg-white text-left text-sm">
             <thead className="bg-gray-50">
               <tr className=''>
                 <th className="px-5 py-4 font-medium text-gray-900">

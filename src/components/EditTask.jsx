@@ -63,7 +63,7 @@ function EditTask({editing, setEditingTask}) {
         onSubmit={handleEditTask}
       >
         <div className='grid grid-cols-2'>
-          <div className='grid gap-8'>
+          <div className='grid gap-8 text-gray-900 font-semibold'>
             <label className='uppercase'>Name</label>
             <label className='uppercase'>Due Date</label>
             <label className='uppercase'>Priority</label>
