@@ -7,7 +7,7 @@ import { btnStyles } from '../helpers/StyleHelpers';
 import useTasks from '../hooks/useTasks';
 
 function AllTasks() {
-  const {addToTasks, allTasks} = useTasks();
+  const {allTasks} = useTasks();
   const [showingTasks, setShowingTasks] = useState([])
   const [activeBtn, setActiveBtn] = useState(3)
 
@@ -17,13 +17,12 @@ function AllTasks() {
   const [arrowPriority, setArrowPriority] = useState(false)
   const [arrowTime, setArrowTime] = useState(false)
   
-  // useEffect(() => {
-  //   setShowingTasks(allTasks)
-  // }, [allTasks])
+  useEffect(() => {
+    setShowingTasks(allTasks)
+  }, [allTasks])
   
   const completedTasks = allTasks.filter(task => task.completed)
   const uncompletedTasks = allTasks.filter(task => !task.completed)
-  console.log(uncompletedTasks);
 
   useEffect(() => {
     setShowingTasks(uncompletedTasks)

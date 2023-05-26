@@ -40,23 +40,6 @@ function TodayDue() {
         </div>
       </>
     )
-  // return (
-  //   <>
-  //     <div className='flex flex-col'>
-  //       <ul className='grid grid-cols-10'>
-  //         <li className='col-span-1 border text-center border-gray-900'><p className='text-gray-900 uppercase'>done</p></li>
-  //         <li className='col-span-3 border text-center border-gray-900'><p className='text-gray-900 uppercase'>name</p></li>
-  //         <li className='col-span-2 border text-center border-gray-900'><p className='text-gray-900 uppercase'>due</p></li>
-  //         <li className='col-span-1 border text-center border-gray-900'><p className='text-gray-900 uppercase'>priority</p></li>
-  //         <li className='col-span-3 border text-center border-gray-900'><p className='text-gray-900 uppercase'>timer</p></li>
-  //       </ul>
-  //       <div className=''>
-  //         {orderedList.map( task => <Task task={task} key={task._id} />)}
-  //         {addingTodayTask ? <AddTask /> : null}
-  //       </div>
-  //     </div>
-  //   </>
-  // )
 }
 
 export default TodayDue

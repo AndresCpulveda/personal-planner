@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 
 import sendAxios from "../../config/axios";
-import { dateFormatter, dateDeFormatter, getTodaysDate, extractRecentRecurrings, createRecurrings } from "../helpers/helpers";
+import { dateFormatter, getTodaysDate, extractRecentRecurrings, createRecurrings } from "../helpers/helpers";
 
 const TasksContext = createContext()
 
@@ -72,7 +72,6 @@ function TasksProvider({children}) {
   }, [allTasks])
 
   const addToTasks = async (task) => { //COMPLETES THE TASK OBJECT AND SENDS IT TO THE BACKEND
-    console.log(task);
     if(task.due.includes('-')) {
       const newDue = dateFormatter(task.due)
       task.due = newDue
@@ -82,10 +81,8 @@ function TasksProvider({children}) {
       completed: false,
       stopWatch: task.time === 0
     }
-    console.log(toAdd);
     try {
       const {data} = await sendAxios.post('tasks/add', toAdd)
-      console.log(data)
       const fixedDue = data.due.split('T')[0] //CUTS THE DATE FOR COMPARISON
       data.due = fixedDue
       const todaysDate = dateFormatter(getTodaysDate()) //GETS TODAYS DATE FOR COMPARISON
@@ -93,6 +90,7 @@ function TasksProvider({children}) {
       if(todaysDate === data.due) {
         setTodayDueTasks([...todayDueTasks, data]) //SAVES OBJECT IN TODAYS TASKS ARRAY WITH THE DESIRED FORMAT
       }
+      setAllTasks([...allTasks, data])
       return data
     } catch (error) {
       console.log(error);
@@ -136,7 +134,6 @@ function TasksProvider({children}) {
    }
 
    const getCategories = () => {
-    console.log('sip');
     const categories = []
     for (let i = 0; i < allTasks.length; i++) {
       const exists = categories.find(category => category === allTasks[i].category)

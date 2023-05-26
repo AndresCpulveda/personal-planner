@@ -11,7 +11,7 @@ import ModalAlert from './ModalAlert';
 function TaskOnAll({task}) {
   const {name, due, priority, time, createdAt, category, completed} = task;
     
-  const {addToCompleted, updateTask, addingTodayTask} = useTasks();
+  const {addToCompleted} = useTasks();
   const [deleted, setDeleted] = useState(false)
 
   const [editingTask, setEditingTask] = useState(false)
@@ -58,7 +58,6 @@ function TaskOnAll({task}) {
             className='hover:text-blue-700'
           >Edit</button></td>
         <td>
-          {addingTodayTask ? <AddTask /> : null} {/* Modal for adding task */}
           {editingTask ? <EditTask editing={task} setEditingTask={setEditingTask} /> : null} {/* Modal for editing task */}
           {modalAlert ? <ModalAlert setModalAlert={setModalAlert} task={task} setDeleted={setDeleted}/> : null }
         </td>
