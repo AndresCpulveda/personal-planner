@@ -33,6 +33,7 @@ function TasksProvider({children}) {
         })
         const toAdd = formatted
         setAllTasks(toAdd)
+        setLoadedTasks(true)
       } catch (error) {
         console.log(error);
       }
@@ -68,7 +69,6 @@ function TasksProvider({children}) {
     }
     getTodaysDue()
     getTodaysCompleted()
-    setLoadedTasks(true)
   }, [allTasks])
 
   const addToTasks = async (task) => { //COMPLETES THE TASK OBJECT AND SENDS IT TO THE BACKEND
