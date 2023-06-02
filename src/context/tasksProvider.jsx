@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import moment from 'moment'
 
 import sendAxios from "../../config/axios";
-import {getTodaysDate, extractRecentRecurrings, createRecurrings } from "../helpers/helpers";
+import {extractRecentRecurrings, createRecurrings } from "../helpers/helpers";
 
 const TasksContext = createContext()
 
@@ -20,7 +20,7 @@ function TasksProvider({children}) {
         const {data} = await sendAxios('tasks/all')
         const formatted = data.map(task => {
           const newDate = moment(task.due)
-          const formattedDate = moment.utc(newDate).format('MMM Do  , YYYY');
+          const formattedDate = moment.utc(newDate).format('MMM Do, YYYY');
           task.due = formattedDate
           return task
         })

@@ -1,13 +1,12 @@
 import {useState} from 'react'
+import moment from 'moment'
 
 import useTasks from '../hooks/useTasks'
 import Alert from './Alert'
-import { getTodaysDate, dateDeFormatter, timeFormatter } from '../helpers/helpers';
+import {dateDeFormatter, timeFormatter } from '../helpers/helpers';
 
 function EditTask({editing, setEditingTask}) {
   console.log(editing);
-
-  const formattedDate = getTodaysDate()
 
   const {setAddingTodayTask, updateTask} = useTasks();
 
@@ -84,7 +83,7 @@ function EditTask({editing, setEditingTask}) {
 
             <input
               // defaultValue={due}
-              defaultValue={editing?.due ? dateDeFormatter(editing.due) : due}
+              defaultValue={editing?.due ? moment(editing.due, "MMMM Do, YYYY").format("YYYY-MM-DD") : due}
               type='date'
               className='bg-gray-300 rounded-md h-8 px-2'
               onChange={e => setDue(e.target.value)}

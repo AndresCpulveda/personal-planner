@@ -1,10 +1,7 @@
-export function getTodaysDate() {
-  const currentDate = new Date
-  const offset = currentDate.getTimezoneOffset();
-  const settedDated = currentDate.setMinutes(currentDate.getMinutes() - offset)
-  const theDate = new Date(settedDated)
-  return theDate.toISOString().split('T')[0]
-}
+import moment from 'moment'
+
+const date = moment();
+export const todaysDate = date.format('YYYY-MM-DD'); //TO USE AS DEFAULT VALUE OF "DUE DATE" FIELD
 
 export function timeFormatter(timer) {
   if(timer < 0) {
@@ -283,7 +280,7 @@ export function createRecurrings(list) {
     days: 1,
     weeks: 7,
   }
-  const todayAsDays = dateAsDays(getTodaysDate()) //Save todays date in a constant variable for comparisson
+  const todayAsDays = dateAsDays(todaysDate) //Save todays date in a constant variable for comparisson
 
   const toCreate = list.filter(task => dateAsDays(dateDeFormatter(task.due)) < todayAsDays) //Filter out all the tasks which its due date is further than todays date
 

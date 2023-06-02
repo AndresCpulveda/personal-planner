@@ -1,8 +1,9 @@
 import {useState, useRef, useEffect} from 'react'
+import moment from 'moment';
 
 import useTasks from '../hooks/useTasks'
 import Alert from './Alert'
-import { getTodaysDate, dateDeFormatter, timeFormatter } from '../helpers/helpers';
+import {dateDeFormatter, timeFormatter } from '../helpers/helpers';
 
 function AddTask() {
   console.log('acá');
@@ -14,7 +15,8 @@ function AddTask() {
     setCategories(categories)
    }, [])
 
-  const formattedDate = getTodaysDate() //TO USE AS DEFAULT VALUE OF "DUE DATE" FIELD
+  const date = moment();
+  const formattedDate = date.format('YYYY-MM-DD'); //TO USE AS DEFAULT VALUE OF "DUE DATE" FIELD
 
   const {addToTasks, setAddingTodayTask, getCategories} = useTasks();
 
