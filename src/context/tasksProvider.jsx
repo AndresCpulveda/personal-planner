@@ -27,12 +27,13 @@ function TasksProvider({children}) {
         const currentRecurrings = extractRecentRecurrings(formatted)
         const newRecurrings = createRecurrings(currentRecurrings)
         const savedRecurrings = newRecurrings.map(task => {
+          const dateToSave = moment(task.due, "MMMM Do, YYYY").format("YYYY-MM-DD");
+          task.due = dateToSave
           const saved = addToTasks(task)
           saved.then(res => formatted.push(res))
           return saved
         })
-        const toAdd = formatted
-        setAllTasks(toAdd)
+        setAllTasks(formatted)
         setLoadedTasks(true)
       } catch (error) {
         console.log(error);
@@ -61,7 +62,6 @@ function TasksProvider({children}) {
 
 
   useEffect(() => {
-    console.log('acá');
     const getTodaysDue = () => {
       const todayDue = todaysTasks.filter(task => !task.completed)
       setTodayDueTasks(todayDue)
@@ -75,6 +75,7 @@ function TasksProvider({children}) {
   }, [todaysTasks])
 
   const addToTasks = async (task) => { //COMPLETES THE TASK OBJECT AND SENDS IT TO THE BACKEND
+    console.log(allTasks);
     const toAdd = {
       ...task,
       completed: false,
@@ -87,12 +88,11 @@ function TasksProvider({children}) {
       data.due = formattedSaved
       const todaysDate = moment()
       const formattedTodays = moment.utc(todaysDate).format('MMM Do, YYYY');
-      console.log(formattedTodays);
-      console.log(data.due);
       if(formattedTodays === data.due) {
         setTodayDueTasks([...todayDueTasks, data]) //SAVES OBJECT IN TODAYS TASKS ARRAY WITH THE DESIRED FORMAT
       }
       setAllTasks([...allTasks, data])
+      console.log(data);
       return data
     } catch (error) {
       console.log(error);

@@ -3,6 +3,14 @@ import moment from 'moment'
 const date = moment();
 export const todaysDate = date.format('YYYY-MM-DD'); //TO USE AS DEFAULT VALUE OF "DUE DATE" FIELD
 
+export function dateFormatted(date) {
+  return moment(date, "YYYY-MM-DD").format("MMMM Do, YYYY")
+}
+
+export function dateRaw(date) {
+  return moment(date, "MMMM Do, YYYY").format("YYYY-MM-DD")
+}
+
 export function timeFormatter(timer) {
   if(timer < 0) {
     return '00:00:00'
@@ -151,12 +159,12 @@ export function sortByBoolean(list, boolean){ //OPTIMIZAR
 export function sortDueBoolean(list, boolean) { //OPTIMIZAR
   if(boolean) {
     const sorted = list.sort((a, b) => {
-      const aAsNumb = dateAsDays(dateDeFormatter(a.due))
-      const bAsNumb = dateAsDays(dateDeFormatter(b.due))
-      if(aAsNumb > bAsNumb) {
+      const dateA = moment(a.due, "MMM Do, YYYY")
+      const dateB = moment(b.due, "MMM Do, YYYY")
+      if(!dateA.isAfter(dateB, 'day')) {
         return -1
       }
-      if(aAsNumb < bAsNumb) {
+      if(dateA.isAfter(dateB, 'day')) {
         return 1
       }
       return 0
@@ -164,13 +172,13 @@ export function sortDueBoolean(list, boolean) { //OPTIMIZAR
     return sorted
   }
   const sorted = list.sort((a, b) => {
-    const aAsNumb = dateAsDays(dateDeFormatter(a.due))
-    const bAsNumb = dateAsDays(dateDeFormatter(b.due))
-    if(aAsNumb < bAsNumb) {
-      return -1
-    }
-    if(aAsNumb > bAsNumb) {
+    const dateA = moment(a.due, "MMM Do, YYYY")
+    const dateB = moment(b.due, "MMM Do, YYYY")
+    if(!dateA.isAfter(dateB, 'day')) {
       return 1
+    }
+    if(dateA.isAfter(dateB, 'day')) {
+      return -1
     }
     return 0
   })
@@ -180,12 +188,12 @@ export function sortDueBoolean(list, boolean) { //OPTIMIZAR
 export function sortCreatedBoolean(list, boolean) { //OPTIMIZAR
   if(boolean) {
     const sorted = list.sort((a, b) => {
-      const aAsNumb = dateAsDays(dateDeFormatter(a.createdAt))
-      const bAsNumb = dateAsDays(dateDeFormatter(b.createdAt))
-      if(aAsNumb > bAsNumb) {
+      const dateA = moment(a.createdAt, "MMM Do, YYYY")
+      const dateB = moment(b.createdAt, "MMM Do, YYYY")
+      if(!dateA.isAfter(dateB, 'day')) {
         return -1
       }
-      if(aAsNumb < bAsNumb) {
+      if(dateA.isAfter(dateB, 'day')) {
         return 1
       }
       return 0
@@ -193,13 +201,13 @@ export function sortCreatedBoolean(list, boolean) { //OPTIMIZAR
     return sorted
   }
   const sorted = list.sort((a, b) => {
-    const aAsNumb = dateAsDays(dateDeFormatter(a.createdAt))
-    const bAsNumb = dateAsDays(dateDeFormatter(b.createdAt))
-    if(aAsNumb < bAsNumb) {
-      return -1
-    }
-    if(aAsNumb > bAsNumb) {
+    const dateA = moment(a.createdAt, "MMM Do, YYYY")
+    const dateB = moment(b.createdAt, "MMM Do, YYYY")
+    if(!dateA.isAfter(dateB, 'day')) {
       return 1
+    }
+    if(dateA.isAfter(dateB, 'day')) {
+      return -1
     }
     return 0
   })
@@ -264,9 +272,9 @@ export function extractRecentRecurrings(list) {
       acc.push(clone)
     }else {
       //Transform the dates to numbers so they can be compared
-      const aAsNum = dateAsDays(dateDeFormatter(alreadyExists.due))
-      const bAsNum = dateAsDays(dateDeFormatter(cur.due))
-      if(aAsNum < bAsNum) { //If already in the acc then check if its due value is greater than the interating elements due value
+      const dateA = moment(alreadyExists.due, "MMM Do, YYYY")
+      const dateB = moment(cur.due, "MMM Do, YYYY")
+      if(dateB.isAfter(dateA, 'day')) { //If already in the acc then check if its due value is greater than the interating elements due value
         alreadyExists.due = cur.due //If iterating element has greater value, previously saved elements due value is updated
       }
     }
@@ -280,29 +288,34 @@ export function createRecurrings(list) {
     days: 1,
     weeks: 7,
   }
-  const todayAsDays = dateAsDays(todaysDate) //Save todays date in a constant variable for comparisson
 
-  const toCreate = list.filter(task => dateAsDays(dateDeFormatter(task.due)) < todayAsDays) //Filter out all the tasks which its due date is further than todays date
+  const toCreate = list.filter(task => { //Filter out all the tasks which its due date is further than todays date
+    if(!moment(task.due, "MMM Do, YYYY").isAfter(moment(), 'day')) {
+      return task
+    }
+  })
 
   const tasksToAdd = toCreate.map(task => { //Use map to iterate on each task to be cloned
     const {name, priority, isRecurring, intervalUnit, frequencyInterval, category, time} = task //Destructure object of task
-    let latestDue = parseInt(dateAsDays(dateDeFormatter(task.due))) //Calculate (in days) the due date of the task (which is the task with the latest due date)
+    let latestDue = moment(task.due, 'MMM Do, YYYY') //Calculate (in days) the due date of the task (which is the task with the latest due date)
     let newTasks = [] //Array where the tasks to be created will be stored
-    while (latestDue < todayAsDays) { //Check if todays date is further in time than the latestDue so we know if more tasks must be created {
+    while (moment().isAfter(latestDue, 'day')) { //Check if todays date is further in time than the latestDue so we know if more tasks must be created {
       let newDueDays; ////Variable where the new due date of each task being created will be stored (as days)
       if(intervalUnit === 'months') { //If the tasks interval unit is months we have to add months instead of days (cause every month has different amount of days)
-        const newDueString = addMonths(latestDue, frequencyInterval) //Create a new date with the corresponding amount of months added (as a string formatted date)
-        newDueDays = dateAsDays(dateDeFormatter(newDueString)) //The new due date for the task being created (as days for future comparisson)
+        const newDueDays = latestDue.clone().add(frequencyInterval, 'month'); //Create a new date with the corresponding amount of months added (as a string formatted date)
+        console.log(newDueDays);
       }else{
-        newDueDays = latestDue + (increments[intervalUnit] * frequencyInterval) //If the tasks interval unit is not months, calculate the increment in days and add it to the last due date
+        newDueDays = latestDue.clone().add((increments[intervalUnit] * frequencyInterval), 'day') //If the tasks interval unit is not months, calculate the increment in days and add it to the last due date
       }
-      const newDue = dateFormatter(daysToDate(newDueDays)) //Formatt (to string date) the newDue date of the task being created so it is saved ready to show in the UI
-      const newTask = { //CREATE TASK OBJECT TO BE SENT
-        name, due: newDue, priority, isRecurring, intervalUnit, frequencyInterval, category, time: timeDeFormatter(time)
-      }
-      newTasks.push(newTask) //Push the created task to the array
-      latestDue = newDueDays //Update the latestDue to the due date of the task recently created
-    } // while (latestDue < todayAsDays); //Check if todays date is further in time than the latestDue so we know if more tasks must be created
+      const newDue = moment(newDueDays).format('MMM Do, YYYY') //Formatt (to string date) the newDue date of the task being created so it is saved ready to show in the UI
+      console.log(newDue);
+       const newTask = { //CREATE TASK OBJECT TO BE SENT
+         name, due: newDue, priority, isRecurring, intervalUnit, frequencyInterval, category, time: timeDeFormatter(time)
+       }
+       newTasks.push(newTask) //Push the created task to the array
+       latestDue = newDueDays //Update the latestDue to the due date of the task recently created
+    }
+    console.log(newTasks);
     return newTasks
   })
   return tasksToAdd.flat()
