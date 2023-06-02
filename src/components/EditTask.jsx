@@ -5,6 +5,7 @@ import Alert from './Alert'
 import { getTodaysDate, dateDeFormatter, timeFormatter } from '../helpers/helpers';
 
 function EditTask({editing, setEditingTask}) {
+  console.log(editing);
 
   const formattedDate = getTodaysDate()
 

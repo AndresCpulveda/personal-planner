@@ -47,14 +47,12 @@ function TasksProvider({children}) {
     const getTodaysTasks = async () => {
       try {
         const {data} = await sendAxios('tasks/todays')
-        console.log(data);
         const formatted = data.map(task => {
           const newDate = moment(task.due)
           const formattedDate = moment.utc(newDate).format('MMM Do, YYYY');
           task.due = formattedDate
           return task
         })
-        console.log(formatted);
         setTodaysTasks(formatted)
       } catch (error) {
         console.log(error);
@@ -106,13 +104,12 @@ function TasksProvider({children}) {
     const newDueList = todayDueTasks.filter(due => due.name != task.name)
     setTodayDueTasks(newDueList)
     try {
-      const neew = moment(task.due, "MMMM Do, YYYY").format("YYYY-MM-DD");
-      task.due = neew
+      const dateToSave = moment(task.due, "MMMM Do, YYYY").format("YYYY-MM-DD");
+      task.due = dateToSave
       const {data} = await sendAxios.put('tasks/update', task)
-      console.log(data);
-      // data.due = dateFormatter(data.due)
-      // console.log(data.due);
-      // setTodayCompleted([...todayCompleted, data])
+      data.due = moment(task.due).format("MMMM Do, YYYY");
+      console.log(data.due);
+      setTodayCompleted([...todayCompleted, data])
     } catch (error) {
       console.log(error);
     }
@@ -129,11 +126,7 @@ function TasksProvider({children}) {
    }
 
    const updateTask = async (task) => {
-    if(task.due.includes('-')) {
-      const newDue = dateFormatter(task.due)
-      task.due = newDue
-    }
-    // task.due = getTodaysDate()
+    task.due = moment(task.due, "MMMM Do, YYYY").format("YYYY-MM-DD");
 
     try {
       const {data} = await sendAxios.put('tasks/update', task)

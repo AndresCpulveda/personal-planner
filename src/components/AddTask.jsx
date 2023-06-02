@@ -5,6 +5,7 @@ import Alert from './Alert'
 import { getTodaysDate, dateDeFormatter, timeFormatter } from '../helpers/helpers';
 
 function AddTask({editing, setEditingTask}) {
+  console.log('acá');
 
   const [categories, setCategories] = useState([])
 
@@ -85,7 +86,7 @@ function AddTask({editing, setEditingTask}) {
 
             <input
               // defaultValue={due}
-              defaultValue={editing?.due ? dateDeFormatter(editing.due) : due}
+              defaultValue={editing?.due ? editing.due : due}
               type='date'
               className='bg-gray-300 rounded-md h-8 px-2'
               onChange={e => setDue(e.target.value)}
