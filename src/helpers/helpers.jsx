@@ -302,8 +302,8 @@ export function createRecurrings(list) {
     while (moment().isAfter(latestDue, 'day')) { //Check if todays date is further in time than the latestDue so we know if more tasks must be created {
       let newDueDays; ////Variable where the new due date of each task being created will be stored (as days)
       if(intervalUnit === 'months') { //If the tasks interval unit is months we have to add months instead of days (cause every month has different amount of days)
-        const newDueDays = latestDue.clone().add(frequencyInterval, 'month'); //Create a new date with the corresponding amount of months added (as a string formatted date)
-        console.log(newDueDays);
+        newDueDays = latestDue.clone().add(frequencyInterval, 'month'); //Create a new date with the corresponding amount of months added (as a string formatted date)
+        console.log(newDueDays.format('MMM Do, YYYY'));
       }else{
         newDueDays = latestDue.clone().add((increments[intervalUnit] * frequencyInterval), 'day') //If the tasks interval unit is not months, calculate the increment in days and add it to the last due date
       }
@@ -315,7 +315,6 @@ export function createRecurrings(list) {
        newTasks.push(newTask) //Push the created task to the array
        latestDue = newDueDays //Update the latestDue to the due date of the task recently created
     }
-    console.log(newTasks);
     return newTasks
   })
   return tasksToAdd.flat()
