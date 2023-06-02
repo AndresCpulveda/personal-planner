@@ -303,12 +303,10 @@ export function createRecurrings(list) {
       let newDueDays; ////Variable where the new due date of each task being created will be stored (as days)
       if(intervalUnit === 'months') { //If the tasks interval unit is months we have to add months instead of days (cause every month has different amount of days)
         newDueDays = latestDue.clone().add(frequencyInterval, 'month'); //Create a new date with the corresponding amount of months added (as a string formatted date)
-        console.log(newDueDays.format('MMM Do, YYYY'));
       }else{
         newDueDays = latestDue.clone().add((increments[intervalUnit] * frequencyInterval), 'day') //If the tasks interval unit is not months, calculate the increment in days and add it to the last due date
       }
       const newDue = moment(newDueDays).format('MMM Do, YYYY') //Formatt (to string date) the newDue date of the task being created so it is saved ready to show in the UI
-      console.log(newDue);
        const newTask = { //CREATE TASK OBJECT TO BE SENT
          name, due: newDue, priority, isRecurring, intervalUnit, frequencyInterval, category, time: timeDeFormatter(time)
        }
