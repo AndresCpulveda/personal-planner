@@ -24,17 +24,7 @@ function TasksProvider({children}) {
           task.due = formattedDate
           return task
         })
-        const currentRecurrings = extractRecentRecurrings(formatted)
-        const newRecurrings = createRecurrings(currentRecurrings)
-        const savedRecurrings = newRecurrings.map(task => {
-          const dateToSave = moment(task.due, "MMMM Do, YYYY").format("YYYY-MM-DD");
-          task.due = dateToSave
-          const saved = addToTasks(task)
-          saved.then(res => formatted.push(res))
-          return saved
-        })
         setAllTasks(formatted)
-        setLoadedTasks(true)
       } catch (error) {
         console.log(error);
       }
@@ -52,6 +42,16 @@ function TasksProvider({children}) {
           task.due = formattedDate
           return task
         })
+        const currentRecurrings = extractRecentRecurrings(allTasks)
+        const newRecurrings = createRecurrings(currentRecurrings)
+        const savedRecurrings = newRecurrings.map(task => {
+          const dateToSave = moment(task.due, "MMMM Do, YYYY").format("YYYY-MM-DD");
+          task.due = dateToSave
+          const saved = addToTasks(task)
+          saved.then(res => formatted.push(res))
+          return saved
+        })
+        setLoadedTasks(true)
         setTodaysTasks(formatted)
       } catch (error) {
         console.log(error);
