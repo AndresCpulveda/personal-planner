@@ -45,7 +45,6 @@ function Task({task}) {
               if(completed) {
                 if (confirm('Do you want to remove this task?')){
                   removeCompleted(task)
-                  setDeleted(true)
                 }
               }else {
                 task.completed = true

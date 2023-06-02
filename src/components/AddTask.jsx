@@ -4,7 +4,7 @@ import useTasks from '../hooks/useTasks'
 import Alert from './Alert'
 import { getTodaysDate, dateDeFormatter, timeFormatter } from '../helpers/helpers';
 
-function AddTask({editing, setEditingTask}) {
+function AddTask() {
   console.log('acá');
 
   const [categories, setCategories] = useState([])
@@ -57,7 +57,6 @@ function AddTask({editing, setEditingTask}) {
       onClick={e => {
         if(e.target.classList.contains('out-modal')){
           setAddingTodayTask(false)
-          setEditingTask(false)
         }}
       }
     >
@@ -80,50 +79,49 @@ function AddTask({editing, setEditingTask}) {
             <input
               autoFocus
               className='bg-gray-300 rounded-md h-8 px-2'
-              defaultValue={editing?.name || ''}
               onChange={e => setName(e.target.value)}
             ></input>
 
             <input
               // defaultValue={due}
-              defaultValue={editing?.due ? editing.due : due}
+              defaultValue={due}
               type='date'
               className='bg-gray-300 rounded-md h-8 px-2'
               onChange={e => setDue(e.target.value)}
             ></input>
 
-            <select required defaultValue={editing?.priority || "empty"} className='bg-gray-300 rounded-md h-8 p-2' onChange={e => setPriority(e.target.value)}>
+            <select required defaultValue={"empty"} className='bg-gray-300 rounded-md h-8 p-2' onChange={e => setPriority(e.target.value)}>
               <option value="empty"></option>
               <option value="Low">Low</option>
               <option value="Medium">Medium</option>
               <option value="High">High</option>
             </select>
 
-            <select required defaultValue={editing?.isRecurring || "no"} className='bg-gray-300 rounded-md h-8 p-2' onChange={e => setIsRecurring(e.target.value === "No" ? false : true)}>
+            <select required defaultValue={"no"} className='bg-gray-300 rounded-md h-8 p-2' onChange={e => setIsRecurring(e.target.value === "No" ? false : true)}>
               <option value="yes">Yes</option>
               <option value="no">No</option>
             </select>
 
             <div className={`flex ${isRecurring ? '' : 'text-gray-500'}`}>
               <span className='mr-2 pt-1'>Every:</span>
-              <input type='number' defaultValue={editing?.frequencyInterval || frequencyInterval} disabled={!isRecurring} className='bg-gray-300 rounded-md h-8 p-2 w-12' onChange={e => setFrequencyInterval(e.target.value)}></input>
-              <select disabled={!isRecurring} defaultValue={editing?.intervalUnit || intervalUnit} onChange={e => {setIntervalUnit(e.target.value)}}>
+              <input type='number' defaultValue={frequencyInterval} disabled={!isRecurring} className='bg-gray-300 rounded-md h-8 p-2 w-12' onChange={e => setFrequencyInterval(e.target.value)}></input>
+              <select disabled={!isRecurring} defaultValue={intervalUnit} onChange={e => {setIntervalUnit(e.target.value)}}>
                 <option value='days'>Days</option>
                 <option value='weeks'>Weeks</option>
                 <option value='months'>Months</option>
               </select>
             </div>
 
-            <input list='categoriesList' className='bg-gray-300 rounded-md h-8 p-1' defaultValue={editing?.category || category} onChange={e => setCategory(e.target.value)}>
+            <input list='categoriesList' className='bg-gray-300 rounded-md h-8 p-1' defaultValue={category} onChange={e => setCategory(e.target.value)}>
             </input>
             <datalist id='categoriesList'>
               {categories.map( categorie => (<option key={categorie} value={categorie}>{categorie}</option>))}
             </datalist>
 
             <div className={`flex`}>
-              <input type='number' className='bg-gray-300 rounded-md h-8 p-2 w-12' defaultValue={editing?.hoursToComplete || hoursToComplete} onChange={e => setHoursToComplete(parseInt(e.target.value))}></input>
+              <input type='number' className='bg-gray-300 rounded-md h-8 p-2 w-12' defaultValue={hoursToComplete} onChange={e => setHoursToComplete(parseInt(e.target.value))}></input>
               <span className='ml-1 mr-4 pt-1'>Hours</span>
-              <input type='number' className='bg-gray-300 rounded-md h-8 p-2 w-12' defaultValue={editing?.minutesToComplete || minutesToComplete} onChange={e => setMinutesToComplete(parseInt(e.target.value))}></input>
+              <input type='number' className='bg-gray-300 rounded-md h-8 p-2 w-12' defaultValue={minutesToComplete} onChange={e => setMinutesToComplete(parseInt(e.target.value))}></input>
               <span className='ml-1 mr-4 pt-1'>minutes</span>
             </div>
           </div>

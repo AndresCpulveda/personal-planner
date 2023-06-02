@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import moment from 'moment'
 
 import sendAxios from "../../config/axios";
-import { dateFormatter, getTodaysDate, extractRecentRecurrings, createRecurrings } from "../helpers/helpers";
+import {getTodaysDate, extractRecentRecurrings, createRecurrings } from "../helpers/helpers";
 
 const TasksContext = createContext()
 
@@ -83,7 +83,7 @@ function TasksProvider({children}) {
     }
     try {
       const {data} = await sendAxios.post('tasks/add', toAdd)
-      const dueSaved = moment(task.due)
+      const dueSaved = moment(data.due)
       const formattedSaved = moment.utc(dueSaved).format('MMM Do, YYYY');
       data.due = formattedSaved
       const todaysDate = moment()
@@ -103,9 +103,9 @@ function TasksProvider({children}) {
    const addToCompleted = async (task) => {
     const newDueList = todayDueTasks.filter(due => due.name != task.name)
     setTodayDueTasks(newDueList)
+    const dateToSave = moment(task.due, "MMMM Do, YYYY").format("YYYY-MM-DD");
+    task.due = dateToSave
     try {
-      const dateToSave = moment(task.due, "MMMM Do, YYYY").format("YYYY-MM-DD");
-      task.due = dateToSave
       const {data} = await sendAxios.put('tasks/update', task)
       data.due = moment(task.due).format("MMMM Do, YYYY");
       console.log(data.due);
