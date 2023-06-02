@@ -7,7 +7,6 @@ import {getTodaysDate, extractRecentRecurrings, createRecurrings } from "../help
 const TasksContext = createContext()
 
 function TasksProvider({children}) {
-
   const [addingTodayTask, setAddingTodayTask] = useState(false)
   const [todayDueTasks, setTodayDueTasks] = useState([])
   const [todayCompleted, setTodayCompleted] = useState([])
@@ -16,7 +15,6 @@ function TasksProvider({children}) {
   const [allTasks, setAllTasks] = useState([])
 
   useEffect(() => {
-    console.log('render');
     const getAllTasks = async () => {
       try {
         const {data} = await sendAxios('tasks/all')
@@ -59,10 +57,11 @@ function TasksProvider({children}) {
       }
     }
     getTodaysTasks()
-  }, [])
+  }, [allTasks])
 
 
   useEffect(() => {
+    console.log('acá');
     const getTodaysDue = () => {
       const todayDue = todaysTasks.filter(task => !task.completed)
       setTodayDueTasks(todayDue)
@@ -73,7 +72,7 @@ function TasksProvider({children}) {
     }
     getTodaysDue()
     getTodaysCompleted()
-  }, [allTasks])
+  }, [todaysTasks])
 
   const addToTasks = async (task) => { //COMPLETES THE TASK OBJECT AND SENDS IT TO THE BACKEND
     const toAdd = {
