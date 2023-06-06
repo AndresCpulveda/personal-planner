@@ -75,7 +75,6 @@ function TasksProvider({children}) {
   }, [todaysTasks])
 
   const addToTasks = async (task) => { //COMPLETES THE TASK OBJECT AND SENDS IT TO THE BACKEND
-    console.log(allTasks);
     const toAdd = {
       ...task,
       completed: false,
@@ -92,7 +91,6 @@ function TasksProvider({children}) {
         setTodayDueTasks([...todayDueTasks, data]) //SAVES OBJECT IN TODAYS TASKS ARRAY WITH THE DESIRED FORMAT
       }
       setAllTasks([...allTasks, data])
-      console.log(data);
       return data
     } catch (error) {
       console.log(error);
@@ -107,7 +105,6 @@ function TasksProvider({children}) {
     try {
       const {data} = await sendAxios.put('tasks/update', task)
       data.due = moment(task.due).format("MMMM Do, YYYY");
-      console.log(data.due);
       setTodayCompleted([...todayCompleted, data])
     } catch (error) {
       console.log(error);

@@ -3,10 +3,9 @@ import moment from 'moment'
 
 import useTasks from '../hooks/useTasks'
 import Alert from './Alert'
-import {dateDeFormatter, timeFormatter } from '../helpers/helpers';
+import {timeFormatter } from '../helpers/helpers';
 
 function EditTask({editing, setEditingTask}) {
-  console.log(editing);
 
   const {setAddingTodayTask, updateTask} = useTasks();
 

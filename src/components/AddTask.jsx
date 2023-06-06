@@ -3,10 +3,8 @@ import moment from 'moment';
 
 import useTasks from '../hooks/useTasks'
 import Alert from './Alert'
-import {dateDeFormatter, timeFormatter } from '../helpers/helpers';
 
 function AddTask() {
-  console.log('acá');
 
   const [categories, setCategories] = useState([])
 
