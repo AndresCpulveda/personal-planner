@@ -1,14 +1,20 @@
 import moment from 'moment'
 
+export function makeFormattedDate(date) {
+  const momentObjDate = moment(date)
+  const formattedSaved = moment.utc(momentObjDate).format('MMM Do, YYYY');
+  return formattedSaved
+}
+
 const date = moment();
 export const todaysDate = date.format('YYYY-MM-DD'); //TO USE AS DEFAULT VALUE OF "DUE DATE" FIELD
 
-export function dateFormatted(date) {
-  return moment(date, "YYYY-MM-DD").format("MMMM Do, YYYY")
+export function toFormattedDate(date) {
+  return moment(date, "YYYY-MM-DD").format("MMM Do, YYYY")
 }
 
-export function dateRaw(date) {
-  return moment(date, "MMMM Do, YYYY").format("YYYY-MM-DD")
+export function toRawDate(date) {
+  return moment(date, "MMM Do, YYYY").format("YYYY-MM-DD")
 }
 
 export function timeFormatter(timer) {

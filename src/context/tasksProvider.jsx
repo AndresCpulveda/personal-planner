@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import moment from 'moment'
 
 import sendAxios from "../../config/axios";
-import {extractRecentRecurrings, createRecurrings } from "../helpers/helpers";
+import {extractRecentRecurrings, createRecurrings, makeFormattedDate, toRawDate, toFormattedDate } from "../helpers/helpers";
 
 const TasksContext = createContext()
 
@@ -19,9 +19,7 @@ function TasksProvider({children}) {
       try {
         const {data} = await sendAxios('tasks/all')
         const formatted = data.map(task => {
-          const newDate = moment(task.due)
-          const formattedDate = moment.utc(newDate).format('MMM Do, YYYY');
-          task.due = formattedDate
+          task.due = makeFormattedDate(task.due)
           return task
         })
         setAllTasks(formatted)
@@ -37,16 +35,13 @@ function TasksProvider({children}) {
       try {
         const {data} = await sendAxios('tasks/todays')
         const formatted = data.map(task => {
-          const newDate = moment(task.due)
-          const formattedDate = moment.utc(newDate).format('MMM Do, YYYY');
-          task.due = formattedDate
+          task.due = makeFormattedDate(task.due)
           return task
         })
         const currentRecurrings = extractRecentRecurrings(allTasks)
         const newRecurrings = createRecurrings(currentRecurrings)
         const savedRecurrings = newRecurrings.map(task => {
-          const dateToSave = moment(task.due, "MMMM Do, YYYY").format("YYYY-MM-DD");
-          task.due = dateToSave
+          task.due = toRawDate(task.due)
           const saved = addToTasks(task)
           saved.then(res => formatted.push(res))
           return saved
@@ -82,11 +77,8 @@ function TasksProvider({children}) {
     }
     try {
       const {data} = await sendAxios.post('tasks/add', toAdd)
-      const dueSaved = moment(data.due)
-      const formattedSaved = moment.utc(dueSaved).format('MMM Do, YYYY');
-      data.due = formattedSaved
-      const todaysDate = moment()
-      const formattedTodays = moment.utc(todaysDate).format('MMM Do, YYYY');
+      data.due = makeFormattedDate(data.due)
+      const formattedTodays = makeFormattedDate()
       if(formattedTodays === data.due) {
         setTodayDueTasks([...todayDueTasks, data]) //SAVES OBJECT IN TODAYS TASKS ARRAY WITH THE DESIRED FORMAT
       }
@@ -100,11 +92,10 @@ function TasksProvider({children}) {
    const addToCompleted = async (task) => {
     const newDueList = todayDueTasks.filter(due => due.name != task.name)
     setTodayDueTasks(newDueList)
-    const dateToSave = moment(task.due, "MMMM Do, YYYY").format("YYYY-MM-DD");
-    task.due = dateToSave
+    task.due = toRawDate(task.due)
     try {
       const {data} = await sendAxios.put('tasks/update', task)
-      data.due = moment(task.due).format("MMMM Do, YYYY");
+      data.due = toFormattedDate(data.due)
       setTodayCompleted([...todayCompleted, data])
     } catch (error) {
       console.log(error);
@@ -122,7 +113,7 @@ function TasksProvider({children}) {
    }
 
    const updateTask = async (task) => {
-    task.due = moment(task.due, "MMMM Do, YYYY").format("YYYY-MM-DD");
+    task.due = toRawDate(task.due)
 
     try {
       const {data} = await sendAxios.put('tasks/update', task)
