@@ -22,13 +22,38 @@ function TasksProvider({children}) {
           task.due = makeFormattedDate(task.due)
           return task
         })
-        setAllTasks(formatted)
+        const currentRecurrings = extractRecentRecurrings(formatted)
+        const newRecurrings = createRecurrings(currentRecurrings)
+        const savedRecurrings = newRecurrings.map(task => {
+          task.due = toRawDate(task.due)
+          return saveTask(task)
+        })
+        Promise.all(savedRecurrings)
+        .then(res => {
+          const all = [...formatted, ...res]
+          setAllTasks(all)
+        })
       } catch (error) {
         console.log(error);
       }
     }
     getAllTasks()
   }, [])
+
+  const saveTask = async (task) => {
+    const toAdd = {
+      ...task,
+      completed: false,
+      stopWatch: task.time === 0
+    }
+    try {
+      const {data} = await sendAxios.post('tasks/add', toAdd)
+      data.due = makeFormattedDate(data.due)
+      return data
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     const getTodaysTasks = async () => {
@@ -37,14 +62,6 @@ function TasksProvider({children}) {
         const formatted = data.map(task => {
           task.due = makeFormattedDate(task.due)
           return task
-        })
-        const currentRecurrings = extractRecentRecurrings(allTasks)
-        const newRecurrings = createRecurrings(currentRecurrings)
-        const savedRecurrings = newRecurrings.map(task => {
-          task.due = toRawDate(task.due)
-          const saved = addToTasks(task)
-          saved.then(res => formatted.push(res))
-          return saved
         })
         setLoadedTasks(true)
         setTodaysTasks(formatted)
