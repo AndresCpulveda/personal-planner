@@ -41,6 +41,7 @@ function AddTask() {
       }, 3000);
       return
     }
+    intervalUnit = intervalUnit.toLowerCase()
     const task = { //CREATE TASK OBJECT TO BE SENT
       name, due, priority, isRecurring, frequencyInterval, intervalUnit, category, time: (hoursToComplete * 3600 + minutesToComplete * 60)
     }
