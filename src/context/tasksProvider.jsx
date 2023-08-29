@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import moment from 'moment'
 
 import sendAxios from "../../config/axios";
-import {extractRecentRecurrings, createRecurrings, makeFormattedDate, toRawDate, toFormattedDate } from "../helpers/helpers";
+import {extractRecentRecurrings, createRecurrings, makeFormattedDate, toRawDate, toFormattedDate, todaysDate } from "../helpers/helpers";
 
 const TasksContext = createContext()
 
@@ -18,6 +18,15 @@ function TasksProvider({children}) {
     const getAllTasks = async () => {
       try {
         const {data} = await sendAxios('tasks/all')
+          const listCompleted = data.filter(task => {
+            if(!task.completedAt) {
+              return false
+            }
+            if(task.completedAt.split('T')[0] == todaysDate) {
+              return true
+            }
+          })
+          setTodayCompleted(listCompleted)
         const formatted = data.map(task => {
           task.due = makeFormattedDate(task.due)
           return task
@@ -78,12 +87,7 @@ function TasksProvider({children}) {
       const todayDue = todaysTasks.filter(task => !task.completed)
       setTodayDueTasks(todayDue)
     }
-    const getTodaysCompleted = () => {
-      const listCompleted = todaysTasks.filter(task => task.completed)
-      setTodayCompleted(listCompleted)
-    }
     getTodaysDue()
-    getTodaysCompleted()
   }, [todaysTasks])
 
   const addToTasks = async (task) => { //COMPLETES THE TASK OBJECT AND SENDS IT TO THE BACKEND
@@ -110,8 +114,11 @@ function TasksProvider({children}) {
     const newDueList = todayDueTasks.filter(due => due.name != task.name)
     setTodayDueTasks(newDueList)
     task.due = toRawDate(task.due)
+    task.completedAt = todaysDate
+
     try {
       const {data} = await sendAxios.put('tasks/update', task)
+      console.log(data);
       data.due = toFormattedDate(data.due)
       setTodayCompleted([...todayCompleted, data])
     } catch (error) {
@@ -130,10 +137,9 @@ function TasksProvider({children}) {
    }
 
    const updateTask = async (task) => {
-    task.due = toRawDate(task.due)
-
     try {
       const {data} = await sendAxios.put('tasks/update', task)
+      console.log(data);
     } catch (error) {
       console.log(error);
     }

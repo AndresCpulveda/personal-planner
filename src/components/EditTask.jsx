@@ -4,6 +4,7 @@ import moment from 'moment'
 import useTasks from '../hooks/useTasks'
 import Alert from './Alert'
 import {timeFormatter } from '../helpers/helpers';
+import { toRawDate } from '../helpers/helpers';
 
 function EditTask({editing, setEditingTask}) {
 
@@ -30,16 +31,18 @@ function EditTask({editing, setEditingTask}) {
       }, 3000);
       return
     }
+    if(due === editing.due) {
+      editing.due = toRawDate(due)
+    }else {
+      editing.due = due
+    }
 
     editing.name = name
-    editing.due = due
     editing.priority = priority
     editing.time = timeFormatter(hoursToComplete * 3600 + minutesToComplete * 60)
     editing.isRecurring = isRecurring
     editing.frequencyInterval = frequencyInterval
     editing.category = category
-
-    console.log(editing);
     
     updateTask(editing)
     setEditingTask(false)
@@ -95,7 +98,7 @@ function EditTask({editing, setEditingTask}) {
               <option value="High">High</option>
             </select>
 
-            <select required defaultValue={editing?.isRecurring || "no"} className='bg-gray-300 rounded-md h-8 p-2' onChange={e => setIsRecurring(e.target.value === "No" ? false : true)}>
+            <select required defaultValue={editing?.isRecurring || "no"} className='bg-gray-300 rounded-md h-8 p-2' onChange={e => setIsRecurring(e.target.value === "no" ? false : true)}>
               <option value="yes">Yes</option>
               <option value="no">No</option>
             </select>

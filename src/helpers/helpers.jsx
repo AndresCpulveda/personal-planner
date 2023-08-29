@@ -232,9 +232,7 @@ export function createRecurrings(list) {
     const {name, priority, isRecurring, intervalUnit, frequencyInterval, category, time} = task //Destructure object of task
     let latestDue = moment(task.due, 'MMM Do, YYYY') //Calculate (in days) the due date of the task (which is the task with the latest due date)
     let newTasks = [] //Array where the tasks to be created will be stored
-    let i = 1;
     while (moment().isAfter(latestDue, 'day')) { //Check if todays date is further in time than the latestDue so we know if more tasks must be created {
-      console.log(i++);
       let newDueDays; ////Variable where the new due date of each task being created will be stored (as days)
       if(intervalUnit === 'months') { //If the tasks interval unit is months we have to add months instead of days (cause every month has different amount of days)
         newDueDays = latestDue.clone().add(frequencyInterval, 'month'); //Create a new date with the corresponding amount of months added (as a string formatted date)

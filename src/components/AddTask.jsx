@@ -25,7 +25,7 @@ function AddTask() {
   const [priority, setPriority] = useState("")
   const [isRecurring, setIsRecurring] = useState(false)
   const [frequencyInterval, setFrequencyInterval] = useState(1)
-  const [intervalUnit, setIntervalUnit] = useState("Days")
+  const [intervalUnit, setIntervalUnit] = useState("days")
   const [category, setCategory] = useState("")
   const [hoursToComplete, setHoursToComplete] = useState(0)
   const [minutesToComplete, setMinutesToComplete] = useState(0)
@@ -41,7 +41,6 @@ function AddTask() {
       }, 3000);
       return
     }
-    intervalUnit = intervalUnit.toLowerCase()
     const task = { //CREATE TASK OBJECT TO BE SENT
       name, due, priority, isRecurring, frequencyInterval, intervalUnit, category, time: (hoursToComplete * 3600 + minutesToComplete * 60)
     }
