@@ -18,15 +18,6 @@ function TasksProvider({children}) {
     const getAllTasks = async () => {
       try {
         const {data} = await sendAxios('tasks/all')
-          const listCompleted = data.filter(task => {
-            if(!task.completedAt) {
-              return false
-            }
-            if(task.completedAt.split('T')[0] == todaysDate) {
-              return true
-            }
-          })
-          setTodayCompleted(listCompleted)
         const formatted = data.map(task => {
           task.due = makeFormattedDate(task.due)
           return task
@@ -49,6 +40,32 @@ function TasksProvider({children}) {
     getAllTasks()
   }, [])
 
+  const getDaysTasks = async (day = todaysDate) => {
+    const due = allTasks.filter(task => toRawDate(task.due) === day && !task.completed )
+    setLoadedTasks(true)
+    setTodayDueTasks(due)
+    const completed = allTasks.filter(task => {
+      if(task.completedAt && task.completedAt.split('T')[0] == day) {
+        return true
+      }
+    })
+
+    setTodayCompleted(completed)
+  }
+  
+  useEffect(() => {
+    getDaysTasks()
+  }, [allTasks])
+  
+  
+  useEffect(() => {
+    const getTodays = async() => {
+      const todayDue = todaysTasks.filter(task => !task.completed)
+      setTodayDueTasks(todayDue)
+    }
+    getTodays()
+  }, [todaysTasks])
+
   const saveTask = async (task) => {
     const toAdd = {
       ...task,
@@ -63,32 +80,6 @@ function TasksProvider({children}) {
       console.log(error);
     }
   }
-
-  useEffect(() => {
-    const getTodaysTasks = async () => {
-      try {
-        const {data} = await sendAxios('tasks/todays')
-        const formatted = data.map(task => {
-          task.due = makeFormattedDate(task.due)
-          return task
-        })
-        setLoadedTasks(true)
-        setTodaysTasks(formatted)
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getTodaysTasks()
-  }, [allTasks])
-
-
-  useEffect(() => {
-    const getTodaysDue = () => {
-      const todayDue = todaysTasks.filter(task => !task.completed)
-      setTodayDueTasks(todayDue)
-    }
-    getTodaysDue()
-  }, [todaysTasks])
 
   const addToTasks = async (task) => { //COMPLETES THE TASK OBJECT AND SENDS IT TO THE BACKEND
     const toAdd = {
@@ -174,6 +165,7 @@ function TasksProvider({children}) {
         updateTask,
         allTasks,
         getCategories,
+        getDaysTasks,
       }}
     >
       {children}
