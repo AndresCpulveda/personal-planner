@@ -9,3 +9,7 @@ body {
 body {
   background-color: white
 }
+
+.input-date::-webkit-calendar-picker-indicator{
+    margin-left: -20px;
+}

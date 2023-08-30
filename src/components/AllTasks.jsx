@@ -5,6 +5,7 @@ import sendAxios from '../../config/axios';
 import { sortByBoolean, sortDueBoolean, sortPriority, sortCreatedBoolean, sortCategory} from '../helpers/helpers';
 import { btnStyles } from '../helpers/StyleHelpers';
 import useTasks from '../hooks/useTasks';
+import { ThinArrow } from './icons';
 
 function AllTasks() {
   const {allTasks} = useTasks();
@@ -133,8 +134,9 @@ function AllTasks() {
                       setShowingTasks(sortPriority(showingTasks, arrowPriority))
                       setArrowPriority(!arrowPriority)
                       }
-                    }
-                  ><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg>
+                    }>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
+                  </svg>
                 </span>
               </th>
               <th className={styles.table.th}></th>

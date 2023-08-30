@@ -1,22 +1,53 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
+import moment from 'moment';
+
 import useTasks from '../hooks/useTasks';
 import { todaysDate } from '../helpers/helpers';
+
+import { ChevronLeftIcon, ChevronRightIcon } from './icons';
 
 function DaySelector() {
   const {getDaysTasks} = useTasks();
 
   const [selectedDay, setSelectedDay] = useState(todaysDate)
 
+  useEffect(() => {
+    getDaysTasks(selectedDay)
+  }, [selectedDay])
+
   const handleChange = (e) => {
     setSelectedDay(e.target.value)
-    getDaysTasks(e.target.value)
   }
 
+  const addOneDay = (e) => {
+    console.log(e.target.name);
+    const calculatedDate = moment(selectedDay).add(1, 'days')
+    const formattedDate = moment(calculatedDate).format('YYYY-MM-DD')
+    setSelectedDay(formattedDate)
+  }
+
+  const substractOneDay = (e) => {
+    console.log(e.target.name);
+    const calculatedDate = moment(selectedDay).subtract(1, 'days')
+    const formattedDate = moment(calculatedDate).format('YYYY-MM-DD')
+    setSelectedDay(formattedDate)
+  }
   return (
-    <div className='flex gap-5 my-4'>
+    <div className='flex my-4 items-center'>
       <h3 className='font-semibold capitalize'>selected day:</h3>
-      <input type="date" value={selectedDay} onChange={handleChange}/>
-      <span>P</span><span>N</span>
+      <ChevronLeftIcon
+        iconOptions={{
+          onClick: substractOneDay,
+          className: 'cursor-pointer hover:scale-125 transition-all',
+        }}
+      />
+      <input type="date" value={selectedDay} onChange={handleChange} className='input-date bg-slate-200 rounded px-2 py-1'/>
+      <ChevronRightIcon 
+        iconOptions={{
+          onClick: addOneDay,
+          className: 'cursor-pointer hover:scale-125 transition-all',
+        }}
+      />
     </div>
   )
 }
