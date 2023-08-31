@@ -109,7 +109,6 @@ function TasksProvider({children}) {
 
     try {
       const {data} = await sendAxios.put('tasks/update', task)
-      console.log(data);
       data.due = toFormattedDate(data.due)
       setTodayCompleted([...todayCompleted, data])
     } catch (error) {
@@ -117,11 +116,17 @@ function TasksProvider({children}) {
     }
    }
 
-   const removeCompleted = async (task) => {
+   const deleteTask = async (task) => {
     try {
       const {data} = await sendAxios.delete(`tasks/delete/${task._id}`)
-      const newCompletedList = todayCompleted.filter(completed => completed.name != data.name)
-      setTodayCompleted(newCompletedList)
+      if(data.completed) {
+        const newCompletedList = todayCompleted.filter(item => item._id != data._id)
+        setTodayCompleted(newCompletedList)
+      }else {
+        console.log(todayDueTasks);
+        const newDueList = todayDueTasks.filter(item => item._id != data._id)
+        setTodayDueTasks(newDueList)
+      }
     } catch (error) {
       console.log(error);
     }
@@ -160,7 +165,7 @@ function TasksProvider({children}) {
         addToTasks,
         todayCompleted,
         addToCompleted,
-        removeCompleted,
+        deleteTask,
         loadedTasks,
         updateTask,
         allTasks,

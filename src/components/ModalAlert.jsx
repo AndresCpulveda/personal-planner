@@ -1,7 +1,7 @@
 import useTasks from "../hooks/useTasks";
 
 function ModalAlert({setModalAlert, setDeleted, task}) {
-  const {removeCompleted} = useTasks();
+  const {deleteTask} = useTasks();
   return (
     <>
       <div
@@ -23,7 +23,7 @@ function ModalAlert({setModalAlert, setDeleted, task}) {
               <button
                 className="font-bold"
                 onClick={() => {
-                  removeCompleted(task)
+                  deleteTask(task)
                   setDeleted(true)
                 }}
               >Delete</button>

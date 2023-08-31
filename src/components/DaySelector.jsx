@@ -4,7 +4,7 @@ import moment from 'moment';
 import useTasks from '../hooks/useTasks';
 import { todaysDate } from '../helpers/helpers';
 
-import { ChevronLeftIcon, ChevronRightIcon } from './icons/icons';
+import { ChevronIcon } from './icons/icons';
 
 function DaySelector() {
   const {getDaysTasks} = useTasks();
@@ -20,7 +20,6 @@ function DaySelector() {
   }
 
   const addOneDay = (e) => {
-    console.log(e.target.name);
     const calculatedDate = moment(selectedDay).add(1, 'days')
     const formattedDate = moment(calculatedDate).format('YYYY-MM-DD')
     setSelectedDay(formattedDate)
@@ -35,17 +34,17 @@ function DaySelector() {
   return (
     <div className='flex my-4 items-center'>
       <h3 className='font-semibold capitalize'>selected day:</h3>
-      <ChevronLeftIcon
+      <ChevronIcon
         iconOptions={{
           onClick: substractOneDay,
           className: 'cursor-pointer hover:scale-125 transition-all',
         }}
       />
       <input type="date" value={selectedDay} onChange={handleChange} className='input-date bg-slate-200 rounded px-2 py-1'/>
-      <ChevronRightIcon 
+      <ChevronIcon 
         iconOptions={{
           onClick: addOneDay,
-          className: 'cursor-pointer hover:scale-125 transition-all',
+          className: 'cursor-pointer hover:scale-125 transition-all rotate-180',
         }}
       />
     </div>

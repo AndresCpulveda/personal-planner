@@ -26,9 +26,9 @@ function TodayTasks() {
       {loadedTasks ? <TodayCompleted /> : null}
 
     </section>
-    <section className='w-1/3 flex flex-col'>
+    {/* <section className='w-1/3 flex flex-col'>
       <ProgressGraph />
-    </section>
+    </section> */}
     </>
   )
 }
