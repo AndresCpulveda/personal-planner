@@ -5,7 +5,6 @@ import sendAxios from '../../config/axios';
 import { sortByBoolean, sortDueBoolean, sortPriority, sortCreatedBoolean, sortCategory} from '../helpers/helpers';
 import { btnStyles } from '../helpers/StyleHelpers';
 import useTasks from '../hooks/useTasks';
-import { ThinArrow } from './icons';
 
 function AllTasks() {
   const {allTasks} = useTasks();

@@ -4,7 +4,7 @@ import moment from 'moment';
 import useTasks from '../hooks/useTasks';
 import { todaysDate } from '../helpers/helpers';
 
-import { ChevronLeftIcon, ChevronRightIcon } from './icons';
+import { ChevronLeftIcon, ChevronRightIcon } from './icons/icons';
 
 function DaySelector() {
   const {getDaysTasks} = useTasks();

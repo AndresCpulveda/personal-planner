@@ -5,7 +5,7 @@ import TodayCompleted from '../components/TodayCompleted'
 import ProgressGraph from '../components/ProgressGraph'
 import useTasks from '../hooks/useTasks'
 import SavingSpinner from '../components/SavingSpinner'
-import { AddTaskIcon } from '../components/icons'
+import { AddTaskIcon } from '../components/icons/icons'
 
 function TodayTasks() {
 

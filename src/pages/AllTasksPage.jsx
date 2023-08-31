@@ -3,7 +3,7 @@ import AllTasks from '../components/AllTasks';
 import TodayDue from '../components/TodayDue'
 import useTasks from '../hooks/useTasks'
 import AddTask from '../components/AddTask';
-import { AddTaskIcon } from '../components/icons';
+import { AddTaskIcon } from '../components/icons/icons';
 
 function AllTasksPage() {
   const {loadedTasks, setAddingTodayTask, addingTodayTask} = useTasks();

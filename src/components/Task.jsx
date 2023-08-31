@@ -5,7 +5,8 @@ import Timer from './Timer';
 import { formatPriority } from '../helpers/StyleHelpers';
 import EditTask from './EditTask';
 import { stylePriority } from '../helpers/StyleHelpers';
-import { CheckIcon, XIcon } from './icons';
+import { CheckIcon, NextIcon, PencilIcon, TrashIcon, XIcon } from './icons/icons';
+import ModalAlert from './ModalAlert';
 
 function Task({task}) {
   
@@ -13,7 +14,24 @@ function Task({task}) {
   const {name, due, priority, time, category, completed} = task;
 
   const [editingTask, setEditingTask] = useState(false)
-
+  
+  const handleCompleteTask = () => {
+    task.completed = true
+    addToCompleted({...task, completed: true})
+  }
+  
+  const handleCancelTask = () => {
+    console.log('canceling');
+  }
+  
+  const handleDeleteTask = () => {
+    console.log('deleting');
+  }
+  
+  const handleNext = () => {
+    console.log('moving to next');
+  }
+  
   const handleEditTask = () => {
     setEditingTask(true)
   }
@@ -28,31 +46,40 @@ function Task({task}) {
         <td className="text-gray-500 px-6 py-4">
           <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${completed ? "text-green-600 bg-green-100" : stylePriority(priority)}`}>
             {completed ?
-              <CheckIcon />
+              <CheckIcon isAction={false} iconOptions={{className: 'h-3 w-3'}} />
               :
-              <XIcon />
+              <XIcon isAction={false} iconOptions={{className: 'h-3 w-3'}} />
             }
             {completed ? 'completed' : 'uncompleted'}
           </span>
         </td>
         <td className="text-gray-500 flex justify-end gap-4 px-6 py-4 font-medium">
-          <button
-            className={`${completed ? "hover:text-red-600" : "hover:text-green-600"}`}
-            onClick={e => {
-              if(completed) {
-                if (confirm('Do you want to remove this task?')){
-                  removeCompleted(task)
-                }
-              }else {
-                task.completed = true
-                addToCompleted({...task, completed: true})
-              }
+          <CheckIcon isAction={true} iconOptions={{
+            onClick: handleCompleteTask,
+            className: 'hover:text-green-600 cursor-pointer h-5 w-5'
             }}
-          >{completed ? "Delete" : "Complete"}</button>
-          <button
-            onClick={handleEditTask}
-            className='hover:text-blue-700'
-          >Edit</button></td>
+          />
+          <XIcon isAction={true} iconOptions={{
+            onClick: handleCancelTask,
+            className: 'hover:text-red-600 cursor-pointer h-5 w-5'
+            }}
+          />
+          <TrashIcon isAction={true} iconOptions={{
+            onClick: handleDeleteTask,
+            className: 'hover:text-red-800 cursor-pointer h-5 w-5'
+            }}
+          />
+          <NextIcon isAction={true} iconOptions={{
+            onClick: handleNext,
+            className: 'hover:text-green-800 cursor-pointer h-5 w-5'
+            }}
+          />
+          <PencilIcon isAction={true} iconOptions={{
+            onClick: handleEditTask,
+            className: 'hover:text-blue-600 cursor-pointer h-5 w-5'
+            }}
+          />
+          </td>
       </tr>
     </>
   )

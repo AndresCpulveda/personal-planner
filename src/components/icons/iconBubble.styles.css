@@ -1,0 +1,20 @@
+/* (B) ADD SPEECH "CALLOUT TAIL" */
+/* (B1) USE ::AFTER TO CREATE THE "TAIL" */
+.speech::after {
+  /* (B1-1) ATTACH TRANSPARENT BORDERS */
+  content: "";
+  border: 10px solid transparent;
+ 
+  /* (B1-2) NECESSARY TO POSITION THE "TAIL" */
+  position: absolute;
+}
+ 
+.bottom.speech::after {
+  /* (B2-1) DOWN TRIANGLE */
+  border-top-color: #94A3B8;
+  border-bottom: 0;
+ 
+  /* (B2-2) POSITION AT BOTTOM */
+  bottom: -10px; left: 50%;
+  margin-left: -10px;
+}
