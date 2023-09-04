@@ -43,9 +43,9 @@ function TaskOnAll({task}) {
     <>
       <tr className={`odd:bg-white even:bg-gray-50 ${deleted ? "hidden" : ""}`}>
         <th className="px-6 py-4 font-medium text-gray-900">{name}</th>
-        <td className="text-gray-500 px-6 py-4">{due}</td>
-        <td className="text-gray-500 px-6 py-4">{category}</td>
-        <td className="text-gray-500 px-6 py-4">
+        <td className="text-gray-500 px-5 py-4">{due}</td>
+        <td className="text-gray-500 px-5 py-4">{category}</td>
+        <td className="text-gray-500 px-5 py-4">
           <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${completed ? "text-green-600 bg-green-100" : stylePriority(priority)}`}>
             {completed ?
               <CheckIcon isAction={false} iconOptions={{className: 'h-3 w-3'}} />
@@ -55,7 +55,7 @@ function TaskOnAll({task}) {
             {completed ? 'completed' : 'uncompleted'}
           </span>
         </td>
-        <td className="text-gray-500 flex justify-end gap-4 px-6 py-4 font-medium">
+        <td className="text-gray-500 flex gap-4 px-5 py-4 font-medium">
           <CheckIcon isAction={true} iconOptions={{
             onClick: handleCompleteTask,
             className: 'hover:text-green-600 cursor-pointer h-5 w-5'

@@ -138,7 +138,7 @@ function AllTasks() {
                   </svg>
                 </span>
               </th>
-              <th className={styles.table.th}></th>
+              <th className={styles.table.th}>Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 border-t border-gray-100">

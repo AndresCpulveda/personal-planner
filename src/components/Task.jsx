@@ -12,7 +12,7 @@ import { toRawDate } from '../helpers/helpers';
 
 function Task({task}) {
   
-  const {addToCompleted, deleteTask, updateTask} = useTasks();
+  const {addToCompleted, removeCompleted, updateTask} = useTasks();
   const {name, due, priority, time, category, completed} = task;
 
   const [editingTask, setEditingTask] = useState(false)
@@ -28,7 +28,7 @@ function Task({task}) {
   
   const handleDeleteTask = () => {
     if(confirm('Quieres borrar?')) {
-      deleteTask(task)
+      removeCompleted(task)
     }
   }
   
@@ -52,9 +52,9 @@ function Task({task}) {
       <tr className={`odd:bg-white even:bg-gray-50`}>
         {editingTask ? <td><EditTask editing={task} setEditingTask={setEditingTask} /></td> : null}
         <th className="px-6 py-4 font-medium text-gray-900">{name}</th>
-        <td className="text-gray-500 px-6 py-4">{due}</td>
-        <td className="text-gray-500 px-6 py-4">{category}</td>
-        <td className="text-gray-500 px-6 py-4">
+        <td className="text-gray-500 px-5 py-4">{due}</td>
+        <td className="text-gray-500 px-5 py-4">{category}</td>
+        <td className="text-gray-500 px-5 py-4">
           <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${completed ? "text-green-600 bg-green-100" : stylePriority(priority)}`}>
             {completed ?
               <CheckIcon iconOptions={{className: 'h-3 w-3'}} />
@@ -64,7 +64,7 @@ function Task({task}) {
             {completed ? 'completed' : 'uncompleted'}
           </span>
         </td>
-        <td className="px-6 py-4">
+        <td className="px-5 py-4">
           <div className='flex text-slate-500 gap-2'>
             <CheckIcon iconOptions={{
               onClick: handleCompleteTask,

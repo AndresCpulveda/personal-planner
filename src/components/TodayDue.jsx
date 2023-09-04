@@ -31,7 +31,7 @@ function TodayDue() {
                 <th className="px-5 py-4 font-medium text-gray-900">
                   <span className={`flex`}>State</span>
                 </th>
-                <th className="px-5 py-4 font-medium text-gray-900"></th>
+                <th className="px-5 py-4 font-medium text-gray-900">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 border-t border-gray-100">
