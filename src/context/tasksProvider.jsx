@@ -78,6 +78,7 @@ function TasksProvider({children}) {
       return data
     } catch (error) {
       console.log(error);
+      alert(error)
     }
   }
 
@@ -87,6 +88,7 @@ function TasksProvider({children}) {
       completed: false,
       stopWatch: task.time === 0
     }
+    setAllTasks([...allTasks, toAdd])
     try {
       const {data} = await sendAxios.post('tasks/add', toAdd)
       data.due = makeFormattedDate(data.due)
@@ -94,50 +96,61 @@ function TasksProvider({children}) {
       if(formattedTodays === data.due) {
         setTodayDueTasks([...todayDueTasks, data]) //SAVES OBJECT IN TODAYS TASKS ARRAY WITH THE DESIRED FORMAT
       }
-      setAllTasks([...allTasks, data])
       return data
     } catch (error) {
       console.log(error);
+      alert(error)
     }
    }
 
    const addToCompleted = async (task) => {
-    const newDueList = todayDueTasks.filter(due => due.name != task.name)
+    const newDueList = todayDueTasks.filter(due => due.id != task.id)
     setTodayDueTasks(newDueList)
-    task.due = toRawDate(task.due)
     task.completedAt = todaysDate
+    setTodayCompleted([...todayCompleted, task])
+    task.due = toRawDate(task.due)
 
     try {
       const {data} = await sendAxios.put('tasks/update', task)
-      data.due = toFormattedDate(data.due)
-      setTodayCompleted([...todayCompleted, data])
+      return data
     } catch (error) {
       console.log(error);
+      alert(error)
     }
    }
 
    const deleteTask = async (task) => {
+     if(task.completed) {
+       const newCompletedList = todayCompleted.filter(item => item.id != task.id)
+       setTodayCompleted(newCompletedList)
+     }else {
+       console.log(todayDueTasks);
+       const newDueList = todayDueTasks.filter(item => item.id != task.id)
+       setTodayDueTasks(newDueList)
+     }
     try {
       const {data} = await sendAxios.delete(`tasks/delete/${task._id}`)
-      if(data.completed) {
-        const newCompletedList = todayCompleted.filter(item => item._id != data._id)
-        setTodayCompleted(newCompletedList)
-      }else {
-        console.log(todayDueTasks);
-        const newDueList = todayDueTasks.filter(item => item._id != data._id)
-        setTodayDueTasks(newDueList)
-      }
+      return data
     } catch (error) {
       console.log(error);
+      alert(error)
     }
    }
 
    const updateTask = async (task) => {
+    if(task.completed) {
+      const newCompletedList = todayCompleted.map(item => item.id === task.id ? task : item)
+      setTodayCompleted(newCompletedList)
+    }else {
+      const newDueList = todayDueTasks.map(item => item.id === task.id ? task : item)
+      setTodayDueTasks(newDueList)
+    }
     try {
       const {data} = await sendAxios.put('tasks/update', task)
-      console.log(data);
+      return data
     } catch (error) {
       console.log(error);
+      alert(error)
     }
    }
 
