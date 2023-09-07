@@ -12,7 +12,7 @@ import { toRawDate } from '../helpers/helpers';
 
 function Task({task}) {
   
-  const {addToCompleted, removeCompleted, updateTask} = useTasks();
+  const {addToCompleted, deleteTask, updateTask} = useTasks();
   const {name, due, priority, time, category, completed} = task;
 
   const [editingTask, setEditingTask] = useState(false)
@@ -28,7 +28,7 @@ function Task({task}) {
   
   const handleDeleteTask = () => {
     if(confirm('Quieres borrar?')) {
-      removeCompleted(task)
+      deleteTask(task)
     }
   }
   

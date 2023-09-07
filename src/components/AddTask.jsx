@@ -3,6 +3,7 @@ import moment from 'moment';
 
 import useTasks from '../hooks/useTasks'
 import Alert from './Alert'
+import generarId from '../helpers/generarId';
 
 function AddTask() {
 
@@ -41,8 +42,12 @@ function AddTask() {
       }, 3000);
       return
     }
-    const task = { //CREATE TASK OBJECT TO BE SENT
-      name, due, priority, isRecurring, frequencyInterval, intervalUnit, category, time: (hoursToComplete * 3600 + minutesToComplete * 60)
+
+    //CREATE TASK OBJECT TO BE SENT
+    const id = generarId()
+    const time = (hoursToComplete * 3600 + minutesToComplete * 60)
+    const task = {
+      name, id, due, priority, isRecurring, frequencyInterval, intervalUnit, category, time
     }
 
     addToTasks(task)
