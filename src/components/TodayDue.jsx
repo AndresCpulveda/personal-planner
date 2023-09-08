@@ -35,7 +35,7 @@ function TodayDue() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 border-t border-gray-100">
-            {orderedList.map( task => <Task task={task} key={task._id} />)}
+            {orderedList.map( task => <Task task={task} key={task.id} />)}
             </tbody>
           </table>
           {addingTodayTask ? <AddTask /> : null}

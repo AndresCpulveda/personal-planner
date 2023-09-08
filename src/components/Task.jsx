@@ -2,13 +2,12 @@ import { useState } from 'react';
 
 import useTasks from '../hooks/useTasks'
 import Timer from './Timer';
-import { formatPriority } from '../helpers/StyleHelpers';
+import { formatPriority, stylePriority } from '../helpers/StyleHelpers';
 import EditTask from './EditTask';
-import { stylePriority } from '../helpers/StyleHelpers';
 import { CheckIcon, ChevronIcon, NextIcon, PencilIcon, StopIcon, TrashIcon, XIcon } from './icons/icons';
 import ModalAlert from './ModalAlert';
 import moment from 'moment';
-import { toRawDate } from '../helpers/helpers';
+import { toRawDate, toFormattedDate } from '../helpers/helpers';
 
 function Task({task}) {
   
@@ -52,7 +51,7 @@ function Task({task}) {
       <tr className={`odd:bg-white even:bg-gray-50`}>
         {editingTask ? <td><EditTask editing={task} setEditingTask={setEditingTask} /></td> : null}
         <th className="px-6 py-4 font-medium text-gray-900">{name}</th>
-        <td className="text-gray-500 px-5 py-4">{due}</td>
+        <td className="text-gray-500 px-5 py-4">{toFormattedDate(due)}</td>
         <td className="text-gray-500 px-5 py-4">{category}</td>
         <td className="text-gray-500 px-5 py-4">
           <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${completed ? "text-green-600 bg-green-100" : stylePriority(priority)}`}>

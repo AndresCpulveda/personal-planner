@@ -20,7 +20,6 @@ function TasksProvider({children}) {
         const {data} = await sendAxios('tasks/all')
         const currentRecurrings = extractRecentRecurrings(data)
         const newRecurrings = createRecurrings(currentRecurrings)
-        console.log(newRecurrings);
         const all = [...data, ...newRecurrings]
         setAllTasks(all)
         const savedRecurrings = newRecurrings.map(task => {
@@ -34,16 +33,22 @@ function TasksProvider({children}) {
   }, [])
 
   const getDaysTasks = async (day = todaysDate) => {
-    const due = allTasks.filter(task => task.due.split('T')[0] == day.split('T')[0] && !task.completed )
-    setLoadedTasks(true)
-    setTodayDueTasks(due)
-    const completed = allTasks.filter(task => {
+    const due = []
+    const completed = []
+    const filteredAll = allTasks.map(task => {
+      task.due = task.due.split('T')[0]
+      if(task.due == day.split('T')[0] && !task.completed) {
+        due.push(task)
+        return task
+      }
       if(task.completedAt && task.completedAt.split('T')[0] == day.split('T')[0]) {
-        return true
+        completed.push(task)
+        return task
       }
     })
-
+    setTodayDueTasks(due)
     setTodayCompleted(completed)
+    setLoadedTasks(true)
   }
   
   useEffect(() => {
@@ -113,16 +118,16 @@ function TasksProvider({children}) {
    }
 
    const deleteTask = async (task) => {
+    console.log(task);
      if(task.completed) {
        const newCompletedList = todayCompleted.filter(item => item.id != task.id)
        setTodayCompleted(newCompletedList)
      }else {
-       console.log(todayDueTasks);
        const newDueList = todayDueTasks.filter(item => item.id != task.id)
        setTodayDueTasks(newDueList)
      }
     try {
-      const {data} = await sendAxios.delete(`tasks/delete/${task._id}`)
+      const {data} = await sendAxios.delete(`tasks/delete/${task.id}`)
       return data
     } catch (error) {
       console.log(error);
