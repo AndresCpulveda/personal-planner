@@ -9,7 +9,7 @@ import { ChevronIcon } from './icons/icons';
 function DaySelector() {
   const {getDaysTasks} = useTasks();
 
-  const [selectedDay, setSelectedDay] = useState(todaysDate)
+  const [selectedDay, setSelectedDay] = useState(todaysDate.split('T')[0])
 
   useEffect(() => {
     getDaysTasks(selectedDay)
@@ -26,7 +26,6 @@ function DaySelector() {
   }
 
   const substractOneDay = (e) => {
-    console.log(e.target.name);
     const calculatedDate = moment(selectedDay).subtract(1, 'days')
     const formattedDate = moment(calculatedDate).format('YYYY-MM-DD')
     setSelectedDay(formattedDate)

@@ -18,20 +18,13 @@ function TasksProvider({children}) {
     const getAllTasks = async () => {
       try {
         const {data} = await sendAxios('tasks/all')
-        const formatted = data.map(task => {
-          task.due = makeFormattedDate(task.due)
-          return task
-        })
-        const currentRecurrings = extractRecentRecurrings(formatted)
+        const currentRecurrings = extractRecentRecurrings(data)
         const newRecurrings = createRecurrings(currentRecurrings)
+        console.log(newRecurrings);
+        const all = [...data, ...newRecurrings]
+        setAllTasks(all)
         const savedRecurrings = newRecurrings.map(task => {
-          task.due = toRawDate(task.due)
           return saveTask(task)
-        })
-        Promise.all(savedRecurrings)
-        .then(res => {
-          const all = [...formatted, ...res]
-          setAllTasks(all)
         })
       } catch (error) {
         console.log(error);
@@ -41,11 +34,11 @@ function TasksProvider({children}) {
   }, [])
 
   const getDaysTasks = async (day = todaysDate) => {
-    const due = allTasks.filter(task => toRawDate(task.due) === day && !task.completed )
+    const due = allTasks.filter(task => task.due.split('T')[0] == day.split('T')[0] && !task.completed )
     setLoadedTasks(true)
     setTodayDueTasks(due)
     const completed = allTasks.filter(task => {
-      if(task.completedAt && task.completedAt.split('T')[0] == day) {
+      if(task.completedAt && task.completedAt.split('T')[0] == day.split('T')[0]) {
         return true
       }
     })

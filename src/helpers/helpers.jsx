@@ -1,4 +1,5 @@
 import moment from 'moment'
+import generarId from './generarId';
 
 export function makeFormattedDate(date) {
   const momentObjDate = moment(date)
@@ -7,7 +8,7 @@ export function makeFormattedDate(date) {
 }
 
 const date = moment();
-export const todaysDate = date.format('YYYY-MM-DD'); //TO USE AS DEFAULT VALUE OF "DUE DATE" FIELD
+export const todaysDate = date.format('yyyy-MM-DD').concat('', 'T00:00:00.000Z') //TO USE AS DEFAULT VALUE OF "DUE DATE" FIELD
 
 export function toFormattedDate(date) {
   return moment(date, "YYYY-MM-DD").format("MMM Do, YYYY")
@@ -203,8 +204,8 @@ export function extractRecentRecurrings(list) {
       acc.push(clone)
     }else {
       //Transform the dates to numbers so they can be compared
-      const dateA = moment(alreadyExists.due, "MMM Do, YYYY")
-      const dateB = moment(cur.due, "MMM Do, YYYY")
+      const dateA = moment(alreadyExists.due, "YYYY-MM-DD")
+      const dateB = moment(cur.due, "YYYY-MM-DD")
       if(dateB.isAfter(dateA, 'day')) { //If already in the acc then check if its due value is greater than the interating elements due value
         alreadyExists.due = cur.due //If iterating element has greater value, previously saved elements due value is updated
       }
@@ -223,14 +224,14 @@ export function createRecurrings(list) {
   }
 
   const toCreate = list.filter(task => { //Filter out all the tasks which its due date is further than todays date
-    if(!moment(task.due, "MMM Do, YYYY").isAfter(moment(), 'day')) {
+    if(!moment(task.due, "YYYY-MM-DD").isAfter(moment(), 'day')) {
       return task
     }
   })
 
   const tasksToAdd = toCreate.map(task => { //Use map to iterate on each task to be cloned
     const {name, priority, isRecurring, intervalUnit, frequencyInterval, category, time} = task //Destructure object of task
-    let latestDue = moment(task.due, 'MMM Do, YYYY') //Calculate (in days) the due date of the task (which is the task with the latest due date)
+    let latestDue = moment(task.due, 'YYYY-MM-DD') //Calculate (in days) the due date of the task (which is the task with the latest due date)
     let newTasks = [] //Array where the tasks to be created will be stored
     while (moment().isAfter(latestDue, 'day')) { //Check if todays date is further in time than the latestDue so we know if more tasks must be created {
       let newDueDays; ////Variable where the new due date of each task being created will be stored (as days)
@@ -239,9 +240,9 @@ export function createRecurrings(list) {
       }else{
         newDueDays = latestDue.clone().add((increments[intervalUnit] * frequencyInterval), 'day') //If the tasks interval unit is not months, calculate the increment in days and add it to the last due date
       }
-      const newDue = moment(newDueDays).format('MMM Do, YYYY') //Formatt (to string date) the newDue date of the task being created so it is saved ready to show in the UI
+      const newDue = moment(newDueDays).format('YYYY-MM-DD').concat('', 'T00:00:00.000Z') //Formatt (to string date) the newDue date
        const newTask = { //CREATE TASK OBJECT TO BE SENT
-         name, due: newDue, priority, isRecurring, intervalUnit, frequencyInterval, category, time: timeDeFormatter(time)
+         name, due: newDue, priority, isRecurring, intervalUnit, frequencyInterval, category, time: timeDeFormatter(time), completed: false, id: generarId(),
        }
        newTasks.push(newTask) //Push the created task to the array
        latestDue = newDueDays //Update the latestDue to the due date of the task recently created
