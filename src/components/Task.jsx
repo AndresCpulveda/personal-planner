@@ -17,8 +17,7 @@ function Task({task}) {
   const [editingTask, setEditingTask] = useState(false)
   
   const handleCompleteTask = () => {
-    task.completed = true
-    addToCompleted({...task, completed: true})
+    addToCompleted(task)
   }
   
   const handleCancelTask = () => {

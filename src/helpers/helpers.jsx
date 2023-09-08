@@ -224,6 +224,7 @@ export function createRecurrings(list) {
   }
 
   const toCreate = list.filter(task => { //Filter out all the tasks which its due date is further than todays date
+    task.due = task.due.split('T')[0]
     if(!moment(task.due, "YYYY-MM-DD").isAfter(moment(), 'day')) {
       return task
     }

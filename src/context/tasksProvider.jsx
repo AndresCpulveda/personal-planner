@@ -89,11 +89,6 @@ function TasksProvider({children}) {
     setAllTasks([...allTasks, toAdd])
     try {
       const {data} = await sendAxios.post('tasks/add', toAdd)
-      data.due = makeFormattedDate(data.due)
-      const formattedTodays = makeFormattedDate()
-      if(formattedTodays === data.due) {
-        setTodayDueTasks([...todayDueTasks, data]) //SAVES OBJECT IN TODAYS TASKS ARRAY WITH THE DESIRED FORMAT
-      }
       return data
     } catch (error) {
       console.log(error);
@@ -102,11 +97,11 @@ function TasksProvider({children}) {
    }
 
    const addToCompleted = async (task) => {
+    task.completed = true
     const newDueList = todayDueTasks.filter(due => due.id != task.id)
     setTodayDueTasks(newDueList)
-    task.completedAt = todaysDate
+    task.completedAt = todaysDate.split('T')[0]
     setTodayCompleted([...todayCompleted, task])
-    task.due = toRawDate(task.due)
 
     try {
       const {data} = await sendAxios.put('tasks/update', task)
@@ -118,7 +113,6 @@ function TasksProvider({children}) {
    }
 
    const deleteTask = async (task) => {
-    console.log(task);
      if(task.completed) {
        const newCompletedList = todayCompleted.filter(item => item.id != task.id)
        setTodayCompleted(newCompletedList)
@@ -136,13 +130,9 @@ function TasksProvider({children}) {
    }
 
    const updateTask = async (task) => {
-    if(task.completed) {
-      const newCompletedList = todayCompleted.map(item => item.id === task.id ? task : item)
-      setTodayCompleted(newCompletedList)
-    }else {
-      const newDueList = todayDueTasks.map(item => item.id === task.id ? task : item)
-      setTodayDueTasks(newDueList)
-    }
+    const newAllTasks = allTasks.map(item => item.id === task.id ? task : item)
+    setAllTasks(newAllTasks)
+
     try {
       const {data} = await sendAxios.put('tasks/update', task)
       return data

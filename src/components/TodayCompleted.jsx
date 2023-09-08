@@ -28,7 +28,7 @@ function TodayCompleted() {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100 border-t border-gray-100">
-          {todayCompleted.map( task => <Task task={task} key={task._id} />)}
+          {todayCompleted.map( task => <Task task={task} key={task.id} />)}
         </tbody>
       </table>
     </div>

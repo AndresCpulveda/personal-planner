@@ -4,7 +4,6 @@ import Task from './Task'
 import useTasks from '../hooks/useTasks'
 import AddTask from './AddTask';
 import { sortPriority } from '../helpers/helpers';
-import DaySelector from './DaySelector';
 
 function TodayDue() {
     const {addingTodayTask, todayDueTasks} = useTasks();
@@ -15,7 +14,6 @@ function TodayDue() {
     return (
       <>
         <div className="">
-          <DaySelector />
           <table className="w-full border-collapse bg-white text-left text-sm">
             <thead className="bg-gray-50">
               <tr className=''>
