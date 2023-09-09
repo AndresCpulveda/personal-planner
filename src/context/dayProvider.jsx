@@ -1,20 +1,25 @@
 import { createContext, useState } from "react"
+import moment from "moment";
 
-export const dayContext = createContext()
+const daysContext = createContext()
 
-const DayProvider = ({children}) => {
+const date = moment();
+const todaysDate = date.format('yyyy-MM-DD').concat('', 'T00:00:00.000Z') //TO USE AS DEFAULT VALUE OF "DUE DATE" FIELD
 
+export const DaysProvider = ({children}) => {
   const [selectedDay, setSelectedDay] = useState(todaysDate.split('T')[0])
 
   return (
-    <dayContext.Provider
+    <daysContext.Provider
       value={{
-
+        selectedDay,
+        setSelectedDay,
+        todaysDate,
       }}
     >
       {children}
-    </dayContext.Provider>
+    </daysContext.Provider>
   )
 }
 
-export default DayProvider
+export default daysContext

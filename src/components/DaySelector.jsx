@@ -2,14 +2,13 @@ import {useEffect, useState} from 'react'
 import moment from 'moment';
 
 import useTasks from '../hooks/useTasks';
-import { todaysDate } from '../helpers/helpers';
 
 import { ChevronIcon } from './icons/icons';
+import useDays from '../hooks/useDays';
 
 function DaySelector() {
   const {getDaysTasks} = useTasks();
-
-  const [selectedDay, setSelectedDay] = useState(todaysDate.split('T')[0])
+  const {selectedDay, setSelectedDay} = useDays();
 
   useEffect(() => {
     getDaysTasks(selectedDay)

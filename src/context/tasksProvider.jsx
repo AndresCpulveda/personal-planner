@@ -2,11 +2,15 @@ import { createContext, useState, useEffect } from "react";
 import moment from 'moment'
 
 import sendAxios from "../../config/axios";
-import {extractRecentRecurrings, createRecurrings, makeFormattedDate, toRawDate, toFormattedDate, todaysDate } from "../helpers/helpers";
+import {extractRecentRecurrings, createRecurrings, makeFormattedDate, toRawDate, toFormattedDate } from "../helpers/helpers";
+import useDays from "../hooks/useDays";
 
 const TasksContext = createContext()
 
 function TasksProvider({children}) {
+
+  const {selectedDay, setSelectedDay, todaysDate} = useDays();
+
   const [addingTodayTask, setAddingTodayTask] = useState(false)
   const [todayDueTasks, setTodayDueTasks] = useState([])
   const [todayCompleted, setTodayCompleted] = useState([])
@@ -32,7 +36,7 @@ function TasksProvider({children}) {
     getAllTasks()
   }, [])
 
-  const getDaysTasks = async (day = todaysDate) => {
+  const getDaysTasks = async (day) => {
     const due = []
     const completed = []
     const filteredAll = allTasks.map(task => {
@@ -52,7 +56,7 @@ function TasksProvider({children}) {
   }
   
   useEffect(() => {
-    getDaysTasks()
+    getDaysTasks(selectedDay)
   }, [allTasks])
   
   

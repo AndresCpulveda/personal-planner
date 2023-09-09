@@ -7,9 +7,6 @@ export function makeFormattedDate(date) {
   return formattedSaved
 }
 
-const date = moment();
-export const todaysDate = date.format('yyyy-MM-DD').concat('', 'T00:00:00.000Z') //TO USE AS DEFAULT VALUE OF "DUE DATE" FIELD
-
 export function toFormattedDate(date) {
   return moment(date, "YYYY-MM-DD").format("MMM Do, YYYY")
 }
