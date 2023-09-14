@@ -32,7 +32,7 @@ function EditTask({editing, setEditingTask}) {
       return
     }
     if(due === editing.due) {
-      editing.due = toRawDate(due)
+      editing.due = due
     }else {
       editing.due = due
     }
@@ -85,7 +85,7 @@ function EditTask({editing, setEditingTask}) {
 
             <input
               // defaultValue={due}
-              defaultValue={editing?.due ? moment(editing.due, "MMMM Do, YYYY").format("YYYY-MM-DD") : due}
+              defaultValue={editing?.due ? editing.due : due}
               type='date'
               className='bg-gray-300 rounded-md h-8 px-2'
               onChange={e => setDue(e.target.value)}

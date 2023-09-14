@@ -88,8 +88,8 @@ export function sortByBoolean(list, boolean){ //OPTIMIZAR
 export function sortDueBoolean(list, boolean) { //OPTIMIZAR
   if(boolean) {
     const sorted = list.sort((a, b) => {
-      const dateA = moment(a.due, "MMM Do, YYYY")
-      const dateB = moment(b.due, "MMM Do, YYYY")
+      const dateA = moment(a.due, "YYYY-MM-DD")
+      const dateB = moment(b.due, "YYYY-MM-DD")
       if(!dateA.isAfter(dateB, 'day')) {
         return -1
       }
@@ -101,8 +101,8 @@ export function sortDueBoolean(list, boolean) { //OPTIMIZAR
     return sorted
   }
   const sorted = list.sort((a, b) => {
-    const dateA = moment(a.due, "MMM Do, YYYY")
-    const dateB = moment(b.due, "MMM Do, YYYY")
+    const dateA = moment(a.due, "YYYY-MM-DD")
+    const dateB = moment(b.due, "YYYY-MM-DD")
     if(!dateA.isAfter(dateB, 'day')) {
       return 1
     }

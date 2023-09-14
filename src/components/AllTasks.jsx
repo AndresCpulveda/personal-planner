@@ -17,16 +17,18 @@ function AllTasks() {
   const [arrowPriority, setArrowPriority] = useState(false)
   const [arrowTime, setArrowTime] = useState(false)
   
-  useEffect(() => {
-    setShowingTasks(allTasks)
-  }, [allTasks])
   
-  const completedTasks = allTasks.filter(task => task.completed)
-  const uncompletedTasks = allTasks.filter(task => !task.completed)
-
   useEffect(() => {
-    setShowingTasks(uncompletedTasks)
-  }, [])
+    if(activeBtn === 3) {
+      const uncompletedTasks = allTasks.filter(task => !task.completed)
+      setShowingTasks(uncompletedTasks)
+    }else if(activeBtn === 2) {
+      const completedTasks = allTasks.filter(task => task.completed)
+      setShowingTasks(completedTasks)
+    }else{
+      setShowingTasks(allTasks)
+    }
+  }, [allTasks])
 
   const styles = {
     btns: {
@@ -60,6 +62,7 @@ function AllTasks() {
               <a 
                 onClick={() => {
                   setActiveBtn(2)
+                  const completedTasks = allTasks.filter(task => task.completed)
                   setShowingTasks(completedTasks)
                 }}
                 className={`${activeBtn === 2 ? btnStyles[2] : ''} ${styles.btns.categoryBtns} hover:bg-green-100 hover:text-green-500`}
@@ -69,6 +72,7 @@ function AllTasks() {
               <a 
                 onClick={() => {
                   setActiveBtn(3)
+                  const uncompletedTasks = allTasks.filter(task => !task.completed)
                   setShowingTasks(uncompletedTasks)
                 }}
                 className={`${activeBtn === 3 ? btnStyles[3] : ''} ${styles.btns.categoryBtns} hover:bg-red-100 hover:text-red-500`}
@@ -142,7 +146,7 @@ function AllTasks() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 border-t border-gray-100">
-          {showingTasks.map( task => <TaskOnAll task={task} key={task._id} />)}
+          {showingTasks.map( task => <TaskOnAll task={task} key={task.id} />)}
           </tbody>
         </table>
       </div>

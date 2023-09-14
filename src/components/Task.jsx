@@ -31,9 +31,7 @@ function Task({task}) {
   }
   
   const handleNext = () => {
-    console.log(task.due);
     const modifiedDate = moment(task.due).add(1, 'days')
-    console.log(modifiedDate);
     const formattedDate = moment(modifiedDate).format('YYYY-MM-DD')
     task.due = formattedDate
     updateTask(task)
