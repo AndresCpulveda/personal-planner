@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react'
 
-import TaskOnAll from './TaskOnAll';
-import sendAxios from '../../config/axios';
+import Task from './Task';
 import { sortByBoolean, sortDueBoolean, sortPriority, sortCreatedBoolean, sortCategory} from '../helpers/helpers';
 import { btnStyles } from '../helpers/StyleHelpers';
 import useTasks from '../hooks/useTasks';
@@ -146,7 +145,7 @@ function AllTasks() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 border-t border-gray-100">
-          {showingTasks.map( task => <TaskOnAll task={task} key={task.id} />)}
+          {showingTasks.map( task => <Task task={task} key={task.id} />)}
           </tbody>
         </table>
       </div>

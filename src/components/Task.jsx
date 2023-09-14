@@ -1,34 +1,48 @@
 import { useState } from 'react';
+import moment from 'moment';
 
 import useTasks from '../hooks/useTasks'
-import Timer from './Timer';
-import { formatPriority, stylePriority } from '../helpers/StyleHelpers';
+import { toFormattedDate } from '../helpers/helpers';
+import { stylePriority } from '../helpers/StyleHelpers';
+import { CheckIcon, ChevronIcon, NextIcon, PencilIcon, TrashIcon, XIcon } from './icons/icons';
 import EditTask from './EditTask';
-import { CheckIcon, ChevronIcon, NextIcon, PencilIcon, StopIcon, TrashIcon, XIcon } from './icons/icons';
 import ModalAlert from './ModalAlert';
-import moment from 'moment';
-import { toRawDate, toFormattedDate } from '../helpers/helpers';
 
 function Task({task}) {
   
   const {addToCompleted, deleteTask, updateTask} = useTasks();
-  const {name, due, priority, time, category, completed, dismissed} = task;
+  const {name, due, priority, time, category, completed} = task;
 
+  const [deleted, setDeleted] = useState(false)
   const [editingTask, setEditingTask] = useState(false)
+  const [modalAlert, setModalAlert] = useState({showing: false})
   
   const handleCompleteTask = () => {
     addToCompleted(task)
   }
   
   const handleDismissTask = () => {
-    task.dismissed = true;
-    updateTask(task)
+    setModalAlert({
+      message: 'Do you want to dismiss this task? Task will no longer be shown by default on your due or completed lists, but may be found in your reports',
+      showing: true,
+      action: () => {
+        task.dismissed = true
+        updateTask(task)
+        setModalAlert({showing: false})
+      },
+    })
   }
   
   const handleDeleteTask = () => {
-    if(confirm('Quieres borrar?')) {
-      deleteTask(task)
-    }
+    setModalAlert({
+      message: 'Do you want to remove this task permanently?',
+      showing: true,
+      action: () => {
+        deleteTask(task)
+        setDeleted(true)
+        setModalAlert({showing: false})
+      },
+    })
   }
   
   const handleNext = () => {
@@ -48,8 +62,7 @@ function Task({task}) {
 
   return (
     <>
-      <tr className={`odd:bg-white even:bg-gray-50`}>
-        {editingTask ? <td><EditTask editing={task} setEditingTask={setEditingTask} /></td> : null}
+      <tr className={`odd:bg-white even:bg-gray-50 ${deleted ? "hidden" : ""}`}>
         <th className="px-6 py-4 font-medium text-gray-900">{name}</th>
         <td className="text-gray-500 px-5 py-4">{toFormattedDate(due)}</td>
         <td className="text-gray-500 px-5 py-4">{category}</td>
@@ -63,8 +76,8 @@ function Task({task}) {
             {completed ? 'completed' : 'uncompleted'}
           </span>
         </td>
-        <td className="px-5 py-4">
-          <div className='flex text-slate-500 gap-2'>
+        <td className="flex gap-4 px-5 py-4">
+        <div className='flex text-slate-500 gap-2'>
             <CheckIcon iconOptions={{
               onClick: handleCompleteTask,
               className: 'hover:text-green-600 cursor-pointer h-5 w-5',
@@ -108,7 +121,11 @@ function Task({task}) {
               description={'Expand details'}
             />
           </div>
-          </td>
+        </td>
+        <td>
+          {editingTask ? <EditTask editing={task} setEditingTask={setEditingTask} /> : null} {/* Modal for editing task */}
+          {modalAlert.showing ? <ModalAlert modalAlert={modalAlert} setModalAlert={setModalAlert} task={task} setDeleted={setDeleted}/> : null }
+        </td>
       </tr>
     </>
   )

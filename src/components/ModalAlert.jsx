@@ -1,5 +1,3 @@
-import useTasks from "../hooks/useTasks";
-
 function ModalAlert({setModalAlert, modalAlert}) {
   const {message, action} = modalAlert;
   return (
@@ -8,7 +6,7 @@ function ModalAlert({setModalAlert, modalAlert}) {
         className='fixed top-0 left-0 w-screen h-screen bg-gray-800 opacity-95 out-modal p-8 flex place-content-center'
         onClick={e => {
           if(e.target.classList.contains('out-modal')) {
-            setModalAlert(false)
+            setModalAlert({showing: false})
           }
         }}
       >
@@ -19,7 +17,7 @@ function ModalAlert({setModalAlert, modalAlert}) {
           <div>
             <h4 className="font-bold">{message}</h4>
             <div className="mt-2 flex space-x-4">
-              <button className="font-bold text-red-800" onClick={e => setModalAlert(false)}>Cancel</button>
+              <button className="font-bold text-red-800" onClick={e => setModalAlert({showing: false})}>Cancel</button>
               <button
                 className="font-bold"
                 onClick={action}
