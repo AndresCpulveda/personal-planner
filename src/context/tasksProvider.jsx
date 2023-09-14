@@ -134,10 +134,13 @@ function TasksProvider({children}) {
    }
 
    const updateTask = async (task) => {
-    console.time('all map')
-    const newAllTasks = allTasks.map(item => item.id === task.id ? task : item)
-    console.timeEnd('all map')
-    setAllTasks(newAllTasks)
+    if(task.dismissed === true) {
+      const newAllTasks = allTasks.filter(item => item.id !== task.id)
+      setAllTasks(newAllTasks)
+    }else {
+      const newAllTasks = allTasks.map(item => item.id === task.id ? task : item)
+      setAllTasks(newAllTasks)
+    }
 
     try {
       const {data} = await sendAxios.put('tasks/update', task)

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import moment from 'moment';
 
 import useTasks from '../hooks/useTasks'
 import Timer from './Timer';
@@ -6,37 +7,57 @@ import { toRawDate, toFormattedDate } from '../helpers/helpers';
 import { formatPriority } from '../helpers/StyleHelpers';
 import EditTask from './EditTask';
 import { stylePriority } from '../helpers/StyleHelpers';
-import { CheckIcon, NextIcon, PencilIcon, TrashIcon, XIcon } from './icons/icons';
+import { CheckIcon, NextIcon, PencilIcon, TrashIcon, XIcon, ChevronIcon } from './icons/icons';
 import ModalAlert from './ModalAlert';
 
 function TaskOnAll({task}) {
   const {name, due, priority, time, createdAt, category, completed} = task;
     
-  const {addToCompleted} = useTasks();
+  const {addToCompleted, updateTask, deleteTask} = useTasks();
   const [deleted, setDeleted] = useState(false)
 
   const [editingTask, setEditingTask] = useState(false)
-  const [modalAlert, setModalAlert] = useState(false)
+  const [modalAlert, setModalAlert] = useState({showing: false})
 
   const handleCompleteTask = () => {
-    task.completed = true
-    addToCompleted({...task, completed: true})
+    addToCompleted(task)
   }
   
-  const handleCancelTask = () => {
-    console.log('canceling');
+  const handleDismissTask = () => {
+    setModalAlert({
+      message: 'Do you want to dismiss this task? Task will no longer be shown by default on your due or completed lists, but may be found in your reports',
+      showing: true,
+      action: () => {
+        task.dismissed = true
+        updateTask(task)
+      },
+    })
   }
   
   const handleDeleteTask = () => {
-    setModalAlert(true)
+    setModalAlert({
+      message: 'Do you want to remove this task permanently?',
+      showing: true,
+      action: () => {
+        deleteTask(task)
+        setDeleted(true)
+      },
+    })
   }
   
   const handleNext = () => {
-    console.log('moving to next');
+    const modifiedDate = moment(task.due).add(1, 'days')
+    const formattedDate = moment(modifiedDate).format('YYYY-MM-DD')
+    task.due = formattedDate
+    updateTask(task)
   }
   
   const handleEditTask = () => {
     setEditingTask(true)
+  }
+
+  const handleExpandTask = () => {
+    console.log('expanding');
   }
 
   return (
@@ -62,7 +83,7 @@ function TaskOnAll({task}) {
             }}
           />
           <XIcon isAction={true} iconOptions={{
-            onClick: handleCancelTask,
+            onClick: handleDismissTask,
             className: 'hover:text-red-600 cursor-pointer h-5 w-5'
             }}
           />
@@ -81,10 +102,22 @@ function TaskOnAll({task}) {
             className: 'hover:text-blue-600 cursor-pointer h-5 w-5'
             }}
           />
+          {/* <StopIcon iconOptions={{
+            onClick: handleEditTask,
+            className: 'hover:text-blue-600 cursor-pointer h-5 w-5'
+            }}
+            description={''}
+          /> */}
+          <ChevronIcon iconOptions={{
+            onClick: handleExpandTask,
+            className: 'hover:text-blue-600 cursor-pointer h-5 w-5 -rotate-90'
+            }}
+            description={'Expand details'}
+          />
         </td>
         <td>
           {editingTask ? <EditTask editing={task} setEditingTask={setEditingTask} /> : null} {/* Modal for editing task */}
-          {modalAlert ? <ModalAlert setModalAlert={setModalAlert} task={task} setDeleted={setDeleted}/> : null }
+          {modalAlert.showing ? <ModalAlert modalAlert={modalAlert} setModalAlert={setModalAlert} task={task} setDeleted={setDeleted}/> : null }
         </td>
       </tr>
     </>
