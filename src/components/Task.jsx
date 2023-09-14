@@ -12,7 +12,7 @@ import { toRawDate, toFormattedDate } from '../helpers/helpers';
 function Task({task}) {
   
   const {addToCompleted, deleteTask, updateTask} = useTasks();
-  const {name, due, priority, time, category, completed} = task;
+  const {name, due, priority, time, category, completed, dismissed} = task;
 
   const [editingTask, setEditingTask] = useState(false)
   
@@ -20,8 +20,9 @@ function Task({task}) {
     addToCompleted(task)
   }
   
-  const handleCancelTask = () => {
-    console.log('canceling');
+  const handleDismissTask = () => {
+    task.dismissed = true;
+    updateTask(task)
   }
   
   const handleDeleteTask = () => {
@@ -71,7 +72,7 @@ function Task({task}) {
               description={'Complete'}
             />
             <XIcon iconOptions={{
-              onClick: handleCancelTask,
+              onClick: handleDismissTask,
               className: 'hover:text-red-600 cursor-pointer h-5 w-5'
               }}
               description={'Dismiss'}

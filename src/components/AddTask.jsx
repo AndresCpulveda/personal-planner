@@ -46,8 +46,9 @@ function AddTask() {
     //CREATE TASK OBJECT TO BE SENT
     const id = generarId()
     const time = (hoursToComplete * 3600 + minutesToComplete * 60)
+    const dismissed = false;
     const task = {
-      name, id, due, priority, isRecurring, frequencyInterval, intervalUnit, category, time
+      name, id, due, priority, isRecurring, frequencyInterval, intervalUnit, category, time, dismissed
     }
 
     addToTasks(task)

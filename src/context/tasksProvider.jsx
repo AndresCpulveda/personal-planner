@@ -134,7 +134,9 @@ function TasksProvider({children}) {
    }
 
    const updateTask = async (task) => {
+    console.time('all map')
     const newAllTasks = allTasks.map(item => item.id === task.id ? task : item)
+    console.timeEnd('all map')
     setAllTasks(newAllTasks)
 
     try {
