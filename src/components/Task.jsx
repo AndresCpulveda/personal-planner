@@ -1,26 +1,25 @@
-import { useState } from 'react';
-import moment from 'moment';
+import { useState } from 'react'
+import moment from 'moment'
 
 import useTasks from '../hooks/useTasks'
-import { toFormattedDate } from '../helpers/helpers';
-import { stylePriority } from '../helpers/StyleHelpers';
-import { CheckIcon, ChevronIcon, NextIcon, PencilIcon, TrashIcon, XIcon } from './icons/icons';
-import EditTask from './EditTask';
-import ModalAlert from './ModalAlert';
+import { toFormattedDate } from '../helpers/helpers'
+import { stylePriority } from '../helpers/StyleHelpers'
+import { CheckIcon, ChevronIcon, NextIcon, PencilIcon, TrashIcon, XIcon } from './icons/icons'
+import EditTask from './EditTask'
+import ModalAlert from './ModalAlert'
 
-function Task({task}) {
-  
-  const {addToCompleted, deleteTask, updateTask} = useTasks();
-  const {name, due, priority, time, category, completed} = task;
+function Task ({ task }) {
+  const { addToCompleted, deleteTask, updateTask } = useTasks()
+  const { name, due, priority, category, completed } = task
 
   const [deleted, setDeleted] = useState(false)
   const [editingTask, setEditingTask] = useState(false)
-  const [modalAlert, setModalAlert] = useState({showing: false})
-  
+  const [modalAlert, setModalAlert] = useState({ showing: false })
+
   const handleCompleteTask = () => {
     addToCompleted(task)
   }
-  
+
   const handleDismissTask = () => {
     setModalAlert({
       message: 'Do you want to dismiss this task? Task will no longer be shown by default on your due or completed lists, but may be found in your reports',
@@ -28,11 +27,11 @@ function Task({task}) {
       action: () => {
         task.dismissed = true
         updateTask(task)
-        setModalAlert({showing: false})
-      },
+        setModalAlert({ showing: false })
+      }
     })
   }
-  
+
   const handleDeleteTask = () => {
     setModalAlert({
       message: 'Do you want to remove this task permanently?',
@@ -40,73 +39,76 @@ function Task({task}) {
       action: () => {
         deleteTask(task)
         setDeleted(true)
-        setModalAlert({showing: false})
-      },
+        setModalAlert({ showing: false })
+      }
     })
   }
-  
+
   const handleNext = () => {
     const modifiedDate = moment(task.due).add(1, 'days')
     const formattedDate = moment(modifiedDate).format('YYYY-MM-DD')
     task.due = formattedDate
     updateTask(task)
   }
-  
+
   const handleEditTask = () => {
     setEditingTask(true)
   }
 
   const handleExpandTask = () => {
-    console.log('expanding');
+    console.log('expanding')
   }
 
   return (
     <>
-      <tr className={`odd:bg-white even:bg-gray-50 ${deleted ? "hidden" : ""}`}>
-        <th className="px-6 py-4 font-medium text-gray-900">{name}</th>
-        <td className="text-gray-500 px-5 py-4">{toFormattedDate(due)}</td>
-        <td className="text-gray-500 px-5 py-4">{category}</td>
-        <td className="text-gray-500 px-5 py-4">
-          <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${completed ? "text-green-600 bg-green-100" : stylePriority(priority)}`}>
-            {completed ?
-              <CheckIcon iconOptions={{className: 'h-3 w-3'}} />
-              :
-              <XIcon iconOptions={{className: 'h-3 w-3'}} />
-            }
+      <tr className={`odd:bg-white even:bg-gray-50 ${deleted ? 'hidden' : ''}`}>
+        <th className='px-6 py-4 font-medium text-gray-900'>{name}</th>
+        <td className='text-gray-500 px-5 py-4'>{toFormattedDate(due)}</td>
+        <td className='text-gray-500 px-5 py-4'>{category}</td>
+        <td className='text-gray-500 px-5 py-4'>
+          <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${completed ? 'text-green-600 bg-green-100' : stylePriority(priority)}`}>
+            {completed
+              ? <CheckIcon iconOptions={{ className: 'h-3 w-3' }} />
+              : <XIcon iconOptions={{ className: 'h-3 w-3' }} />}
             {completed ? 'completed' : 'uncompleted'}
           </span>
         </td>
-        <td className="flex gap-4 px-5 py-4">
-        <div className='flex text-slate-500 gap-2'>
-            <CheckIcon iconOptions={{
-              onClick: handleCompleteTask,
-              className: 'hover:text-green-600 cursor-pointer h-5 w-5',
+        <td className='flex gap-4 px-5 py-4'>
+          <div className='flex text-slate-500 gap-2'>
+            <CheckIcon
+              iconOptions={{
+                onClick: handleCompleteTask,
+                className: 'hover:text-green-600 cursor-pointer h-5 w-5'
               }}
-              description={'Complete'}
+              description='Complete'
             />
-            <XIcon iconOptions={{
-              onClick: handleDismissTask,
-              className: 'hover:text-red-600 cursor-pointer h-5 w-5'
+            <XIcon
+              iconOptions={{
+                onClick: handleDismissTask,
+                className: 'hover:text-red-600 cursor-pointer h-5 w-5'
               }}
-              description={'Dismiss'}
+              description='Dismiss'
             />
-            <TrashIcon iconOptions={{
-              onClick: handleDeleteTask,
-              className: 'hover:text-red-800 cursor-pointer h-5 w-5'
+            <TrashIcon
+              iconOptions={{
+                onClick: handleDeleteTask,
+                className: 'hover:text-red-800 cursor-pointer h-5 w-5'
               }}
-              description={'Delete permanently'}
+              description='Delete permanently'
             />
-            <NextIcon iconOptions={{
-              onClick: handleNext,
-              className: 'hover:text-green-800 cursor-pointer h-5 w-5'
+            <NextIcon
+              iconOptions={{
+                onClick: handleNext,
+                className: 'hover:text-green-800 cursor-pointer h-5 w-5'
               }}
-              description={'Move to next day'}
+              description='Move to next day'
             />
-            <PencilIcon iconOptions={{
-              onClick: handleEditTask,
-              className: 'hover:text-blue-600 cursor-pointer h-5 w-5'
+            <PencilIcon
+              iconOptions={{
+                onClick: handleEditTask,
+                className: 'hover:text-blue-600 cursor-pointer h-5 w-5'
               }}
-              description={'Edit'}
+              description='Edit'
             />
             {/* <StopIcon iconOptions={{
               onClick: handleEditTask,
@@ -114,17 +116,18 @@ function Task({task}) {
               }}
               description={''}
             /> */}
-            <ChevronIcon iconOptions={{
-              onClick: handleExpandTask,
-              className: 'hover:text-blue-600 cursor-pointer h-5 w-5 -rotate-90'
+            <ChevronIcon
+              iconOptions={{
+                onClick: handleExpandTask,
+                className: 'hover:text-blue-600 cursor-pointer h-5 w-5 -rotate-90'
               }}
-              description={'Expand details'}
+              description='Expand details'
             />
           </div>
         </td>
         <td>
           {editingTask ? <EditTask editing={task} setEditingTask={setEditingTask} /> : null} {/* Modal for editing task */}
-          {modalAlert.showing ? <ModalAlert modalAlert={modalAlert} setModalAlert={setModalAlert} task={task} setDeleted={setDeleted}/> : null }
+          {modalAlert.showing ? <ModalAlert modalAlert={modalAlert} setModalAlert={setModalAlert} task={task} setDeleted={setDeleted} /> : null}
         </td>
       </tr>
     </>

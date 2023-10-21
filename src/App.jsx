@@ -7,6 +7,7 @@ import { TasksProvider } from './context/tasksProvider'
 import AllTasksPage from './pages/AllTasksPage'
 import AddTask from './components/AddTask'
 import { DaysProvider } from './context/dayProvider'
+import ReportsPage from './pages/ReportsPage'
 
 function App() {
 
@@ -19,7 +20,8 @@ function App() {
               <Route path='/' element={<MainLayout />}>
                 <Route index element={<TodayTasks />}/>
                 <Route path='/tasks' element={<AllTasksPage />}/>
-                <Route path='/add' element={<AddTask />}/>
+                {/* <Route path='/add' element={<AddTask />}/> */}
+                <Route path='/reports' element={<ReportsPage />}/>
               </Route>
             </Routes>
           </TasksProvider>

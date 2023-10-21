@@ -21,6 +21,12 @@ function MainLayout() {
                 className={({ isActive, isPending }) => isActive ? activeStyle : "block p-4 font-semibold"}>All Tasks
               </NavLink>
             </li>
+            <li className='text-gray-800'>
+              <NavLink
+                to={'/reports'}
+                className={({ isActive, isPending }) => isActive ? activeStyle : "block p-4 font-semibold"}>Reports
+              </NavLink>
+            </li>
           </ul>
         </nav>
       </header>
