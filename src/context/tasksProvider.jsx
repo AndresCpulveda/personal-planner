@@ -4,12 +4,15 @@ import moment from 'moment'
 import sendAxios from "../../config/axios";
 import {extractRecentRecurrings, createRecurrings, makeFormattedDate, toRawDate, toFormattedDate } from "../helpers/helpers";
 import useDays from "../hooks/useDays";
+import { useSelector, useDispatch } from 'react-redux'
 
 const TasksContext = createContext()
 
 function TasksProvider({children}) {
 
-  const {selectedDay, setSelectedDay, todaysDate} = useDays();
+  const todaysDate = useSelector(state => state.days.todaysDate)
+
+  const {selectedDay, setSelectedDay} = useDays();
 
   const [addingTodayTask, setAddingTodayTask] = useState(false)
   const [todayDueTasks, setTodayDueTasks] = useState([])
