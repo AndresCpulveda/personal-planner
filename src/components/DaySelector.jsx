@@ -4,30 +4,33 @@ import moment from 'moment';
 import useTasks from '../hooks/useTasks';
 
 import { ChevronIcon } from './icons/icons';
-import useDays from '../hooks/useDays';
+import { useSelector, useDispatch } from 'react-redux'
+import { selectSelectedDate } from "../store/days/days.selectors";
+import { changeSelectedDay } from '../store/days/days.reducer';
 
 function DaySelector() {
+  const dispatch = useDispatch()
   const {getDaysTasks} = useTasks();
-  const {selectedDay, setSelectedDay} = useDays();
+  const selectedDay = useSelector(selectSelectedDate)
 
   useEffect(() => {
     getDaysTasks(selectedDay)
   }, [selectedDay])
 
   const handleChange = (e) => {
-    setSelectedDay(e.target.value)
+    dispatch(changeSelectedDay(e.target.value))
   }
 
   const addOneDay = (e) => {
     const calculatedDate = moment(selectedDay).add(1, 'days')
     const formattedDate = moment(calculatedDate).format('YYYY-MM-DD')
-    setSelectedDay(formattedDate)
+    dispatch(changeSelectedDay(formattedDate))
   }
 
   const substractOneDay = (e) => {
     const calculatedDate = moment(selectedDay).subtract(1, 'days')
     const formattedDate = moment(calculatedDate).format('YYYY-MM-DD')
-    setSelectedDay(formattedDate)
+    dispatch(changeSelectedDay(formattedDate))
   }
   return (
     <div className='flex my-4 items-center'>

@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   todaysDate: moment().format('yyyy-MM-DD').concat('', 'T00:00:00.000Z'), //TO USE AS DEFAULT VALUE OF "DUE DATE" FIELD,
-  selectedDay: () => this.todaysDate.split('T')[0]
+  selectedDay: moment().format('yyyy-MM-DD')
 }
 
 export const daysSlice = createSlice({
