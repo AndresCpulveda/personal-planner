@@ -5,6 +5,7 @@ import sendAxios from "../../config/axios";
 import {extractRecentRecurrings, createRecurrings, makeFormattedDate, toRawDate, toFormattedDate } from "../helpers/helpers";
 import { useSelector } from 'react-redux'
 import { selectSelectedDate, selectTodaysDate } from "../store/days/days.selectors";
+import { useGetUnDismissedTasksQuery } from "../store/tasks/tasks.api";
 
 const TasksContext = createContext()
 
@@ -19,6 +20,8 @@ function TasksProvider({children}) {
   const [todaysTasks, setTodaysTasks] = useState([])
   const [loadedTasks, setLoadedTasks] = useState(false)
   const [allTasks, setAllTasks] = useState([])
+
+  const {data, error, isLoading} = useGetUnDismissedTasksQuery();
 
   useEffect(() => {
     const getAllTasks = async () => {
