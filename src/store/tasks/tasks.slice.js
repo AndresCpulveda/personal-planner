@@ -8,6 +8,9 @@ const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
+    setAllTasks: (state, action) => {
+      state.tasks = action.payload
+    },
     add: (state, action) => {
       state.tasks.push(action.payload)
     },
@@ -17,7 +20,7 @@ const tasksSlice = createSlice({
   }
 })
 
-export const {add} = tasksSlice.actions;
+export const {add, setAllTasks} = tasksSlice.actions;
 const tasksReducer = tasksSlice.reducer
 
 export default tasksReducer

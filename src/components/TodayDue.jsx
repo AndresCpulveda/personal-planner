@@ -4,9 +4,12 @@ import Task from './Task'
 import useTasks from '../hooks/useTasks'
 import AddTask from './AddTask';
 import { sortPriority } from '../helpers/helpers';
+import { useSelector } from 'react-redux'
+import { selectTodayDueTasks } from '../store/tasks/tasks.selectors.js'
 
 function TodayDue() {
-    const {addingTodayTask, todayDueTasks} = useTasks();
+    const {addingTodayTask} = useTasks();
+    const todayDueTasks = useSelector(selectTodayDueTasks)
 
     const orderedList = sortPriority(todayDueTasks, true)
 

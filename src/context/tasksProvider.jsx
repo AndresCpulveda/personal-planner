@@ -20,9 +20,9 @@ function TasksProvider({children}) {
   const [todaysTasks, setTodaysTasks] = useState([])
   const [loadedTasks, setLoadedTasks] = useState(false)
   const [allTasks, setAllTasks] = useState([])
-
-  const {data, error, isLoading} = useGetUnDismissedTasksQuery();
-
+  
+  // const {data, error, isLoading} = useGetUnDismissedTasksQuery();
+  
   useEffect(() => {
     const getAllTasks = async () => {
       try {
