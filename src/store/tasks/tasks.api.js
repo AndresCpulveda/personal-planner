@@ -31,4 +31,4 @@ export const tasksApi = createApi({
   })
 })
 
-export const {useGetUnDismissedTasksQuery} = tasksApi;
+export const {useGetUnDismissedTasksQuery, useAddNewTaskMutation, useUpdateTaskMutation} = tasksApi;

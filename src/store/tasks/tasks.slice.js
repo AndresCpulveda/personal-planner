@@ -11,12 +11,9 @@ const tasksSlice = createSlice({
     setAllTasks: (state, action) => {
       state.tasks = action.payload
     },
-    add: (state, action) => {
+    addNewTask: (state, action) => {
       state.tasks.push(action.payload)
     },
-    remove: (state, action) => {
-      state.tasks = action.payload
-    }
   }
 })
 

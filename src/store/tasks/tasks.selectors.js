@@ -1,6 +1,4 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { useSelector } from "react-redux";
-import { selectTodaysDate } from "../days/days.selectors";
 
 const selectSelectedDay = (state) => state.days.selectedDay
 

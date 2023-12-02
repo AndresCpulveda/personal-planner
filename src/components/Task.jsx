@@ -8,16 +8,37 @@ import { CheckIcon, ChevronIcon, NextIcon, PencilIcon, TrashIcon, XIcon } from '
 import EditTask from './EditTask'
 import ModalAlert from './ModalAlert'
 
+const { deleteTask, updateTask } = useTasks()
+const { name, due, priority, category, completed } = task
+
+const [deleted, setDeleted] = useState(false)
+const [editingTask, setEditingTask] = useState(false)
+const [modalAlert, setModalAlert] = useState({ showing: false })
+
+import { modifyCompletedTask } from '../store/tasks/tasks.utils'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectTodaysDate } from '../store/days/days.selectors'
+import { selectTasksTasks } from '../store/tasks/tasks.selectors'
+import { setAllTasks } from '../store/tasks/tasks.slice'
+import { useUpdateTaskMutation } from '../store/tasks/tasks.api'
+
+
 function Task ({ task }) {
-  const { addToCompleted, deleteTask, updateTask } = useTasks()
-  const { name, due, priority, category, completed } = task
+  const dispatch = useDispatch()
+  const todaysDate = useSelector(selectTodaysDate)
+  const allTasks = useSelector(selectTasksTasks)
+  const [postCompletedTask, {isLoading, error}] = useUpdateTaskMutation()
 
-  const [deleted, setDeleted] = useState(false)
-  const [editingTask, setEditingTask] = useState(false)
-  const [modalAlert, setModalAlert] = useState({ showing: false })
+  const handleCompleteTask = async () => {
+    const modifiedTask = {...task, completed: true, completedAt: todaysDate}
 
-  const handleCompleteTask = () => {
-    addToCompleted(task)
+    dispatch(setAllTasks(modifyCompletedTask(modifiedTask, allTasks)))
+
+    try {
+      await postCompletedTask(modifiedTask)
+    } catch (error) {
+      console.error('Error completing task:', error)
+    }
   }
 
   const handleDismissTask = () => {
