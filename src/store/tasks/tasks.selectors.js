@@ -20,3 +20,13 @@ export const selectTodayDueTasks = createSelector(
     }
   })
 )
+
+export const selectTodayCompletedTasks = createSelector(
+  [selectTasksTasks, selectSelectedDay],
+  (allTasks, day) => allTasks.filter(task => {
+    const modifiedTask = {...task}
+    if(modifiedTask.completedAt && modifiedTask.completedAt.split('T')[0] == day) {
+      return modifiedTask
+    }
+  })
+)
