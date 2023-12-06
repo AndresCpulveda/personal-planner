@@ -30,9 +30,7 @@ function Task ({ task }) {
   const allTasks = useSelector(selectTasksTasks)
   const [postUpdatedTask, {isLoading, error}] = useUpdateTaskMutation()
 
-  const handleCompleteTask = async () => {
-    const modifiedTask = {...task, completed: true, completedAt: todaysDate}
-
+  const taskUpdateDispatcher = async (modifiedTask) => {
     dispatch(setAllTasks(modifyTask(modifiedTask, allTasks)))
 
     try {
@@ -42,19 +40,18 @@ function Task ({ task }) {
     }
   }
 
+  const handleCompleteTask = async () => {
+    const modifiedTask = {...task, completed: true, completedAt: todaysDate}
+    taskUpdateDispatcher(modifiedTask)
+  }
+
   const handleDismissTask = () => {
     setModalAlert({
       message: 'Do you want to dismiss this task? Task will no longer be shown by default on your due or completed lists, but may be found in your reports',
       showing: true,
-      action: async () => {
+      action: () => {
         const modifiedTask = {...task, dismissed: true}
-        dispatch(setAllTasks(modifyTask(modifiedTask, allTasks)))
-        try {
-          await postUpdatedTask(modifiedTask)
-        } catch (error) {
-          console.error('Error updating task:', error)
-        }
-
+        taskUpdateDispatcher(modifiedTask)
         setModalAlert({ showing: false })
       }
     })
@@ -72,11 +69,12 @@ function Task ({ task }) {
     })
   }
 
-  const handleNext = () => {
+  const handleNext = async () => {
+
     const modifiedDate = moment(task.due).add(1, 'days')
     const formattedDate = moment(modifiedDate).format('YYYY-MM-DD')
-    task.due = formattedDate
-    updateTask(task)
+    const modifiedTask = {...task, due: formattedDate}
+    taskUpdateDispatcher(modifiedTask)
   }
 
   const handleEditTask = () => {
