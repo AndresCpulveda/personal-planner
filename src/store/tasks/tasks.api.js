@@ -23,7 +23,7 @@ export const tasksApi = createApi({
     }),
     deleteTask: builder.mutation({
       query: (taskToDelete) => ({
-        url: `delete/${newask.id}`,
+        url: `delete/${taskToDelete.id}`,
         method: 'DELETE',
         body: taskToDelete,
       })
@@ -31,4 +31,4 @@ export const tasksApi = createApi({
   })
 })
 
-export const {useGetUnDismissedTasksQuery, useAddNewTaskMutation, useUpdateTaskMutation} = tasksApi;
+export const {useGetUnDismissedTasksQuery, useAddNewTaskMutation, useUpdateTaskMutation, useDeleteTaskMutation} = tasksApi;

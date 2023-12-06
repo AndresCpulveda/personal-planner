@@ -1,23 +1,21 @@
 import { useState } from 'react'
 import moment from 'moment'
 
-import useTasks from '../hooks/useTasks'
 import { toFormattedDate } from '../helpers/helpers'
 import { stylePriority } from '../helpers/StyleHelpers'
 import { CheckIcon, ChevronIcon, NextIcon, PencilIcon, TrashIcon, XIcon } from './icons/icons'
 import EditTask from './EditTask'
 import ModalAlert from './ModalAlert'
 
-import { modifyTask } from '../store/tasks/tasks.utils'
+import { modifyTask, removeTask } from '../store/tasks/tasks.utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectTodaysDate } from '../store/days/days.selectors'
 import { selectTasksTasks } from '../store/tasks/tasks.selectors'
 import { setAllTasks } from '../store/tasks/tasks.slice'
-import { useUpdateTaskMutation } from '../store/tasks/tasks.api'
+import { useUpdateTaskMutation, useDeleteTaskMutation } from '../store/tasks/tasks.api'
 
 
 function Task ({ task }) {
-  const { deleteTask, updateTask } = useTasks()
   const { name, due, priority, category, completed } = task
 
   const [deleted, setDeleted] = useState(false)
@@ -28,7 +26,8 @@ function Task ({ task }) {
   const dispatch = useDispatch()
   const todaysDate = useSelector(selectTodaysDate)
   const allTasks = useSelector(selectTasksTasks)
-  const [postUpdatedTask, {isLoading, error}] = useUpdateTaskMutation()
+  const [postUpdatedTask, {isLoadingUpdate, updateError}] = useUpdateTaskMutation()
+  const [postDeleteTask, {isLoadingRemove, removeError}] = useDeleteTaskMutation()
 
   const taskUpdateDispatcher = async (modifiedTask) => {
     dispatch(setAllTasks(modifyTask(modifiedTask, allTasks)))
@@ -61,9 +60,13 @@ function Task ({ task }) {
     setModalAlert({
       message: 'Do you want to remove this task permanently?',
       showing: true,
-      action: () => {
-        deleteTask(task)
-        setDeleted(true)
+      action: async () => {
+        dispatch(setAllTasks(removeTask(task, allTasks)))
+        try {
+          await postDeleteTask(task)
+        } catch (error) {
+          console.error('Error updating task:', error)
+        }
         setModalAlert({ showing: false })
       }
     })
