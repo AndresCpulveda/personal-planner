@@ -70,9 +70,9 @@ function Task ({ task }) {
   }
 
   const handleNext = async () => {
-
-    const modifiedDate = moment(task.due).add(1, 'days')
-    const formattedDate = moment(modifiedDate).format('YYYY-MM-DD')
+    const taskDate = task.due.split('T')[0]
+    const addedDate = moment(taskDate).add(1, 'days')
+    const formattedDate = moment(addedDate).format('YYYY-MM-DD')
     const modifiedTask = {...task, due: formattedDate}
     taskUpdateDispatcher(modifiedTask)
   }
