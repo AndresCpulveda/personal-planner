@@ -8,14 +8,7 @@ import { CheckIcon, ChevronIcon, NextIcon, PencilIcon, TrashIcon, XIcon } from '
 import EditTask from './EditTask'
 import ModalAlert from './ModalAlert'
 
-const { deleteTask, updateTask } = useTasks()
-const { name, due, priority, category, completed } = task
-
-const [deleted, setDeleted] = useState(false)
-const [editingTask, setEditingTask] = useState(false)
-const [modalAlert, setModalAlert] = useState({ showing: false })
-
-import { modifyCompletedTask } from '../store/tasks/tasks.utils'
+import { modifyTask } from '../store/tasks/tasks.utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectTodaysDate } from '../store/days/days.selectors'
 import { selectTasksTasks } from '../store/tasks/tasks.selectors'
@@ -24,20 +17,28 @@ import { useUpdateTaskMutation } from '../store/tasks/tasks.api'
 
 
 function Task ({ task }) {
+  const { deleteTask, updateTask } = useTasks()
+  const { name, due, priority, category, completed } = task
+
+  const [deleted, setDeleted] = useState(false)
+  const [editingTask, setEditingTask] = useState(false)
+  const [modalAlert, setModalAlert] = useState({ showing: false })
+
+
   const dispatch = useDispatch()
   const todaysDate = useSelector(selectTodaysDate)
   const allTasks = useSelector(selectTasksTasks)
-  const [postCompletedTask, {isLoading, error}] = useUpdateTaskMutation()
+  const [postUpdatedTask, {isLoading, error}] = useUpdateTaskMutation()
 
   const handleCompleteTask = async () => {
     const modifiedTask = {...task, completed: true, completedAt: todaysDate}
 
-    dispatch(setAllTasks(modifyCompletedTask(modifiedTask, allTasks)))
+    dispatch(setAllTasks(modifyTask(modifiedTask, allTasks)))
 
     try {
-      await postCompletedTask(modifiedTask)
+      await postUpdatedTask(modifiedTask)
     } catch (error) {
-      console.error('Error completing task:', error)
+      console.error('Error updating task:', error)
     }
   }
 
@@ -45,9 +46,15 @@ function Task ({ task }) {
     setModalAlert({
       message: 'Do you want to dismiss this task? Task will no longer be shown by default on your due or completed lists, but may be found in your reports',
       showing: true,
-      action: () => {
-        task.dismissed = true
-        updateTask(task)
+      action: async () => {
+        const modifiedTask = {...task, dismissed: true}
+        dispatch(setAllTasks(modifyTask(modifiedTask, allTasks)))
+        try {
+          await postUpdatedTask(modifiedTask)
+        } catch (error) {
+          console.error('Error updating task:', error)
+        }
+
         setModalAlert({ showing: false })
       }
     })
