@@ -4,18 +4,24 @@ import TodayDue from '../components/TodayDue'
 import useTasks from '../hooks/useTasks'
 import AddTask from '../components/AddTask';
 import { AddTaskIcon } from '../components/icons/icons';
+import { toggleAddingTask } from '../store/tasks/tasks.slice';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { selectAddingTask } from '../store/tasks/tasks.selectors';
 
 function AllTasksPage() {
-  const {loadedTasks, setAddingTodayTask, addingTodayTask} = useTasks();
+  const addingTask = useSelector(selectAddingTask)
+  const dispatch = useDispatch()
+  const {loadedTasks} = useTasks();
   return (
     <>
       <section className='w-full'>
         <div className='mt-10 mb-2 flex gap-4 items-center'>
           <h2 className='uppercase text-gray-900 text-3xl font-bold'>all tasks</h2>
-          <AddTaskIcon iconOptions={{onClick: () => setAddingTodayTask(true)}} />
+          <AddTaskIcon iconOptions={{onClick: () => dispatch(toggleAddingTask())}} />
         </div>
         {loadedTasks ? <AllTasks/> : null}
-        {addingTodayTask ? <AddTask /> : null} {/* Modal for adding task */}
+        {addingTask ? <AddTask /> : null} {/* Modal for adding task */}
       </section>
     </>
   )

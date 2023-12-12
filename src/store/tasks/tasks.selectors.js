@@ -28,3 +28,8 @@ export const selectTodayCompletedTasks = createSelector(
     }
   })
 )
+
+export const selectAddingTask = createSelector(
+  [selectTasksReducer],
+  (tasksSlice) => tasksSlice.addingTask
+)

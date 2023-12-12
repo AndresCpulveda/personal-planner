@@ -4,8 +4,11 @@ import moment from 'moment';
 import useTasks from '../hooks/useTasks'
 import Alert from './Alert'
 import generarId from '../helpers/generarId';
+import { toggleAddingTask } from '../store/tasks/tasks.slice';
+import { useDispatch } from 'react-redux';
 
 function AddTask() {
+  const dispatch = useDispatch()
 
   const [categories, setCategories] = useState([])
 
@@ -17,7 +20,7 @@ function AddTask() {
   const date = moment();
   const formattedDate = date.format('YYYY-MM-DD'); //TO USE AS DEFAULT VALUE OF "DUE DATE" FIELD
 
-  const {addToTasks, setAddingTodayTask, getCategories} = useTasks();
+  const {addToTasks, getCategories} = useTasks();
 
 
   //STATES FOR EACH FIELD ON THE FORM
@@ -52,7 +55,7 @@ function AddTask() {
     }
 
     addToTasks(task)
-    setAddingTodayTask(false)
+    dispatch(toggleAddingTask())
   }
 
 
@@ -62,7 +65,7 @@ function AddTask() {
       className='fixed top-0 left-0 w-screen h-screen bg-gray-800 opacity-95 out-modal p-8 flex place-content-center'
       onClick={e => {
         if(e.target.classList.contains('out-modal')){
-          setAddingTodayTask(false)
+          dispatch(toggleAddingTask())
         }}
       }
     >

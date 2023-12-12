@@ -5,10 +5,11 @@ import useTasks from '../hooks/useTasks'
 import Alert from './Alert'
 import {timeFormatter } from '../helpers/helpers';
 import { toRawDate } from '../helpers/helpers';
+import { toggleAddingTask } from '../store/tasks/tasks.slice';
 
 function EditTask({editing, setEditingTask}) {
 
-  const {setAddingTodayTask, updateTask} = useTasks();
+  const {updateTask} = useTasks();
 
   const [name, setName] = useState(editing.name)
   const [due, setDue] = useState(editing.due)
@@ -55,7 +56,7 @@ function EditTask({editing, setEditingTask}) {
       className='fixed top-0 left-0 w-screen h-screen bg-gray-800 opacity-95 out-modal p-8 flex place-content-center'
       onClick={e => {
         if(e.target.classList.contains('out-modal')){
-          setAddingTodayTask(false)
+          dispatch(toggleAddingTask())
           setEditingTask(false)
         }}
       }
