@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Task from './Task'
-import useTasks from '../hooks/useTasks'
 import AddTask from './AddTask';
 import { sortPriority } from '../helpers/helpers';
 import { useSelector } from 'react-redux'

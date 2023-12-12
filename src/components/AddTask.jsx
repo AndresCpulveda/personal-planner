@@ -1,26 +1,21 @@
-import {useState, useRef, useEffect} from 'react'
+import {useState, useMemo} from 'react'
 import moment from 'moment';
 
 import useTasks from '../hooks/useTasks'
 import Alert from './Alert'
 import generarId from '../helpers/generarId';
-import { toggleAddingTask } from '../store/tasks/tasks.slice';
+import { toggleAddingTask, addNewTask } from '../store/tasks/tasks.slice';
 import { useDispatch } from 'react-redux';
+import { selectTasksCategories } from '../store/tasks/tasks.selectors';
+import { useSelector } from 'react-redux';
 
 function AddTask() {
   const dispatch = useDispatch()
+  const categories = useSelector(selectTasksCategories)
 
-  const [categories, setCategories] = useState([])
-
-  useEffect(() => {
-    const categories = getCategories()
-    setCategories(categories)
-   }, [])
 
   const date = moment();
   const formattedDate = date.format('YYYY-MM-DD'); //TO USE AS DEFAULT VALUE OF "DUE DATE" FIELD
-
-  const {addToTasks, getCategories} = useTasks();
 
 
   //STATES FOR EACH FIELD ON THE FORM
@@ -36,7 +31,7 @@ function AddTask() {
 
   const [alert, setAlert] = useState({}) //TO CONDITIONALY SHOW THE ALERT COMPONENT
 
-  const addNewTask = (e) => { //VALIDATES FORM AND CALLS FUNCTION IN THE PROVIDER TO SEND THE TASK
+  const handleAddTask = (e) => { //VALIDATES FORM AND CALLS FUNCTION IN THE PROVIDER TO SEND THE TASK
     e.preventDefault()
     if([name, due, priority].includes('')) {
       setAlert({msg: 'Use all the fields', error: true})
@@ -54,7 +49,7 @@ function AddTask() {
       name, id, due, priority, isRecurring, frequencyInterval, intervalUnit, category, time, dismissed
     }
 
-    addToTasks(task)
+    dispatch(addNewTask(task))
     dispatch(toggleAddingTask())
   }
 
@@ -71,7 +66,7 @@ function AddTask() {
     >
       <form
         className='w-2/4 bg-white rounded py-8 px-24 flex flex-col justify-evenly'
-        onSubmit={addNewTask}
+        onSubmit={handleAddTask}
       >
         <div className='grid grid-cols-2'>
           <div className='grid gap-8 text-gray-900 font-semibold'>

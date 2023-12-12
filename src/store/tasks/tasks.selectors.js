@@ -33,3 +33,19 @@ export const selectAddingTask = createSelector(
   [selectTasksReducer],
   (tasksSlice) => tasksSlice.addingTask
 )
+
+export const selectTasksCategories = createSelector(
+  [selectTasksTasks],
+  (allTasks) => {
+    const categories = []
+    for (let i = 0; i < allTasks.length; i++) {
+      const exists = categories.find(category => category === allTasks[i].category)
+      if(!exists) {
+        if(allTasks[i].category !== ''){
+          categories.push(allTasks[i].category)
+        }
+      }
+    }
+    return categories
+  }
+)
