@@ -3,10 +3,11 @@ import {useEffect, useState} from 'react'
 import Task from './Task';
 import { sortByBoolean, sortDueBoolean, sortPriority, sortCreatedBoolean, sortCategory} from '../helpers/helpers';
 import { btnStyles } from '../helpers/StyleHelpers';
-import useTasks from '../hooks/useTasks';
+import { useSelector } from 'react-redux';
+import { selectTasksTasks } from '../store/tasks/tasks.selectors';
 
 function AllTasks() {
-  const {allTasks} = useTasks();
+  const allTasks = useSelector(selectTasksTasks)
   const [showingTasks, setShowingTasks] = useState([])
   const [activeBtn, setActiveBtn] = useState(3)
 

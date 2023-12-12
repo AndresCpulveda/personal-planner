@@ -1,7 +1,6 @@
 import {useState, useMemo} from 'react'
 import moment from 'moment';
 
-import useTasks from '../hooks/useTasks'
 import Alert from './Alert'
 import generarId from '../helpers/generarId';
 import { toggleAddingTask, addNewTask } from '../store/tasks/tasks.slice';
