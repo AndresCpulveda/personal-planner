@@ -7,11 +7,12 @@ import { toggleAddingTask, addNewTask } from '../store/tasks/tasks.slice';
 import { useDispatch } from 'react-redux';
 import { selectTasksCategories } from '../store/tasks/tasks.selectors';
 import { useSelector } from 'react-redux';
+import { useAddNewTaskMutation } from '../store/tasks/tasks.api';
 
 function AddTask() {
   const dispatch = useDispatch()
   const categories = useSelector(selectTasksCategories)
-
+  const [postNewTask, {isLoading, error}] = useAddNewTaskMutation()
 
   const date = moment();
   const formattedDate = date.format('YYYY-MM-DD'); //TO USE AS DEFAULT VALUE OF "DUE DATE" FIELD
@@ -30,7 +31,7 @@ function AddTask() {
 
   const [alert, setAlert] = useState({}) //TO CONDITIONALY SHOW THE ALERT COMPONENT
 
-  const handleAddTask = (e) => { //VALIDATES FORM AND CALLS FUNCTION IN THE PROVIDER TO SEND THE TASK
+  const handleAddTask = async (e) => { //VALIDATES FORM AND CALLS FUNCTION IN THE PROVIDER TO SEND THE TASK
     e.preventDefault()
     if([name, due, priority].includes('')) {
       setAlert({msg: 'Use all the fields', error: true})
@@ -44,11 +45,17 @@ function AddTask() {
     const id = generarId()
     const time = (hoursToComplete * 3600 + minutesToComplete * 60)
     const dismissed = false;
+    const stopWatch = time === 0
     const task = {
-      name, id, due, priority, isRecurring, frequencyInterval, intervalUnit, category, time, dismissed
+      name, id, due, priority, isRecurring, frequencyInterval, intervalUnit, category, time, dismissed, completed: false, stopWatch
     }
 
     dispatch(addNewTask(task))
+    try {
+      await postNewTask(task)
+    } catch (e) {
+      console.error('Error adding task:', error)
+    }
     dispatch(toggleAddingTask())
   }
 

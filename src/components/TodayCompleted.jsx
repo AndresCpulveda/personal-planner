@@ -1,5 +1,4 @@
 import { useSelector } from 'react-redux'
-import useTasks from '../hooks/useTasks'
 import { selectTodayCompletedTasks } from '../store/tasks/tasks.selectors.js'
 
 import Task from './Task'

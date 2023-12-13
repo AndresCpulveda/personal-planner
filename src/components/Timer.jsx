@@ -1,21 +1,35 @@
 import { useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 import { timeFormatter, timeDeFormatter } from '../helpers/helpers'
-import useTasks from '../hooks/useTasks'
+import { useUpdateTaskMutation } from '../store/tasks/tasks.api'
+import { setAllTasks } from '../store/tasks/tasks.slice'
+import { modifyTask } from '../store/tasks/tasks.utils'
 
 function Timer ({ task }) {
+  const dispatch = useDispatch()
   const savedTime = timeDeFormatter(task.time)
-  const { updateTask } = useTasks()
 
+  const [postUpdatedTask, {isLoadingUpdate, updateError}] = useUpdateTaskMutation()
   const [timerActive, setTimerActive] = useState(false)
   const [timerPaused, setTimerPaused] = useState(true)
   const [timer, setTimer] = useState(savedTime || 0)
+
+  const taskUpdateDispatcher = async (modifiedTask) => {
+    dispatch(setAllTasks(modifyTask(modifiedTask, allTasks)))
+
+    try {
+      await postUpdatedTask(modifiedTask)
+    } catch (error) {
+      console.error('Error updating task:', error)
+    }
+  }
 
   const timeRef = useRef(savedTime || null)
 
   if (timerActive && timer % 13 === 0) {
     task.time = timeFormatter(timer)
-    updateTask(task)
+    taskUpdateDispatcher(task)
   }
 
   const handleStart = () => {
@@ -37,7 +51,7 @@ function Timer ({ task }) {
     setTimerPaused(true)
     clearInterval(timeRef.current)
     task.time = timeFormatter(timer)
-    updateTask(task)
+    taskUpdateDispatcher(task)
   }
 
   const handleReset = () => {
@@ -47,7 +61,7 @@ function Timer ({ task }) {
     setTimer(0)
     task.time = timeFormatter(timer)
     task.stopWatch = true
-    updateTask(task)
+    taskUpdateDispatcher(task)
   }
 
   if (timer < 0) {

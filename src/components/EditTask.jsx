@@ -1,15 +1,21 @@
 import {useState} from 'react'
 import moment from 'moment'
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import useTasks from '../hooks/useTasks'
 import Alert from './Alert'
 import {timeFormatter } from '../helpers/helpers';
 import { toRawDate } from '../helpers/helpers';
-import { toggleAddingTask } from '../store/tasks/tasks.slice';
+import { useUpdateTaskMutation } from '../store/tasks/tasks.api'
+import { setAllTasks } from '../store/tasks/tasks.slice'
+import { modifyTask } from '../store/tasks/tasks.utils'
+import { selectTasksTasks } from '../store/tasks/tasks.selectors';
 
 function EditTask({editing, setEditingTask}) {
+  const dispatch = useDispatch()
 
-  const {updateTask} = useTasks();
+  const [postUpdatedTask, {isLoadingUpdate, updateError}] = useUpdateTaskMutation()
+  const allTasks = useSelector(selectTasksTasks)
 
   const [name, setName] = useState(editing.name)
   const [due, setDue] = useState(editing.due)
@@ -23,7 +29,7 @@ function EditTask({editing, setEditingTask}) {
 
   const [alert, setAlert] = useState({})
 
-  const handleEditTask = (e) => {
+  const handleEditTask = async (e) => {
     e.preventDefault()
     if([name, due, priority].includes('')) {
       setAlert({msg: 'Use all the fields', error: true})
@@ -32,20 +38,26 @@ function EditTask({editing, setEditingTask}) {
       }, 3000);
       return
     }
+    const editedTask = {...editing}
     if(due === editing.due) {
-      editing.due = due
+      editedTask.due = due
     }else {
-      editing.due = due
+      editedTask.due = due
     }
 
-    editing.name = name
-    editing.priority = priority
-    editing.time = timeFormatter(hoursToComplete * 3600 + minutesToComplete * 60)
-    editing.isRecurring = isRecurring
-    editing.frequencyInterval = frequencyInterval
-    editing.category = category
+    editedTask.name = name
+    editedTask.priority = priority
+    editedTask.time = timeFormatter(hoursToComplete * 3600 + minutesToComplete * 60)
+    editedTask.isRecurring = isRecurring
+    editedTask.frequencyInterval = frequencyInterval
+    editedTask.category = category
     
-    updateTask(editing)
+    dispatch(setAllTasks(modifyTask(editedTask, allTasks)))
+    try {
+      await postUpdatedTask(editedTask)
+    } catch (error) {
+      console.error('Error updating task:', error)
+    }
     setEditingTask(false)
   }
 
@@ -56,7 +68,6 @@ function EditTask({editing, setEditingTask}) {
       className='fixed top-0 left-0 w-screen h-screen bg-gray-800 opacity-95 out-modal p-8 flex place-content-center'
       onClick={e => {
         if(e.target.classList.contains('out-modal')){
-          dispatch(toggleAddingTask())
           setEditingTask(false)
         }}
       }
@@ -86,7 +97,7 @@ function EditTask({editing, setEditingTask}) {
 
             <input
               // defaultValue={due}
-              defaultValue={editing?.due ? editing.due : due}
+              defaultValue={editing?.due ? editing.due.split('T')[0] : due}
               type='date'
               className='bg-gray-300 rounded-md h-8 px-2'
               onChange={e => setDue(e.target.value)}
