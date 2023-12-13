@@ -1,12 +1,14 @@
 import React from 'react'
 
 import Task from './Task'
-import useTasks from '../hooks/useTasks'
 import AddTask from './AddTask';
 import { sortPriority } from '../helpers/helpers';
+import { useSelector } from 'react-redux'
+import { selectAddingTask, selectTodayDueTasks } from '../store/tasks/tasks.selectors.js'
 
 function TodayDue() {
-    const {addingTodayTask, todayDueTasks} = useTasks();
+    const addingTask = useSelector(selectAddingTask)
+    const todayDueTasks = useSelector(selectTodayDueTasks)
 
     const orderedList = sortPriority(todayDueTasks, true)
 
@@ -36,7 +38,7 @@ function TodayDue() {
             {orderedList.map( task => <Task task={task} key={task.id} />)}
             </tbody>
           </table>
-          {addingTodayTask ? <AddTask /> : null}
+          {addingTask ? <AddTask /> : null}
         </div>
       </>
     )

@@ -1,23 +1,47 @@
 import { useState } from 'react'
 import moment from 'moment'
 
-import useTasks from '../hooks/useTasks'
 import { toFormattedDate } from '../helpers/helpers'
 import { stylePriority } from '../helpers/StyleHelpers'
 import { CheckIcon, ChevronIcon, NextIcon, PencilIcon, TrashIcon, XIcon } from './icons/icons'
 import EditTask from './EditTask'
 import ModalAlert from './ModalAlert'
 
+import { modifyTask, removeTask } from '../store/tasks/tasks.utils'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectTodaysDate } from '../store/days/days.selectors'
+import { selectTasksTasks } from '../store/tasks/tasks.selectors'
+import { setAllTasks } from '../store/tasks/tasks.slice'
+import { useUpdateTaskMutation, useDeleteTaskMutation } from '../store/tasks/tasks.api'
+
+
 function Task ({ task }) {
-  const { addToCompleted, deleteTask, updateTask } = useTasks()
   const { name, due, priority, category, completed } = task
 
   const [deleted, setDeleted] = useState(false)
   const [editingTask, setEditingTask] = useState(false)
   const [modalAlert, setModalAlert] = useState({ showing: false })
 
-  const handleCompleteTask = () => {
-    addToCompleted(task)
+
+  const dispatch = useDispatch()
+  const todaysDate = useSelector(selectTodaysDate)
+  const allTasks = useSelector(selectTasksTasks)
+  const [postUpdatedTask, {isLoadingUpdate, updateError}] = useUpdateTaskMutation()
+  const [postDeleteTask, {isLoadingRemove, removeError}] = useDeleteTaskMutation()
+
+  const taskUpdateDispatcher = async (modifiedTask) => {
+    dispatch(setAllTasks(modifyTask(modifiedTask, allTasks)))
+
+    try {
+      await postUpdatedTask(modifiedTask)
+    } catch (error) {
+      console.error('Error updating task:', error)
+    }
+  }
+
+  const handleCompleteTask = async () => {
+    const modifiedTask = {...task, completed: true, completedAt: todaysDate}
+    taskUpdateDispatcher(modifiedTask)
   }
 
   const handleDismissTask = () => {
@@ -25,8 +49,8 @@ function Task ({ task }) {
       message: 'Do you want to dismiss this task? Task will no longer be shown by default on your due or completed lists, but may be found in your reports',
       showing: true,
       action: () => {
-        task.dismissed = true
-        updateTask(task)
+        const modifiedTask = {...task, dismissed: true}
+        taskUpdateDispatcher(modifiedTask)
         setModalAlert({ showing: false })
       }
     })
@@ -36,19 +60,24 @@ function Task ({ task }) {
     setModalAlert({
       message: 'Do you want to remove this task permanently?',
       showing: true,
-      action: () => {
-        deleteTask(task)
-        setDeleted(true)
+      action: async () => {
+        dispatch(setAllTasks(removeTask(task, allTasks)))
+        try {
+          await postDeleteTask(task)
+        } catch (error) {
+          console.error('Error updating task:', error)
+        }
         setModalAlert({ showing: false })
       }
     })
   }
 
-  const handleNext = () => {
-    const modifiedDate = moment(task.due).add(1, 'days')
-    const formattedDate = moment(modifiedDate).format('YYYY-MM-DD')
-    task.due = formattedDate
-    updateTask(task)
+  const handleNext = async () => {
+    const taskDate = task.due.split('T')[0]
+    const addedDate = moment(taskDate).add(1, 'days')
+    const formattedDate = moment(addedDate).format('YYYY-MM-DD')
+    const modifiedTask = {...task, due: formattedDate}
+    taskUpdateDispatcher(modifiedTask)
   }
 
   const handleEditTask = () => {

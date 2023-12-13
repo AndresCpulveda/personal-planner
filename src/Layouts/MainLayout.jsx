@@ -1,9 +1,19 @@
-import React from 'react'
-import { Outlet, NavLink} from 'react-router-dom' 
+import { Outlet, NavLink} from 'react-router-dom'
+import { useDispatch } from 'react-redux';
+
+import { useGetUnDismissedTasksQuery } from "../store/tasks/tasks.api";
+import { setAllTasks } from '../store/tasks/tasks.slice';
 
 function MainLayout() {
+  const dispatch = useDispatch()
   const activeStyle = 'block p-4 bg-white border-b-2 border-gray-800 font-semibold'
+  const {data, isLoading, error} = useGetUnDismissedTasksQuery();
 
+  if(isLoading) {
+    return <p>Loading...</p>
+  }
+  dispatch(setAllTasks(data))
+  
   return (
     <>
       <header className='flex bg-slate-100'>

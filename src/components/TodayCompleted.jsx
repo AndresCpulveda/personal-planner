@@ -1,11 +1,10 @@
-
+import { useSelector } from 'react-redux'
+import { selectTodayCompletedTasks } from '../store/tasks/tasks.selectors.js'
 
 import Task from './Task'
-import useTasks from '../hooks/useTasks'
 
 function TodayCompleted() {
-
-  const {todayCompleted} = useTasks();
+  const todayCompleted = useSelector(selectTodayCompletedTasks)
   
   return (
     <div className="">
