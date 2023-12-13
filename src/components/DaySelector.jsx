@@ -1,7 +1,4 @@
-import {useEffect, useState} from 'react'
 import moment from 'moment';
-
-import useTasks from '../hooks/useTasks';
 
 import { ChevronIcon } from './icons/icons';
 import { useSelector, useDispatch } from 'react-redux'
@@ -10,12 +7,7 @@ import { changeSelectedDay } from '../store/days/days.reducer';
 
 function DaySelector() {
   const dispatch = useDispatch()
-  const {getDaysTasks} = useTasks();
   const selectedDay = useSelector(selectSelectedDate)
-
-  useEffect(() => {
-    getDaysTasks(selectedDay)
-  }, [selectedDay])
 
   const handleChange = (e) => {
     dispatch(changeSelectedDay(e.target.value))
