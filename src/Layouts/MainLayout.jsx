@@ -3,17 +3,40 @@ import { useDispatch } from 'react-redux';
 
 import { useGetUnDismissedTasksQuery } from "../store/tasks/tasks.api";
 import { setAllTasks } from '../store/tasks/tasks.slice';
+import { extractRecentRecurrings, createRecurrings } from '../helpers/helpers';
+import { useAddNewTaskMutation } from '../store/tasks/tasks.api';
+import { useEffect } from 'react';
 
 function MainLayout() {
   const dispatch = useDispatch()
   const activeStyle = 'block p-4 bg-white border-b-2 border-gray-800 font-semibold'
+
+  const [postNewTask, {loadingPost, errorPost}] = useAddNewTaskMutation()
   const {data, isLoading, error} = useGetUnDismissedTasksQuery();
+
+  useEffect(() => {
+    if(!isLoading) {
+      const currentRecurrings = extractRecentRecurrings(data)
+      const newRecurrings = createRecurrings(currentRecurrings)
+
+      const all = [...data, ...newRecurrings]
+
+      dispatch(setAllTasks(all))
+
+      try {
+        newRecurrings.map(async(iTask) => {
+          await postNewTask(iTask)
+        })
+      } catch (error) {
+        console.log(errorPost);
+      }
+    }
+  }, [isLoading, data])
 
   if(isLoading) {
     return <p>Loading...</p>
   }
-  dispatch(setAllTasks(data))
-  
+
   return (
     <>
       <header className='flex bg-slate-100'>
