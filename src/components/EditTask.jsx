@@ -10,6 +10,7 @@ import { useUpdateTaskMutation } from '../store/tasks/tasks.api'
 import { setAllTasks } from '../store/tasks/tasks.slice'
 import { modifyTask } from '../store/tasks/tasks.utils'
 import { selectTasksTasks } from '../store/tasks/tasks.selectors';
+import { deactivateTaskRecurrence } from '../helpers/helpers';
 
 function EditTask({editing, setEditingTask}) {
   const dispatch = useDispatch()
@@ -45,19 +46,33 @@ function EditTask({editing, setEditingTask}) {
       editedTask.due = due
     }
 
+    const updateTaskOnDB = async (taskToUpdate) => {
+      try {
+        await postUpdatedTask(taskToUpdate)
+      } catch (error) {
+        console.error('Error updating task:', error)
+      }
+    }
+
     editedTask.name = name
     editedTask.priority = priority
     editedTask.time = timeFormatter(hoursToComplete * 3600 + minutesToComplete * 60)
     editedTask.isRecurring = isRecurring
     editedTask.frequencyInterval = frequencyInterval
     editedTask.category = category
-    
-    dispatch(setAllTasks(modifyTask(editedTask, allTasks)))
-    try {
-      await postUpdatedTask(editedTask)
-    } catch (error) {
-      console.error('Error updating task:', error)
+
+    if(!editing.isRecurring == isRecurring && isRecurring == false) {
+      const [modifiedList, changedTasks] = deactivateTaskRecurrence(editedTask, allTasks)
+      dispatch(setAllTasks(modifyTask(editedTask, modifiedList)))
+      changedTasks.map(iTask => {
+        updateTaskOnDB(iTask)
+      })
+    }else {
+      dispatch(setAllTasks(modifyTask(editedTask, allTasks)))
+      updateTaskOnDB(editedTask)
     }
+    
+    
     setEditingTask(false)
   }
 
