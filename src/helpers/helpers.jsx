@@ -263,10 +263,14 @@ export function createRecurrings (list) {
 
 export const deactivateTaskRecurrence = (task, allTasks) => {
   const changedTasks = []
+  const name = allTasks.find(iTask => iTask.id == task.id).name
   const modifiedList = allTasks.map((iTask) => {
-    const modTask = {...iTask}
-    if(modTask.name == task.name) {
-      modTask.isRecurring = false
+    if(iTask.name == name) {
+      if(iTask.id === task.id) {
+        changedTasks.push(task)
+        return task
+      }
+      const modTask = {...task, due: iTask.due, completed: iTask.completed, createdAt: iTask.createdAt, updatedAt: iTask.updatedAt, time: iTask.time, id: iTask.id}
       changedTasks.push(modTask)
       return modTask
     }

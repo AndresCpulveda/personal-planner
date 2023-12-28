@@ -30,8 +30,17 @@ function EditTask({editing, setEditingTask}) {
 
   const [alert, setAlert] = useState({})
 
+  const updateTaskOnDB = async (taskToUpdate) => {
+    try {
+      await postUpdatedTask(taskToUpdate)
+    } catch (error) {
+      console.error('Error updating task:', error)
+    }
+  }
+
   const handleEditTask = async (e) => {
     e.preventDefault()
+    //Validate the fields
     if([name, due, priority].includes('')) {
       setAlert({msg: 'Use all the fields', error: true})
       setTimeout(() => {
@@ -39,29 +48,20 @@ function EditTask({editing, setEditingTask}) {
       }, 3000);
       return
     }
+
+    //Clone object to mutate
     const editedTask = {...editing}
-    if(due === editing.due) {
-      editedTask.due = due
-    }else {
-      editedTask.due = due
-    }
-
-    const updateTaskOnDB = async (taskToUpdate) => {
-      try {
-        await postUpdatedTask(taskToUpdate)
-      } catch (error) {
-        console.error('Error updating task:', error)
-      }
-    }
-
+    //Assign input data to object (Optimizable by using object state and spread operator)
     editedTask.name = name
+    editedTask.due = due
     editedTask.priority = priority
     editedTask.time = timeFormatter(hoursToComplete * 3600 + minutesToComplete * 60)
     editedTask.isRecurring = isRecurring
     editedTask.frequencyInterval = frequencyInterval
     editedTask.category = category
 
-    if(!editing.isRecurring == isRecurring && isRecurring == false) {
+    //If task is recurring, all recurrings must be changed
+    if(editing.isRecurring) {
       const [modifiedList, changedTasks] = deactivateTaskRecurrence(editedTask, allTasks)
       dispatch(setAllTasks(modifyTask(editedTask, modifiedList)))
       changedTasks.map(iTask => {
@@ -71,8 +71,7 @@ function EditTask({editing, setEditingTask}) {
       dispatch(setAllTasks(modifyTask(editedTask, allTasks)))
       updateTaskOnDB(editedTask)
     }
-    
-    
+
     setEditingTask(false)
   }
 
