@@ -90,10 +90,10 @@ function AllTasks() {
         </div>
 
 
-        <table className="w-full border-collapse bg-white text-left text-sm">
-          <thead className="bg-gray-50">
-            <tr className=''>
-              <th className={styles.table.th}>
+        <div className="w-full border-collapse bg-white text-left text-sm">
+          <div className="bg-gray-50">
+            <ul className="bg-gray-50 flex w-full">
+              <li className="px-3 py-4 font-medium text-gray-900 w-3/12">
                 <span className={styles.table.headings.text}>Task
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
                     className={`${arrowName ? 'rotate-180' : ''} ${styles.table.headings.icons}`}
@@ -104,8 +104,8 @@ function AllTasks() {
                     }
                   ><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg>
                 </span>
-              </th>
-              <th className={styles.table.th}>
+              </li>
+              <li className="px-3 py-4 font-medium text-gray-900 w-2/12">
                 <span className={styles.table.headings.text}>Due Date
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
                     className={`${arrowDue ? 'rotate-180' : ''} ${styles.table.headings.icons}`}
@@ -116,8 +116,8 @@ function AllTasks() {
                     }
                   ><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg>
                 </span>
-              </th>
-              <th className={styles.table.th}>
+              </li>
+              <li className="px-3 py-4 font-medium text-gray-900 w-2/12">
                 <span className={styles.table.headings.text}>Category
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
                     className={`${arrowCategory ? 'rotate-180' : ''} ${styles.table.headings.icons}`}
@@ -128,8 +128,8 @@ function AllTasks() {
                     }
                   ><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" /></svg>
                 </span>
-              </th>
-              <th className={styles.table.th}>
+              </li>
+              <li className="px-3 py-4 font-medium text-gray-900 w-2/12">
                 <span className={styles.table.headings.text}>State
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
                     className={`${arrowPriority ? 'rotate-180' : ''} ${styles.table.headings.icons}`}
@@ -141,14 +141,14 @@ function AllTasks() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
                   </svg>
                 </span>
-              </th>
-              <th className={styles.table.th}>Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100 border-t border-gray-100">
+              </li>
+              <li className="px-3 py-4 font-medium text-gray-900 w-3/12">Actions</li>
+            </ul>
+          </div>
+          <ul className="divide-y divide-gray-100 border-t border-gray-100">
           {showingTasks.map( task => <Task task={task} key={task.id} />)}
-          </tbody>
-        </table>
+          </ul>
+        </div>
       </div>
     </>
   )
