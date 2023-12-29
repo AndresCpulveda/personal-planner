@@ -88,77 +88,152 @@ function Task ({ task }) {
     console.log('expanding')
   }
 
+  // return (
+  //   <>
+  //     <tr className={`odd:bg-white even:bg-gray-50 ${deleted ? 'hidden' : ''}`}>
+  //       <th className='px-6 py-4 font-medium text-gray-900'>{name}</th>
+  //       <td className='text-gray-500 px-5 py-4'>{toFormattedDate(due)}</td>
+  //       <td className='text-gray-500 px-5 py-4'>{category}</td>
+  //       <td className='text-gray-500 px-5 py-4'>
+  //         <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${completed ? 'text-green-600 bg-green-100' : stylePriority(priority)}`}>
+  //           {completed
+  //             ? <CheckIcon iconOptions={{ className: 'h-3 w-3' }} />
+  //             : <XIcon iconOptions={{ className: 'h-3 w-3' }} />}
+  //           {completed ? 'completed' : 'uncompleted'}
+  //         </span>
+  //       </td>
+  //       <td className='flex gap-4 px-5 py-4'>
+  //         <div className='flex text-slate-500 gap-2'>
+  //           <CheckIcon
+  //             iconOptions={{
+  //               onClick: handleCompleteTask,
+  //               className: 'hover:text-green-600 cursor-pointer h-5 w-5'
+  //             }}
+  //             description='Complete'
+  //           />
+  //           <XIcon
+  //             iconOptions={{
+  //               onClick: handleDismissTask,
+  //               className: 'hover:text-red-600 cursor-pointer h-5 w-5'
+  //             }}
+  //             description='Dismiss'
+  //           />
+  //           <TrashIcon
+  //             iconOptions={{
+  //               onClick: handleDeleteTask,
+  //               className: 'hover:text-red-800 cursor-pointer h-5 w-5'
+  //             }}
+  //             description='Delete permanently'
+  //           />
+  //           <NextIcon
+  //             iconOptions={{
+  //               onClick: handleNext,
+  //               className: 'hover:text-green-800 cursor-pointer h-5 w-5'
+  //             }}
+  //             description='Move to next day'
+  //           />
+  //           <PencilIcon
+  //             iconOptions={{
+  //               onClick: handleEditTask,
+  //               className: 'hover:text-blue-600 cursor-pointer h-5 w-5'
+  //             }}
+  //             description='Edit'
+  //           />
+  //           {/* <StopIcon iconOptions={{
+  //             onClick: handleEditTask,
+  //             className: 'hover:text-blue-600 cursor-pointer h-5 w-5'
+  //             }}
+  //             description={''}
+  //           /> */}
+  //           <ChevronIcon
+  //             iconOptions={{
+  //               onClick: handleExpandTask,
+  //               className: 'hover:text-blue-600 cursor-pointer h-5 w-5 -rotate-90'
+  //             }}
+  //             description='Expand details'
+  //           />
+  //         </div>
+  //       </td>
+  //       <td>
+  //         {editingTask ? <EditTask editing={task} setEditingTask={setEditingTask} /> : null} {/* Modal for editing task */}
+  //         {modalAlert.showing ? <ModalAlert modalAlert={modalAlert} setModalAlert={setModalAlert} task={task} setDeleted={setDeleted} /> : null}
+  //       </td>
+  //     </tr>
+  //   </>
+  // )
   return (
     <>
-      <tr className={`odd:bg-white even:bg-gray-50 ${deleted ? 'hidden' : ''}`}>
-        <th className='px-6 py-4 font-medium text-gray-900'>{name}</th>
-        <td className='text-gray-500 px-5 py-4'>{toFormattedDate(due)}</td>
-        <td className='text-gray-500 px-5 py-4'>{category}</td>
-        <td className='text-gray-500 px-5 py-4'>
-          <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${completed ? 'text-green-600 bg-green-100' : stylePriority(priority)}`}>
-            {completed
-              ? <CheckIcon iconOptions={{ className: 'h-3 w-3' }} />
-              : <XIcon iconOptions={{ className: 'h-3 w-3' }} />}
-            {completed ? 'completed' : 'uncompleted'}
-          </span>
-        </td>
-        <td className='flex gap-4 px-5 py-4'>
-          <div className='flex text-slate-500 gap-2'>
-            <CheckIcon
-              iconOptions={{
-                onClick: handleCompleteTask,
-                className: 'hover:text-green-600 cursor-pointer h-5 w-5'
-              }}
-              description='Complete'
-            />
-            <XIcon
-              iconOptions={{
-                onClick: handleDismissTask,
-                className: 'hover:text-red-600 cursor-pointer h-5 w-5'
-              }}
-              description='Dismiss'
-            />
-            <TrashIcon
-              iconOptions={{
-                onClick: handleDeleteTask,
-                className: 'hover:text-red-800 cursor-pointer h-5 w-5'
-              }}
-              description='Delete permanently'
-            />
-            <NextIcon
-              iconOptions={{
-                onClick: handleNext,
-                className: 'hover:text-green-800 cursor-pointer h-5 w-5'
-              }}
-              description='Move to next day'
-            />
-            <PencilIcon
-              iconOptions={{
+      <li className={`odd:bg-white even:bg-gray-50 ${deleted ? 'hidden' : ''} flex`}>
+        <ul className="flex w-full">
+          <li className="px-3 py-4 font-medium text-gray-900 w-3/12">{name}</li>
+          <li className="px-3 py-4 text-gray-500 w-2/12">{toFormattedDate(due)}</li>
+          <li className="px-3 py-4 text-gray-500 w-2/12">{category}</li>
+          <li className="px-3 py-4 text-gray-500 w-2/12">
+            <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${completed ? 'text-green-600 bg-green-100' : stylePriority(priority)}`}>
+              {completed
+                ? <CheckIcon iconOptions={{ className: 'h-3 w-3' }} />
+                : <XIcon iconOptions={{ className: 'h-3 w-3' }} />}
+              {completed ? 'completed' : 'uncompleted'}
+            </span>
+          </li>
+          <li className="px-3 py-4 text-gray-500 w-3/12">
+            <div className='flex text-slate-500 gap-2'>
+              <CheckIcon
+                iconOptions={{
+                  onClick: handleCompleteTask,
+                  className: 'hover:text-green-600 cursor-pointer h-5 w-5'
+                }}
+                description='Complete'
+              />
+              <XIcon
+                iconOptions={{
+                  onClick: handleDismissTask,
+                  className: 'hover:text-red-600 cursor-pointer h-5 w-5'
+                }}
+                description='Dismiss'
+              />
+              <TrashIcon
+                iconOptions={{
+                  onClick: handleDeleteTask,
+                  className: 'hover:text-red-800 cursor-pointer h-5 w-5'
+                }}
+                description='Delete permanently'
+              />
+              <NextIcon
+                iconOptions={{
+                  onClick: handleNext,
+                  className: 'hover:text-green-800 cursor-pointer h-5 w-5'
+                }}
+                description='Move to next day'
+              />
+              <PencilIcon
+                iconOptions={{
+                  onClick: handleEditTask,
+                  className: 'hover:text-blue-600 cursor-pointer h-5 w-5'
+                }}
+                description='Edit'
+              />
+              {/* <StopIcon iconOptions={{
                 onClick: handleEditTask,
                 className: 'hover:text-blue-600 cursor-pointer h-5 w-5'
-              }}
-              description='Edit'
-            />
-            {/* <StopIcon iconOptions={{
-              onClick: handleEditTask,
-              className: 'hover:text-blue-600 cursor-pointer h-5 w-5'
-              }}
-              description={''}
-            /> */}
-            <ChevronIcon
-              iconOptions={{
-                onClick: handleExpandTask,
-                className: 'hover:text-blue-600 cursor-pointer h-5 w-5 -rotate-90'
-              }}
-              description='Expand details'
-            />
+                }}
+                description={''}
+              /> */}
+              <ChevronIcon
+                iconOptions={{
+                  onClick: handleExpandTask,
+                  className: 'hover:text-blue-600 cursor-pointer h-5 w-5 -rotate-90'
+                }}
+                description='Expand details'
+              />
+            </div>
+          </li>
+          <div>
+            {editingTask ? <EditTask editing={task} setEditingTask={setEditingTask} /> : null} {/* Modal for editing task */}
+            {modalAlert.showing ? <ModalAlert modalAlert={modalAlert} setModalAlert={setModalAlert} task={task} setDeleted={setDeleted} /> : null}
           </div>
-        </td>
-        <td>
-          {editingTask ? <EditTask editing={task} setEditingTask={setEditingTask} /> : null} {/* Modal for editing task */}
-          {modalAlert.showing ? <ModalAlert modalAlert={modalAlert} setModalAlert={setModalAlert} task={task} setDeleted={setDeleted} /> : null}
-        </td>
-      </tr>
+        </ul>
+      </li>
     </>
   )
 }
