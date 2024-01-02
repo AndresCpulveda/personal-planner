@@ -20,6 +20,7 @@ function Task ({ task }) {
 
   const [deleted, setDeleted] = useState(false)
   const [editingTask, setEditingTask] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false)
   const [modalAlert, setModalAlert] = useState({ showing: false })
 
 
@@ -85,17 +86,17 @@ function Task ({ task }) {
   }
 
   const handleExpandTask = () => {
-    console.log('expanding')
+    setIsExpanded(!isExpanded)
   }
-  
+
   return (
     <>
-      <li className={`odd:bg-white even:bg-gray-50 ${deleted ? 'hidden' : ''} flex`}>
+      <li className={`odd:bg-white even:bg-gray-50 ${deleted ? 'hidden' : ''} flex flex-col py-4`}>
         <ul className="flex w-full">
-          <li className="px-3 py-4 font-medium text-gray-900 w-3/12">{name}</li>
-          <li className="px-3 py-4 text-gray-500 w-2/12">{toFormattedDate(due)}</li>
-          <li className="px-3 py-4 text-gray-500 w-2/12">{category}</li>
-          <li className="px-3 py-4 text-gray-500 w-2/12">
+          <li className="px-3 font-medium text-gray-900 w-3/12">{name}</li>
+          <li className="px-3 text-gray-500 w-2/12">{toFormattedDate(due)}</li>
+          <li className="px-3 text-gray-500 w-2/12">{category}</li>
+          <li className="px-3 text-gray-500 w-2/12">
             <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${completed ? 'text-green-600 bg-green-100' : stylePriority(priority)}`}>
               {completed
                 ? <CheckIcon iconOptions={{ className: 'h-3 w-3' }} />
@@ -103,7 +104,7 @@ function Task ({ task }) {
               {completed ? 'completed' : 'uncompleted'}
             </span>
           </li>
-          <li className="px-3 py-4 text-gray-500 w-3/12">
+          <li className="px-3 text-gray-500 w-3/12">
             <div className='flex text-slate-500 gap-2'>
               <CheckIcon
                 iconOptions={{
@@ -149,9 +150,9 @@ function Task ({ task }) {
               <ChevronIcon
                 iconOptions={{
                   onClick: handleExpandTask,
-                  className: 'hover:text-blue-600 cursor-pointer h-5 w-5 -rotate-90'
+                  className: `hover:text-blue-600 cursor-pointer h-6 w-6 -rotate-90 ${isExpanded ? 'rotate-90' : ''}`
                 }}
-                description='Expand details'
+                description={`${isExpanded ? 'Collapse details' : 'Expand details'}`}
               />
             </div>
           </li>
@@ -160,6 +161,15 @@ function Task ({ task }) {
             {modalAlert.showing ? <ModalAlert modalAlert={modalAlert} setModalAlert={setModalAlert} task={task} setDeleted={setDeleted} /> : null}
           </div>
         </ul>
+        {isExpanded ? 
+        <ul className="flex w-full mt-2">
+          <li className="px-3 text-xs text-gray-500 w-3/12">Para cada task, agregar una fila de datos que normalmente sean ocultos en la interfaz, estos datos deben incluir, descripción, fecha creada, recurrencia, tiempo y fecha de cumplición</li>
+          <li className="px-3 text-gray-900 w-2/12">Created at:<p className='text-gray-500'>Jan 28th, 2023</p></li>
+          <li className="px-3 text-gray-900 w-2/12">Completed at:<p className='text-gray-500'>Feb 15th, 2023</p></li>
+          <li className="px-3 text-gray-900 w-2/12">Time:<p className='text-gray-500'>01:23:15<span> Left</span></p></li>
+          <li className="px-3 text-gray-900 w-3/12">Auto-Created Every:<p className='text-gray-500'>3 Days</p></li>
+        </ul>
+        : null}
       </li>
     </>
   )
