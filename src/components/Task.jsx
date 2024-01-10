@@ -16,7 +16,21 @@ import { useUpdateTaskMutation, useDeleteTaskMutation } from '../store/tasks/tas
 
 
 function Task ({ task }) {
-  const { name, due, priority, category, completed } = task
+  const { 
+    name,
+    due,
+    priority,
+    category,
+    completed,
+    createdAt,
+    completedAt,
+    isRecurring,
+    intervalUnit,
+    frequencyInterval,
+    stopWatch,
+    time,
+    description
+  } = task
 
   const [deleted, setDeleted] = useState(false)
   const [editingTask, setEditingTask] = useState(false)
@@ -163,11 +177,11 @@ function Task ({ task }) {
         </ul>
         {isExpanded ? 
         <ul className="flex w-full mt-2">
-          <li className="px-3 text-xs text-gray-500 w-3/12">Para cada task, agregar una fila de datos que normalmente sean ocultos en la interfaz, estos datos deben incluir, descripción, fecha creada, recurrencia, tiempo y fecha de cumplición</li>
-          <li className="px-3 text-gray-900 w-2/12">Created at:<p className='text-gray-500'>Jan 28th, 2023</p></li>
-          <li className="px-3 text-gray-900 w-2/12">Completed at:<p className='text-gray-500'>Feb 15th, 2023</p></li>
-          <li className="px-3 text-gray-900 w-2/12">Time:<p className='text-gray-500'>01:23:15<span> Left</span></p></li>
-          <li className="px-3 text-gray-900 w-3/12">Auto-Created Every:<p className='text-gray-500'>3 Days</p></li>
+          <li className="px-3 text-xs text-gray-500 w-3/12">{description}</li>
+          <li className="px-3 text-gray-900 w-2/12 font-medium">Created at:<p className='text-gray-500 font-normal'>{toFormattedDate(createdAt)}</p></li>
+          <li className="px-3 text-gray-900 w-2/12 font-medium">{completed ? <><p>Completed At:</p><p className='text-gray-500 font-normal'>{toFormattedDate(completedAt)}</p></> : 'Uncompleted'}</li>
+          <li className="px-3 text-gray-900 w-2/12 font-medium">Time:<p className='text-gray-500 font-normal'>{time}<span>{stopWatch ? ' Spent' : ' Left'}</span></p></li>
+          <li className="px-3 text-gray-900 w-2/12">{isRecurring ? <><p className='text-gray-900 font-medium'>Autocreated Every:</p><p className='text-gray-500 font-normal'>{`${frequencyInterval} ${intervalUnit}`}</p></> : ''}</li>
         </ul>
         : null}
       </li>
