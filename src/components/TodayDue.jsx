@@ -5,6 +5,7 @@ import AddTask from './AddTask';
 import { sortPriority } from '../helpers/helpers';
 import { useSelector } from 'react-redux'
 import { selectAddingTask, selectTodayDueTasks } from '../store/tasks/tasks.selectors.js'
+import { signInWithGooglePopup } from '../utils/firebase/firebase.utils.js';
 
 function TodayDue() {
     const addingTask = useSelector(selectAddingTask)
@@ -14,6 +15,7 @@ function TodayDue() {
 
     return (
       <>
+        <button onClick={signInWithGooglePopup}>sign in</button>
         <div className="w-full border-collapse bg-white text-left text-sm">
           <ul className="bg-gray-50 flex w-full">
             <li className="px-3 py-4 font-medium text-gray-900 w-3/12">
