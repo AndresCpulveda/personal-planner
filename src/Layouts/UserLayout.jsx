@@ -7,7 +7,7 @@ import { extractRecentRecurrings, createRecurrings } from '../helpers/helpers';
 import { useAddNewTaskMutation } from '../store/tasks/tasks.api';
 import { useEffect } from 'react';
 
-function MainLayout() {
+function UserLayout() {
   const dispatch = useDispatch()
   const activeStyle = 'block p-4 bg-white border-b-2 border-gray-800 font-semibold'
 
@@ -70,4 +70,4 @@ function MainLayout() {
   )
 }
 
-export default MainLayout
+export default UserLayout
