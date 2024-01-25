@@ -1,52 +1,22 @@
 import React, { useEffect } from 'react'
-import {Link, useNavigate} from "react-router-dom"
+import {useNavigate} from "react-router-dom"
 import { useDispatch } from 'react-redux'
 import { signInWithGooglePopup } from '../utils/firebase/firebase.utils'
-import { auth } from '../utils/firebase/firebase.utils'
-import { setUser } from '../store/user/user.slice'
 const LoginPage = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
 
   const handleSignInWithGooglePopup = async() => {
     const user = await signInWithGooglePopup()
   }
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async(authUser) => {
-      if (authUser) {
-        dispatch(setUser(authUser))
-        const firebaseIdToken = await authUser.getIdToken();
-        const res = await fetch('http://localhost:3000/api/users/sign-google-user', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${firebaseIdToken}`,
-            "Contant-Type": 'application/json',
-          },
-          body: JSON.stringify(authUser)
-        })
-
-        const data = await res.json()
-        console.log(data);
-        setTimeout(() => {
-          navigate('/')//Se redirecciona a la pagina de admin
-        }, 2000);
-      } else {
-        //User is signed out
-      }
-    })
-    return () => unsubscribe();
-  }, [])
-
   return (
     <>
-      <div className='h-screen flex items-center bg-green-100'>
+      <div className='h-screen w-full flex items-center'>
         <div className="mx-auto w-full overflow-hidden rounded-lg bg-white shadow-2xl sm:max-w-sm">
           <div className="relative p-5">
             <div className="text-center">
               <div className="mx-auto mb-5 flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-500">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="h-6 w-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-6 w-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
               <div>

@@ -4,8 +4,8 @@ import UserLayout from './Layouts/UserLayout'
 import TodayTasks from './pages/TodayTasks'
 import AllTasksPage from './pages/AllTasksPage'
 import ReportsPage from './pages/ReportsPage'
-import AuthLayout from './Layouts/AuthLayout'
 import LoginPage from './pages/LoginPage'
+import MainLayout from './Layouts/MainLayout'
 
 function App() {
 
@@ -13,14 +13,13 @@ function App() {
     <>
       <BrowserRouter>
           <Routes>
-            <Route path='/auth' element={<AuthLayout />}>
+            <Route path='/' element={<MainLayout />}>
               <Route index element={<LoginPage />}/>
-            </Route>
-            <Route path='/' element={<UserLayout />}>
-              <Route index element={<TodayTasks />}/>
-              <Route path='/tasks' element={<AllTasksPage />}/>
-              {/* <Route path='/add' element={<AddTask />}/> */}
-              <Route path='/reports' element={<ReportsPage />}/>
+              <Route path='dashboard/' element={<UserLayout />}>
+                <Route index element={<TodayTasks />}/>
+                <Route path='/dashboard/tasks' element={<AllTasksPage />}/>
+                <Route path='/dashboard/reports' element={<ReportsPage />}/>
+              </Route>
             </Route>
           </Routes>
       </BrowserRouter>
