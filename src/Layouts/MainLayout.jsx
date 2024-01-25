@@ -1,12 +1,13 @@
 import { Outlet, NavLink, useNavigate} from 'react-router-dom'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { auth } from '../utils/firebase/firebase.utils'
-import { setUser } from '../store/user/user.slice'
+import { setToken, setUser } from '../store/user/user.slice'
 import { useDispatch } from 'react-redux'
 
 function MainLayout() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(true)
   const activeStyle = 'block p-4 bg-white border-b-2 border-gray-800 font-semibold'
 
   useEffect(() => {
@@ -14,6 +15,7 @@ function MainLayout() {
       if (authUser) {
         dispatch(setUser(authUser))
         const firebaseIdToken = await authUser.getIdToken();
+        dispatch(setToken(firebaseIdToken))
         const res = await fetch('http://localhost:3000/api/users/sign-google-user', {
           method: 'POST',
           headers: {
@@ -24,16 +26,20 @@ function MainLayout() {
         })
 
         const data = await res.json()
-        console.log(data);
         setTimeout(() => {
           navigate('/dashboard')//Se redirecciona a la pagina de admin
         }, 2000);
       } else {
         //User is signed out
       }
+      setIsLoading(false)
     })
     return () => unsubscribe();
   }, [])
+
+  if(isLoading) {
+    return <p>Loading...</p>
+  }
 
   return (
     <>
@@ -42,26 +48,26 @@ function MainLayout() {
           <ul className='flex'>
             <li className='text-gray-800'>
               <NavLink
-                to='/'
+                to='/dashboard'
                 className={({ isActive, isPending }) => isActive ? activeStyle : "block p-4 font-semibold" }>Todays Tasks
               </NavLink>
             </li>
             <li className='text-gray-800'>
               <NavLink
-                to={'/tasks'}
+                to={'/dashboard/tasks'}
                 className={({ isActive, isPending }) => isActive ? activeStyle : "block p-4 font-semibold"}>All Tasks
               </NavLink>
             </li>
             <li className='text-gray-800'>
               <NavLink
-                to={'/reports'}
+                to={'/dashboard/reports'}
                 className={({ isActive, isPending }) => isActive ? activeStyle : "block p-4 font-semibold"}>Reports
               </NavLink>
             </li>
           </ul>
         </nav>
       </header>
-      <main>
+      <main className='flex p-8'>
         <Outlet />
       </main>
     </>

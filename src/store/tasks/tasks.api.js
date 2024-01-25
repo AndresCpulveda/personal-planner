@@ -1,8 +1,20 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { selectUserToken } from '../user/user.selectors';
 
 export const tasksApi = createApi({
   reducerPath: 'tasksApi',
-  baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:3000/api/tasks/'}),
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'http://localhost:3000/api/tasks/',
+    prepareHeaders: ((headers, {getState}) => {
+      const token = getState().user.token
+
+      if(token) {
+        headers.set('Authorization', `Bearer ${token}`)
+      }
+
+      return headers
+    })
+  }),
   endpoints: (builder) => ({
     getUnDismissedTasks: builder.query({
       query: () => 'all',
