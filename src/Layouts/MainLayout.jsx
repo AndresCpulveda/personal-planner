@@ -3,29 +3,22 @@ import React, { useEffect, useState } from 'react'
 import { auth } from '../utils/firebase/firebase.utils'
 import { setToken, setUser } from '../store/user/user.slice'
 import { useDispatch } from 'react-redux'
+import { useSignUserViaGoogleMutation } from '../store/user/user.api'
 
 function MainLayout() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
   const activeStyle = 'block p-4 bg-white border-b-2 border-gray-800 font-semibold'
-
+  const [signUser, {fetchIsLoading, fetchError} ] = useSignUserViaGoogleMutation()
+  
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async(authUser) => {
       if (authUser) {
         dispatch(setUser(authUser))
         const firebaseIdToken = await authUser.getIdToken();
         dispatch(setToken(firebaseIdToken))
-        const res = await fetch('http://localhost:3000/api/users/sign-google-user', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${firebaseIdToken}`,
-            "Contant-Type": 'application/json',
-          },
-          body: JSON.stringify(authUser)
-        })
-
-        const data = await res.json()
+        const savedUser = signUser(authUser)
         setTimeout(() => {
           navigate('/dashboard')//Se redirecciona a la pagina de admin
         }, 2000);
