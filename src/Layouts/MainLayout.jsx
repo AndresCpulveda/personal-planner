@@ -15,10 +15,10 @@ function MainLayout() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async(authUser) => {
       if (authUser) {
-        dispatch(setUser(authUser))
         const firebaseIdToken = await authUser.getIdToken();
         dispatch(setToken(firebaseIdToken))
-        const savedUser = signUser(authUser)
+        const {data} = await signUser(authUser)
+        dispatch(setUser({...authUser, id: data.user.id}))
         setTimeout(() => {
           navigate('/dashboard')//Se redirecciona a la pagina de admin
         }, 2000);
