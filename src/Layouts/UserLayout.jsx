@@ -6,13 +6,15 @@ import { setAllTasks } from '../store/tasks/tasks.slice';
 import { extractRecentRecurrings, createRecurrings } from '../helpers/helpers';
 import { useAddNewTaskMutation } from '../store/tasks/tasks.api';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { selectUserId } from '../store/user/user.selectors';
 
 function UserLayout() {
   const dispatch = useDispatch()
   const activeStyle = 'block p-4 bg-white border-b-2 border-gray-800 font-semibold'
 
   const [postNewTask, {loadingPost, errorPost}] = useAddNewTaskMutation()
-  const {data, isLoading, error} = useGetUnDismissedTasksQuery();
+  const {data, isLoading, error} = useGetUnDismissedTasksQuery(useSelector(selectUserId));
 
   useEffect(() => {
     if(!isLoading) {

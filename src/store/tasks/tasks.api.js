@@ -16,7 +16,7 @@ export const tasksApi = createApi({
   }),
   endpoints: (builder) => ({
     getUnDismissedTasks: builder.query({
-      query: () => 'all',
+      query: (userId) => `all/${userId}`,
     }),
     addNewTask: builder.mutation({
       query: (newTask) => ({
