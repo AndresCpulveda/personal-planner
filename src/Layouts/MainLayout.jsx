@@ -20,10 +20,11 @@ function MainLayout() {
         const {data} = await signUser(authUser)
         dispatch(setUser({...authUser, id: data.user.id}))
         setTimeout(() => {
-          navigate('/dashboard')//Se redirecciona a la pagina de admin
+          navigate('/dashboard')
         }, 2000);
       } else {
         //User is signed out
+        navigate('/')
       }
       setIsLoading(false)
     })

@@ -22,7 +22,7 @@ const LoginPage = () => {
               <div>
                 <h3 className="text-lg font-medium text-secondary-900">Welcome to the Planner App</h3>
                 <div className="mt-2 text-sm">
-                  <p>Organize your tasks and optimize your time with this simple too.</p>
+                  <p>Organize your tasks and optimize your time with this simple tool.</p>
                   <p className='text-lg text-gray-700'>Start Now</p>
                 </div>
               </div>
