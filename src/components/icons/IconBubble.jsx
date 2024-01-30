@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
-import './iconBubble.styles.css'
+import "./iconBubble.styles.css";
 
-function IconBubble({description}) {
+function IconBubble({ description }) {
   return (
-    <div className='relative'>
-      <div className='speech bottom bg-slate-400 w-36 absolute bottom-3 right-[-65px] text-xs text-white text-center px-2 rounded'>
+    <div className="relative">
+      <div className="speech bottom absolute bottom-3 right-[-65px] w-36 rounded bg-slate-400 px-2 text-center text-xs text-white">
         <p>{description}</p>
       </div>
     </div>
-  )
+  );
 }
 
-export default IconBubble
+export default IconBubble;

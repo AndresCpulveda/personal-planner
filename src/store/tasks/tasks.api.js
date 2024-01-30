@@ -1,18 +1,18 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const tasksApi = createApi({
-  reducerPath: 'tasksApi',
+  reducerPath: "tasksApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3000/api/tasks/',
-    prepareHeaders: ((headers, {getState}) => {
-      const token = getState().user.token
+    baseUrl: "http://localhost:3000/api/tasks/",
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().user.token;
 
-      if(token) {
-        headers.set('Authorization', `Bearer ${token}`)
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
       }
 
-      return headers
-    })
+      return headers;
+    },
   }),
   endpoints: (builder) => ({
     getUnDismissedTasks: builder.query({
@@ -20,26 +20,31 @@ export const tasksApi = createApi({
     }),
     addNewTask: builder.mutation({
       query: (newTask) => ({
-        url: 'add',
-        method: 'POST',
+        url: "add",
+        method: "POST",
         body: newTask,
-      })
+      }),
     }),
     updateTask: builder.mutation({
       query: (taskToUpdate) => ({
-        url: 'update',
-        method: 'PUT',
+        url: "update",
+        method: "PUT",
         body: taskToUpdate,
-      })
+      }),
     }),
     deleteTask: builder.mutation({
       query: (taskToDelete) => ({
         url: `delete/${taskToDelete.id}`,
-        method: 'DELETE',
+        method: "DELETE",
         body: taskToDelete,
-      })
+      }),
     }),
-  })
-})
+  }),
+});
 
-export const {useGetUnDismissedTasksQuery, useAddNewTaskMutation, useUpdateTaskMutation, useDeleteTaskMutation} = tasksApi;
+export const {
+  useGetUnDismissedTasksQuery,
+  useAddNewTaskMutation,
+  useUpdateTaskMutation,
+  useDeleteTaskMutation,
+} = tasksApi;

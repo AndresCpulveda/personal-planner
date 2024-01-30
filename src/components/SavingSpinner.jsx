@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 
-import '../styles/SavingSpinner.css'
+import "../styles/SavingSpinner.css";
 
-function SavingSpinner({saving}) {
+function SavingSpinner({ saving }) {
   return (
-    <div className={`flex gap-4 ${saving ? 'visible' : 'invisible'}`}>
-      <p className='text-white'>Saving...</p>
+    <div className={`flex gap-4 ${saving ? "visible" : "invisible"}`}>
+      <p className="text-white">Saving...</p>
       <div className="sk-circle">
         <div className="sk-circle1 sk-child"></div>
         <div className="sk-circle2 sk-child"></div>
@@ -21,7 +21,7 @@ function SavingSpinner({saving}) {
         <div className="sk-circle12 sk-child"></div>
       </div>
     </div>
-  )
+  );
 }
 
-export default SavingSpinner
+export default SavingSpinner;

@@ -4,17 +4,18 @@
   /* (B1-1) ATTACH TRANSPARENT BORDERS */
   content: "";
   border: 10px solid transparent;
- 
+
   /* (B1-2) NECESSARY TO POSITION THE "TAIL" */
   position: absolute;
 }
- 
+
 .bottom.speech::after {
   /* (B2-1) DOWN TRIANGLE */
-  border-top-color: #94A3B8;
+  border-top-color: #94a3b8;
   border-bottom: 0;
- 
+
   /* (B2-2) POSITION AT BOTTOM */
-  bottom: -10px; left: 50%;
+  bottom: -10px;
+  left: 50%;
   margin-left: -10px;
 }

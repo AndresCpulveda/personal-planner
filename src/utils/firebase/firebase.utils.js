@@ -1,6 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut,
+  onAuthStateChanged,
+} from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -11,7 +17,7 @@ const firebaseConfig = {
   projectId: "planner-40778",
   storageBucket: "planner-40778.appspot.com",
   messagingSenderId: "530405585638",
-  appId: "1:530405585638:web:fe87f68c685d43366f0127"
+  appId: "1:530405585638:web:fe87f68c685d43366f0127",
 };
 
 // Initialize Firebase
@@ -29,7 +35,7 @@ export const signInWithGooglePopup = async () => {
     const token = credential.accessToken;
     // The signed-in user info.
     const user = result.user;
-    return user
+    return user;
   } catch (error) {
     // Handle Errors here.
     const errorCode = error.code;
@@ -39,14 +45,17 @@ export const signInWithGooglePopup = async () => {
     // The AuthCredential type that was used.
     const credential_1 = GoogleAuthProvider.credentialFromError(error);
   }
-}
+};
 
 export const signOutUser = () => {
-  signOut(auth).then(() => {
-    // Sign-out successful.
-  }).catch((error) => {
-    // An error happened.
-  });
-}
+  signOut(auth)
+    .then(() => {
+      // Sign-out successful.
+    })
+    .catch((error) => {
+      // An error happened.
+    });
+};
 
-export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback)
+export const onAuthStateChangedListener = (callback) =>
+  onAuthStateChanged(auth, callback);

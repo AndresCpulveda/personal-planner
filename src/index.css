@@ -9,13 +9,13 @@
 } */
 
 body {
-  background-color: rgb(28 25 23)
+  background-color: rgb(28 25 23);
 }
 
 body {
-  background-color: white
+  background-color: white;
 }
 
-.input-date::-webkit-calendar-picker-indicator{
-    margin-left: -20px;
+.input-date::-webkit-calendar-picker-indicator {
+  margin-left: -20px;
 }
