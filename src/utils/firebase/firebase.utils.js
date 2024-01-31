@@ -54,6 +54,8 @@ export const signOutUser = () => {
     })
     .catch((error) => {
       // An error happened.
+      console.log(error);
+      return false;
     });
 };
 

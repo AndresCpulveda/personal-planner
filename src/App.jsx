@@ -14,7 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<LoginPage />} />
-            <Route path="/dashboard/" element={<UserLayout />}>
+            <Route path="/dashboard" element={<UserLayout />}>
               <Route index element={<TodayTasks />} />
               <Route path="/dashboard/tasks" element={<AllTasksPage />} />
               <Route path="/dashboard/reports" element={<ReportsPage />} />

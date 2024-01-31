@@ -1,9 +1,10 @@
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { auth } from "../utils/firebase/firebase.utils";
-import { setToken, setUser } from "../store/user/user.slice";
+import { auth, signOutUser } from "../utils/firebase/firebase.utils";
+import { resetUser, setToken, setUser } from "../store/user/user.slice";
 import { useDispatch } from "react-redux";
 import { useSignUserViaGoogleMutation } from "../store/user/user.api";
+import { setAllTasks } from "../store/tasks/tasks.slice";
 
 function MainLayout() {
   const dispatch = useDispatch();
@@ -39,67 +40,7 @@ function MainLayout() {
 
   return (
     <>
-      <header className="flex bg-slate-100">
-        <nav className="flex w-full justify-between">
-          <ul className="flex">
-            <li className="text-gray-800">
-              <NavLink
-                to="/dashboard"
-                className={({ isActive, isPending }) =>
-                  isActive ? activeStyle : "block p-4 font-semibold"
-                }
-              >
-                Todays Tasks
-              </NavLink>
-            </li>
-            <li className="text-gray-800">
-              <NavLink
-                to={"/dashboard/tasks"}
-                className={({ isActive, isPending }) =>
-                  isActive ? activeStyle : "block p-4 font-semibold"
-                }
-              >
-                All Tasks
-              </NavLink>
-            </li>
-            <li className="text-gray-800">
-              <NavLink
-                to={"/dashboard/reports"}
-                className={({ isActive, isPending }) =>
-                  isActive ? activeStyle : "block p-4 font-semibold"
-                }
-              >
-                Reports
-              </NavLink>
-            </li>
-          </ul>
-          <ul className="flex">
-            <li className="text-gray-800">
-              <NavLink
-                to="/dashboard"
-                className={({ isActive, isPending }) =>
-                  isActive ? activeStyle : "block p-4 font-semibold"
-                }
-              >
-                User
-              </NavLink>
-            </li>
-            <li className="text-gray-800">
-              <NavLink
-                to={"/dashboard/tasks"}
-                className={({ isActive, isPending }) =>
-                  isActive ? activeStyle : "block p-4 font-semibold"
-                }
-              >
-                Sign-Out
-              </NavLink>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <main className="flex p-8">
-        <Outlet />
-      </main>
+      <Outlet />
     </>
   );
 }
