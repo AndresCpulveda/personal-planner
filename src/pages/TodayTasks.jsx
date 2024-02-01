@@ -7,8 +7,40 @@ import DaySelector from "../components/DaySelector";
 import { toggleAddingTask } from "../store/tasks/tasks.slice";
 import { useDispatch } from "react-redux";
 
+import { useGetUnDismissedTasksQuery } from "../store/tasks/tasks.api";
+import { setAllTasks } from "../store/tasks/tasks.slice";
+import { extractRecentRecurrings, createRecurrings } from "../helpers/helpers";
+import { useAddNewTaskMutation } from "../store/tasks/tasks.api";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { selectUserId } from "../store/user/user.selectors";
+
 function TodayTasks() {
   const dispatch = useDispatch();
+
+  const [postNewTask, { loadingPost, errorPost }] = useAddNewTaskMutation();
+  const { data, isLoading, error } = useGetUnDismissedTasksQuery(
+    useSelector(selectUserId),
+  );
+
+  useEffect(() => {
+    if (!isLoading) {
+      const currentRecurrings = extractRecentRecurrings(data);
+      const newRecurrings = createRecurrings(currentRecurrings);
+
+      const all = [...data, ...newRecurrings];
+
+      dispatch(setAllTasks(all));
+
+      try {
+        newRecurrings.map(async (iTask) => {
+          await postNewTask(iTask);
+        });
+      } catch (error) {
+        console.log(errorPost);
+      }
+    }
+  }, [isLoading, data]);
 
   return (
     <>
