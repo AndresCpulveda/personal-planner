@@ -1,6 +1,8 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signOutUser } from "../utils/firebase/firebase.utils";
+import { setAllTasks } from "../store/tasks/tasks.slice";
+import { resetUser, setIsAuthenticated } from "../store/user/user.slice";
 
 const activeStyle =
   "block p-4 bg-white border-b-2 border-gray-800 font-semibold";
@@ -11,9 +13,10 @@ const UserHeader = () => {
 
   const handleSignOut = async () => {
     await signOutUser();
-    dispatch(setAllTasks([]));
     navigate("/");
+    dispatch(setAllTasks([]));
     dispatch(resetUser());
+    // dispatch(setIsAuthenticated(false));
   };
 
   return (
@@ -32,7 +35,7 @@ const UserHeader = () => {
           </li>
           <li className="text-gray-800">
             <NavLink
-              to={"/dashboard/tasks"}
+              to={"/tasks"}
               className={({ isActive, isPending }) =>
                 isActive ? activeStyle : "block p-4 font-semibold"
               }
@@ -42,7 +45,7 @@ const UserHeader = () => {
           </li>
           <li className="text-gray-800">
             <NavLink
-              to={"/dashboard/reports"}
+              to={"/reports"}
               className={({ isActive, isPending }) =>
                 isActive ? activeStyle : "block p-4 font-semibold"
               }
