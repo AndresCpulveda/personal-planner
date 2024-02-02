@@ -14,6 +14,8 @@ import { useAddNewTaskMutation } from "../store/tasks/tasks.api";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectUserId } from "../store/user/user.selectors";
+import { getUserIdToken } from "../utils/firebase/firebase.utils";
+import { setToken } from "../store/user/user.slice";
 
 function TodayTasks() {
   const dispatch = useDispatch();
@@ -23,24 +25,38 @@ function TodayTasks() {
     useSelector(selectUserId),
   );
 
-  useEffect(() => {
-    if (!isLoading) {
-      const currentRecurrings = extractRecentRecurrings(data);
-      const newRecurrings = createRecurrings(currentRecurrings);
+  const serveTasks = () => {
+    const currentRecurrings = extractRecentRecurrings(data);
+    const newRecurrings = createRecurrings(currentRecurrings);
 
-      const all = [...data, ...newRecurrings];
+    const all = [...data, ...newRecurrings];
 
-      dispatch(setAllTasks(all));
+    dispatch(setAllTasks(all));
 
-      try {
-        newRecurrings.map(async (iTask) => {
-          await postNewTask(iTask);
-        });
-      } catch (error) {
-        console.log(errorPost);
-      }
+    try {
+      newRecurrings.map(async (iTask) => {
+        await postNewTask(iTask);
+      });
+    } catch (error) {
+      console.log(errorPost);
     }
-  }, [isLoading, data]);
+  };
+
+  useEffect(() => {
+    const handleFetchingStates = async () => {
+      if (error) {
+        if (error.data.msg == "Token expirado o invalido") {
+          const newUserTokenId = await getUserIdToken();
+          dispatch(setToken(newUserTokenId));
+          serveTasks();
+        }
+      }
+      if (!isLoading) {
+        serveTasks();
+      }
+    };
+    handleFetchingStates();
+  }, [isLoading, data, error]);
 
   return (
     <>

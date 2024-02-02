@@ -61,3 +61,8 @@ export const signOutUser = () => {
 
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
+
+export const getUserIdToken = async () => {
+  const idToken = await auth.currentUser.getIdToken();
+  return idToken;
+};

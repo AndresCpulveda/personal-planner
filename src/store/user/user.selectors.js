@@ -12,9 +12,4 @@ export const selectUserId = createSelector(
   (userUser) => userUser.id,
 );
 
-// export const selectIsAuthenticated = createSelector(
-//   [selectUserSlice],
-//   (userSlice) => userSlice.isAuthenticated,
-// );
-
 export const selectIsAuthenticated = (state) => state.user.isAuthenticated;

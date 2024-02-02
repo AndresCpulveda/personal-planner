@@ -11,6 +11,7 @@ import { useSignUserViaGoogleMutation } from "../store/user/user.api";
 import UserHeader from "../components/UserHeader";
 import AuthHeader from "../components/AuthHeader";
 import { selectIsAuthenticated } from "../store/user/user.selectors";
+import { getUserIdToken } from "../utils/firebase/firebase.utils";
 
 function MainLayout() {
   const dispatch = useDispatch();
@@ -26,14 +27,20 @@ function MainLayout() {
         //User is signed out
         navigate("/");
       } else {
-        const firebaseIdToken = await authUser.getIdToken();
-        dispatch(setToken(firebaseIdToken));
-        const { data } = await signUser(authUser);
-        dispatch(setUser({ ...authUser, id: data.user.id }));
-        setTimeout(() => {
+        try {
+          const firebaseIdToken = await getUserIdToken();
+          dispatch(setToken(firebaseIdToken));
+        } catch (error) {
+          console.log(error);
+        }
+        try {
+          const { data } = await signUser(authUser);
+          dispatch(setUser({ ...authUser, id: data.user.id }));
           navigate("/dashboard");
           dispatch(setIsAuthenticated(true));
-        }, 1000);
+        } catch (error) {
+          console.log(error);
+        }
       }
       setIsLoading(false);
     });
@@ -47,7 +54,9 @@ function MainLayout() {
   return (
     <>
       {isAuthenticated ? <UserHeader /> : <AuthHeader />}
-      <Outlet />
+      <main className="p-8">
+        <Outlet />
+      </main>
     </>
   );
 }
