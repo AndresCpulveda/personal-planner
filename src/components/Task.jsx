@@ -25,6 +25,7 @@ import {
 } from "../store/tasks/tasks.api";
 import { getUserIdToken } from "../utils/firebase/firebase.utils";
 import { setToken } from "../store/user/user.slice";
+import { WarningNotification } from "../components/Notifications";
 
 function Task({ task }) {
   const {
@@ -47,6 +48,7 @@ function Task({ task }) {
   const [editingTask, setEditingTask] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [modalAlert, setModalAlert] = useState({ showing: false });
+  const [notification, setNotification] = useState({ showing: false });
 
   const dispatch = useDispatch();
   const todaysDate = useSelector(selectTodaysDate);
@@ -56,13 +58,23 @@ function Task({ task }) {
   const [postDeleteTask, { isLoadingRemove, removeError }] =
     useDeleteTaskMutation();
 
+  const handleErrorTokenExpired = async () => {
+    const newToken = await getUserIdToken();
+    dispatch(setToken(newToken));
+    console.log("Auth updated, please try again");
+    setNotification({
+      primaryText: "Wait",
+      secondaryText: "Your permissions have been updated, please try again now",
+    });
+    setTimeout(() => {
+      setNotification({ showing: false });
+    }, 3000);
+  };
+
   const taskUpdateDispatcher = async (modifiedTask) => {
     const res = await postUpdatedTask(modifiedTask);
     if (res.error?.data.msg == "Token expirado o invalido") {
-      const newToken = await getUserIdToken();
-      dispatch(setToken(newToken));
-      console.log("Auth updated, please try again");
-      return;
+      return handleErrorTokenExpired();
     }
     dispatch(setAllTasks(modifyTask(modifiedTask, allTasks)));
   };
@@ -248,6 +260,7 @@ function Task({ task }) {
           </ul>
         ) : null}
       </li>
+      <WarningNotification notificationOptions={notification} />
     </>
   );
 }
