@@ -12,6 +12,7 @@ import UserHeader from "../components/UserHeader";
 import AuthHeader from "../components/AuthHeader";
 import { selectIsAuthenticated } from "../store/user/user.selectors";
 import { getUserIdToken } from "../utils/firebase/firebase.utils";
+import SavingSpinner from "../components/SavingSpinner";
 
 function MainLayout() {
   const dispatch = useDispatch();
@@ -48,7 +49,7 @@ function MainLayout() {
   }, []);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <SavingSpinner active={isLoading} text={"Recognizing User"} />;
   }
 
   return (

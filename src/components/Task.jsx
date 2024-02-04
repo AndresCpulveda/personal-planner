@@ -26,6 +26,7 @@ import {
 import { getUserIdToken } from "../utils/firebase/firebase.utils";
 import { setToken } from "../store/user/user.slice";
 import { WarningNotification } from "../components/Notifications";
+import SavingSpinner from "./SavingSpinner";
 
 function Task({ task }) {
   const {
@@ -102,9 +103,12 @@ function Task({ task }) {
       message: "Do you want to remove this task permanently?",
       showing: true,
       action: async () => {
-        dispatch(setAllTasks(removeTask(task, allTasks)));
         try {
-          await postDeleteTask(task);
+          const res = await postDeleteTask(task);
+          if (res.error?.data.msg == "Token expirado o invalido") {
+            return handleErrorTokenExpired();
+          }
+          dispatch(setAllTasks(removeTask(task, allTasks)));
         } catch (error) {
           console.error("Error updating task:", error);
         }
@@ -260,6 +264,11 @@ function Task({ task }) {
           </ul>
         ) : null}
       </li>
+      <SavingSpinner
+        active={isLoadingRemove || isLoadingUpdate}
+        text={"Loading Your Tasks"}
+        additionalStyles="absolute top-3 left-3"
+      />
       <WarningNotification notificationOptions={notification} />
     </>
   );

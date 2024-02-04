@@ -61,6 +61,7 @@ function TodayTasks() {
   return (
     <>
       <section className="w-2/3">
+        <SavingSpinner active={isLoading} text={"Loading Your Tasks"} />
         <DaySelector />
         <div className="mb-2 mt-10 flex items-center gap-4">
           <h2 className="text-3xl font-bold uppercase text-gray-900">
