@@ -23,6 +23,8 @@ import {
   useUpdateTaskMutation,
   useDeleteTaskMutation,
 } from "../store/tasks/tasks.api";
+import { getUserIdToken } from "../utils/firebase/firebase.utils";
+import { setToken } from "../store/user/user.slice";
 
 function Task({ task }) {
   const {
@@ -55,13 +57,14 @@ function Task({ task }) {
     useDeleteTaskMutation();
 
   const taskUpdateDispatcher = async (modifiedTask) => {
-    dispatch(setAllTasks(modifyTask(modifiedTask, allTasks)));
-
-    try {
-      await postUpdatedTask(modifiedTask);
-    } catch (error) {
-      console.error("Error updating task:", error);
+    const res = await postUpdatedTask(modifiedTask);
+    if (res.error?.data.msg == "Token expirado o invalido") {
+      const newToken = await getUserIdToken();
+      dispatch(setToken(newToken));
+      console.log("Auth updated, please try again");
+      return;
     }
+    dispatch(setAllTasks(modifyTask(modifiedTask, allTasks)));
   };
 
   const handleCompleteTask = async () => {
