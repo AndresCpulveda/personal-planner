@@ -66,6 +66,7 @@ function Task({ task }) {
     setNotification({
       primaryText: "Wait",
       secondaryText: "Your permissions have been updated, please try again now",
+      showing: true,
     });
     setTimeout(() => {
       setNotification({ showing: false });

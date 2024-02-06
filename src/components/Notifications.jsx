@@ -11,7 +11,7 @@ export const WarningNotification = ({
 }) => {
   return (
     <div className={`space-y-5 ${showing ? "" : "hidden"}`}>
-      <div className="absolute bottom-4 right-0 mx-auto max-w-[400px] rounded-xl border border-gray-50 bg-white p-4 text-sm shadow-lg">
+      <div className="absolute bottom-2 right-0 mx-auto max-w-[400px] rounded-xl border border-gray-50 bg-white p-4 text-sm shadow-lg">
         <button className="ttop-4 absolute right-4 ml-auto text-gray-500 hover:text-gray-900">
           <svg
             xmlns="http://www.w3.org/2000/svg"

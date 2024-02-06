@@ -5,6 +5,7 @@ import AllTasksPage from "./pages/AllTasksPage";
 import ReportsPage from "./pages/ReportsPage";
 import LoginPage from "./pages/LoginPage";
 import MainLayout from "./Layouts/MainLayout";
+import UserPage from "./pages/UserPage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/dashboard" element={<TodayTasks />} />
             <Route path="/tasks" element={<AllTasksPage />} />
             <Route path="/reports" element={<ReportsPage />} />
+            <Route path="/user" element={<UserPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
